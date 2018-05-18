@@ -49,7 +49,6 @@ class Lobby(models.Model):
         upload_to='stream/static/images',
         blank=True,
         null=True,
-        unique=True
     )
     category = models.ForeignKey(
         Category,
