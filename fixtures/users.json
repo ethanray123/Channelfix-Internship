@@ -1,0 +1,182 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$ogz0zFICk5A9$RrfFy/7CiEuyluw0V8Dt1Mw7xGBmpOj+Nv6SHFKb538=",
+        "last_login": "2018-05-18T01:36:07.326Z",
+        "is_superuser": true,
+        "username": "Thraxx",
+        "first_name": "Ethan Ray",
+        "last_name": "Mosqueda",
+        "email": "ethanray.mosqueda@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:09:48Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$Z43bq4B7gOuH$ugqu6aKJpaD/tQtonue9MwS+YfPog3v7U+7L3JzXXUQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Mastah",
+        "first_name": "Neji",
+        "last_name": "Himura",
+        "email": "thedojoismybitch@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:11:19Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$WlgCcVQ52Vpo$+imYpN3mcih3/Y0kZ0UcchWFjhp5XffsJIIkViKS/CQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Mad",
+        "first_name": "Max",
+        "last_name": "Collins",
+        "email": "madmax@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:12:22Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$mIFC3df5nDYm$a1ULQ5Sb1WBI8k+5X/y1I7VfT6FiKAkDV+0giDAI9tE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Powered",
+        "first_name": "Austin",
+        "last_name": "Powers",
+        "email": "powerup@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:13:20Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$0ErVcTxvMq7Y$I0hiklgUW3ypJhALKXDY7IHF0/4ttGTYeMH4BLj/Q4I=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Roxx",
+        "first_name": "Roxxette",
+        "last_name": "Marcher",
+        "email": "rox@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:14:01Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$zoXTkn2gerO6$1/OWnMY7SG0/oaRj1Q5pnDs2p0zkSzGrSAl4Kv1aCRY=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "JT",
+        "first_name": "Joshua",
+        "last_name": "Ty",
+        "email": "joshmyname@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T00:15:02Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$70gufKQY47Oy$RFC804dK6KEusYrzkC27RNbI9ZUHO9ikgQAzBBSYOBM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Trixxy",
+        "first_name": "Tracey",
+        "last_name": "Collins",
+        "email": "tracer@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T01:37:10Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 8,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$Zwd6r3h1Qgum$Wj7wlDBySZO4YwCYiJ/LjLLWU0pl1KllXxqKAmngw10=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Trime",
+        "first_name": "Triton",
+        "last_name": "Prime",
+        "email": "prime@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T01:37:59Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 9,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$25NPeOrv3Tb3$KyJW6Js1lKn9UUPBVbCUdKOUj8Ca03CRcwOrkj4sX2Q=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Meg",
+        "first_name": "Megan",
+        "last_name": "Stone",
+        "email": "megs@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T01:39:34Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 10,
+    "fields": {
+        "password": "pbkdf2_sha256$100000$1bBljFQs2Jgc$FCheOuzK+YAmyNm+B9jaUlbhiU5q4n/Wdgt9wLoxsoE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Mit",
+        "first_name": "Mitch",
+        "last_name": "Beccam",
+        "email": "mitchiswhich@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2018-05-18T01:40:20Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
