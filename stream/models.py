@@ -130,17 +130,17 @@ class Comment(models.Model):
         return self.owner.username
 
 
-class Lobby_Membership(models.Model):
+class LobbyMembership(models.Model):
     member = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name='lobbies'
+        related_name='memberships'
     )
     lobby = models.ForeignKey(
         Lobby,
         on_delete=models.CASCADE,
-        related_name='members'
+        related_name='memberships'
     )
 
     def __str__(self):
-        return self.member.owner
+        return self.member.owner.username
