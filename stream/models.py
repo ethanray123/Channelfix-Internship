@@ -48,7 +48,8 @@ class Lobby(models.Model):
     image = models.ImageField(
         upload_to='stream/static/images',
         blank=True,
-        null=True
+        null=True,
+        unique=True
     )
     category = models.ForeignKey(
         Category,
@@ -98,10 +99,8 @@ class Stream(models.Model):
         null=True
     )
     title = models.CharField(max_length=50)
-    URL = models.CharField(max_length=200)
+    URL = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=50, blank=True, null=True)
-    # type is a predefined word or built in function so I used tag instead
-    # Also changed the tuple to be named 'STREAM_TAGS' instead of 'TYPES'
     tag = models.IntegerField(choices=STREAM_TAGS, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
