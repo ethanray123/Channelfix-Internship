@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home.HomeView.as_view(), name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('stream/', include('stream.urls')),
 ]
 
 if settings.DEBUG:
