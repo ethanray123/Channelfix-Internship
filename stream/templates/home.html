@@ -10,6 +10,17 @@
 	    <a href="{% url 'logout' %}">logout</a>
 
 		<br><br>
+        <ul>
+        {% for lobby in lobbies %}
+        <li>
+            <div onclick="">
+                <a href="{% url 'stream:lobby_detailview' lobby.id %}"><h1>{{ lobby.name }}</h1></a>
+                <img width="20%" height="50%" src="{{ lobby.image.url }}">
+                <p>{{ lobby.description }}</p>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
 
 	{% else %}
 		<h3>You are not logged in...</h3>
