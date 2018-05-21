@@ -95,7 +95,7 @@
     "fields": {
         "owner": 1,
         "nickname": "Rayver",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:50:16.222Z",
         "removed": false
     }
@@ -106,7 +106,7 @@
     "fields": {
         "owner": 6,
         "nickname": "Josh",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:50:44.773Z",
         "removed": false
     }
@@ -117,7 +117,7 @@
     "fields": {
         "owner": 3,
         "nickname": "Maxy",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:51:15.230Z",
         "removed": false
     }
@@ -128,7 +128,7 @@
     "fields": {
         "owner": 2,
         "nickname": "Sensei",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:51:46.374Z",
         "removed": false
     }
@@ -139,7 +139,7 @@
     "fields": {
         "owner": 9,
         "nickname": "Megan",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:52:19.438Z",
         "removed": false
     }
@@ -150,7 +150,7 @@
     "fields": {
         "owner": 10,
         "nickname": "Mic",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:52:49.687Z",
         "removed": false
     }
@@ -161,7 +161,7 @@
     "fields": {
         "owner": 4,
         "nickname": "Aussie",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:53:20.083Z",
         "removed": false
     }
@@ -172,7 +172,7 @@
     "fields": {
         "owner": 5,
         "nickname": "Ross",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:53:47.475Z",
         "removed": false
     }
@@ -183,7 +183,7 @@
     "fields": {
         "owner": 8,
         "nickname": "Trisha",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:54:21.681Z",
         "removed": false
     }
@@ -194,7 +194,7 @@
     "fields": {
         "owner": 7,
         "nickname": "Tex",
-        "avatar": "stream/static/images/default.jpg",
+        "avatar": "stream/static/images/default_avatar.png",
         "when": "2018-05-18T03:54:54.630Z",
         "removed": false
     }
@@ -205,7 +205,7 @@
     "fields": {
         "owner": 1,
         "name": "Legends",
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "category": 10,
         "description": "Witness Great Strats!",
         "when": "2018-05-18T03:58:36.849Z",
@@ -218,7 +218,7 @@
     "fields": {
         "owner": 2,
         "name": "The Dojo",
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "category": 9,
         "description": "The Master is In Here",
         "when": "2018-05-18T04:01:02.267Z",
@@ -231,7 +231,7 @@
     "fields": {
         "owner": 9,
         "name": "ROS Junkies",
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "category": 2,
         "description": "Let's Waste Some Hackers",
         "when": "2018-05-18T04:37:11.063Z",
@@ -294,7 +294,7 @@
     "fields": {
         "lobby": 1,
         "owner": 1,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Legendary",
         "URL": "",
         "description": "Try Me",
@@ -309,7 +309,7 @@
     "fields": {
         "lobby": 1,
         "owner": 6,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Legendary-ish",
         "URL": "",
         "description": "hahahah trying out this game",
@@ -324,7 +324,7 @@
     "fields": {
         "lobby": 2,
         "owner": 2,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Mastery",
         "URL": "",
         "description": "Observe",
@@ -339,7 +339,7 @@
     "fields": {
         "lobby": 3,
         "owner": 9,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Lead",
         "URL": "",
         "description": "Let's Waste Some Hackers",
@@ -354,7 +354,7 @@
     "fields": {
         "lobby": 3,
         "owner": 5,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Second In Command",
         "URL": "",
         "description": "Scouting is Key",
@@ -369,7 +369,7 @@
     "fields": {
         "lobby": 3,
         "owner": 8,
-        "image": "stream/static/images/default.jpg",
+        "image": "stream/static/images/default_thumbnail.jpg",
         "title": "Private",
         "URL": "",
         "description": "Newb Here hahaha",
@@ -497,7 +497,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 2,
     "fields": {
         "member": 2,
@@ -505,7 +505,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 3,
     "fields": {
         "member": 4,
@@ -513,7 +513,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 4,
     "fields": {
         "member": 3,
@@ -521,7 +521,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 5,
     "fields": {
         "member": 5,
@@ -529,7 +529,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 6,
     "fields": {
         "member": 9,
@@ -537,7 +537,7 @@
     }
 },
 {
-    "model": "stream.lobbymembership",
+    "model": "stream.lobby_thumbnailmjpbership",
     "pk": 7,
     "fields": {
         "member": 8,
@@ -545,3 +545,4 @@
     }
 }
 ]
+_thumbnajp
