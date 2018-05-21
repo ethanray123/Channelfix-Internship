@@ -497,7 +497,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 2,
     "fields": {
         "member": 2,
@@ -505,7 +505,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 3,
     "fields": {
         "member": 4,
@@ -513,7 +513,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 4,
     "fields": {
         "member": 3,
@@ -521,7 +521,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 5,
     "fields": {
         "member": 5,
@@ -529,7 +529,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 6,
     "fields": {
         "member": 9,
@@ -537,7 +537,7 @@
     }
 },
 {
-    "model": "stream.lobby_thumbnailmjpbership",
+    "model": "stream.lobbymembership",
     "pk": 7,
     "fields": {
         "member": 8,
@@ -545,4 +545,3 @@
     }
 }
 ]
-_thumbnajp
