@@ -12,8 +12,13 @@
 		<br><br>
 
 	{% else %}
+
 		<h3>You are not logged in...</h3>
-    		<a href="{% url 'login' %}">login</a>
+
+    	<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+    	<br><br>
+    	<h3><a href="{% url 'login' %}">login</a></h3>
+
   	{% endif %}
 
 {% endblock content %}
