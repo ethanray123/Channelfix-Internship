@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stream',
     'social_django',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
