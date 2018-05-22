@@ -5,7 +5,8 @@
 {% block content %}
 
 	{% if user.is_authenticated %}
-
+		
+		<br><br>
 	    <h1>Hi {{ user.username }}! </h1>
 	    <a href="{% url 'logout' %}">logout</a>
 

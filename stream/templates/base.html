@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	{% load static %}
 	<meta charset="UTF-8">
 	<title>{% block title %}{% endblock title %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "stream/base.css" %}">
 </head>
 <body>
-	<header></header>
-	<div class="navbar"></div>
+	<div class="navbar">
+		<div class="ui menu">
+		  <img id="logo" class="item" src="{% static "images/default-logo.png" %}">
+		  <a class="item">
+		    Home
+		  </a>
+		  <a class="item">
+		    Friends
+		  </a>
+		  <div class="right menu">
+		    <div class="item">
+		      <div class="ui icon input">
+		        <input type="text" placeholder="Search...">
+		        <i class="search link icon"></i>
+		      </div>
+		    </div>
+		    <a class="ui item">
+		      Logout
+		    </a>
+		  </div>
+		</div>
+	</div>
 	<div class="content">
 		{% block content %}
 		{% endblock content %}
@@ -16,3 +39,8 @@
 	</div>
 </body>
 </html>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="{% static "semantic/dist/semantic.min.css" %}"></script>
