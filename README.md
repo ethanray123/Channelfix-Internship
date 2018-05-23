@@ -22,6 +22,8 @@ Then install the prequisites using:
 
 ```
 pip install django
+pip install social-auth-app-django
+pip install django-sslserver
 ```
 
 Install npm and Node JS:
