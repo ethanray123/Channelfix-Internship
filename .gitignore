@@ -113,5 +113,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# npm and semantic UI
+node_modules/
+semantic/
+package-lock.json
+semantic.json
 
 # End of https://www.gitignore.io/api/django,python
