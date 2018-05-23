@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Lobby{% endblock title %}
 
@@ -16,7 +17,31 @@
     {% endfor %}
 </ul>
 <h2>Comments</h2>
-<ul>
+<form>
+    {% csrf_token %}
+    <input type="text" id="txtComment">
+    <button id="btnComment">send</button>
+</form>
+<li class="comment template" hidden="True">
+    <div>
+        <div>
+            <img class="avatar" src="" width="2%" height="2%">
+            <span class="username"></span>(<span class="when"></span>)
+        </div>
+        <span class="text"></span>
+    </div>
+    <span class="remove"> [remove] </span><span class="report"> [report] </span>
+    <br><br>
+</li>
+<ul id="ulComment">
+</ul>
+
+{% endblock content %}
+{% block additionalJS %}
+<script src="{% static 'stream/js/lobby.js' %}"></script>
+{% endblock additionalJS %}
+
+<!--
     {% for comment in comments %}
     <li>
         <div>
@@ -28,7 +53,4 @@
         </div>
         <p>{{ comment.text }}</p>
     </li>
-    {% endfor %}
-</ul>
-
-{% endblock content %}
+    {% endfor %} -->
