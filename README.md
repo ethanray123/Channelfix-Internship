@@ -23,12 +23,54 @@ Then install the prequisites using:
 ```
 pip install django
 ```
+
+Install npm and Node JS:
+
+```
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
+
+Install Gulp:
+
+```
+sudo npm install -g gulp
+```
+
 Then get the project files from the repository by using:
 
 ```
-git clone https://github.com/ethanray123/TeamFeels-Version1.git
+git clone https://github.com/ethanray123/Channelfix-Internship.git
 ```
+
 Note: You need to install git to use this command but is not required for the project as a whole.
+Once cloned, move to the project directory:
+
+```
+cd Channelfix-Internship
+```
+
+In the project folder, install Semantic UI:
+
+```
+sudo npm install semantic-ui --save
+```
+
+Select the Automatic Set-up for Semantic UI using the arrow keys and press Enter.
+Confirm that you are in the project folder.
+You will be then prompted on where to install the semantic folder. Enter the following directory:
+
+```
+stream/static/semantic/
+```
+
+cd into semantic directory and build using gulp:
+
+```
+cd stream/static/semantic
+gulp build
+```
 
 ## Running the tests
 
