@@ -67,6 +67,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 SOCIAL_AUTH_FACEBOOK_KEY = '334851153707710'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+LOGIN_ERROR_URL = 'home'
 
 WSGI_APPLICATION = 'Project.wsgi.application'
 
