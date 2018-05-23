@@ -4,7 +4,7 @@
 	{% load static %}
 	<meta charset="UTF-8">
 	<title>{% block title %}{% endblock title %}</title>
-	<link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "semantic/semantic.min.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "stream/base.css" %}">
 </head>
 <body>
@@ -17,9 +17,9 @@
 	    <div class="right menu">
 	    	<div class="item">
 	    		<div class="ui icon input">
-		        <input type="text" placeholder="Search...">
-		        <i class="search link icon"></i>
-		      </div>
+			        <input type="text" placeholder="Search...">
+			        <i class="search link icon"></i>
+	      	</div>
 
 					{% if user.is_authenticated %}
 					
@@ -35,22 +35,20 @@
 					</div>
 
 
-				</div>
-				<div class="item">
-					<span><a class="ui item" href="{% url 'logout' %}">logout</a></span>
-				</div>
 				  
 					{% else %}
-				<div class="item">
-	    		<a class="ui item" href="{% url 'login' %}">login</a>
-    		</div>
+
+					<div class="item">
+		    		<a class="ui item" href="{% url 'login' %}">login</a>
+	    		</div>
+
 		  		{% endif %}
+
+				</div>
 			</div>
 
-
-		    </div>
+    </div>
 				
-		</div>
 	</div>
 	<div class="content">
 		{% block content %}
@@ -65,7 +63,7 @@
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
-<script src="{% static "semantic/dist/semantic.min.js" %}"></script>
+<script src="{% static "semantic/semantic.min.js" %}"></script>
 <script>
 	$('.ui.dropdown')
   	.dropdown()
