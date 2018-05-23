@@ -1,4 +1,16 @@
 #logo{
-	height: 5rem;
-	width: 5rem;
+	height: 4rem;
+	width: 4rem;
+	padding: 0px;
+	margin: 0px;
+}
+
+#profilepic{
+	height: 3rem;
+	width: 3rem;
+	margin: 1em;
+}
+
+#name{
+	font-weight: bold;
 }
