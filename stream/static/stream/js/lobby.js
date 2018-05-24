@@ -21,8 +21,19 @@ $(function(){
                             comment_holder.find("span.username").html(comment.owner__username);
                             comment_holder.find("span.when").html(comment.when);
                             comment_holder.find("span.text").html(comment.text);
-                            comment_holder.find("span.remove").attr("id", comment.pk);
-                            comment_holder.find("span.remove").click(function(event){myfunction(event);});
+                            if($("input#user").val() == comment.owner__username){
+                                console.log("dsdsd");
+                                comment_holder.find("div#container").after("<span class='remove'> [remove] </span>");
+                                comment_holder.find("span.remove").attr("id", comment.pk);
+                                comment_holder.find("span.remove").click(function(event){remove_comment(event);});
+                            }
+                            else{
+                                if(!comment.reported){
+                                    comment_holder.find("div#container").after("<span class='report'> [report] </span>");
+                                    comment_holder.find("span.report").attr("id", comment.pk);
+                                    comment_holder.find("span.report").click(function(event){report_comment(event);});
+                                }
+                            }
                             comment_holder.appendTo("ul#ulComment");
                         });
                     }
@@ -48,8 +59,12 @@ $(function(){
         });
     }
 
-    function myfunction(event){
+    function remove_comment(event){
         ajax_post(event, type="remove", text="", pk=$(event.target).attr("id"));
+    }
+
+    function report_comment(event){
+        ajax_post(event, type="report", text="", pk=$(event.target).attr("id"));
     }
 
     $("button#btnComment").click(function(event){

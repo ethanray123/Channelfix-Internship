@@ -1,6 +1,7 @@
 from django.views import generic
 from stream import models
 from django.http import Http404, JsonResponse
+from django.contrib.contenttypes.models import ContentType
 
 
 class DetailView(generic.DetailView):
@@ -28,12 +29,20 @@ class CommentView(generic.View):
                 text=request.POST['txtComment'],
                 owner=request.user)
         elif request.POST['type'] == "remove":
-            comment = models.Comment.objects.get(pk=request.POST['pk'])
+            comment = models.Comment.objects.get(
+                pk=request.POST['pk'], owner=request.user)
             comment.removed = True
             comment.save()
+        elif request.POST['type'] == "report":
+            comment = models.Comment.objects.get(pk=request.POST['pk'])
+            if not comment.is_reported(self.request.user):
+                content_type = ContentType.objects.get_for_model(
+                    models.Comment)
+                models.Report.objects.create(
+                    reporter=self.request.user, content_type=content_type,
+                    object_id=comment.pk)
         data = {'pk': comment.pk, 'text': comment.text,
-                'owner': comment.owner.username, 'when': comment.when
-                }
+                'owner': comment.owner.username, 'when': comment.when}
         return JsonResponse(data, content_type="application/json", safe=False)
 
     def get(self, request, *args, **kwargs):
@@ -42,11 +51,8 @@ class CommentView(generic.View):
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         comments = lobby.comments.values(
             'pk', 'text', 'owner__username', 'when',
-            'owner__profile__avatar').filter(
-            removed=False).order_by('-when')
-        data = {
-            'comments': list(comments)
-        }
+            'owner__profile__avatar').filter(removed=False).order_by('-when')
+        data = {'comments': list(comments)}
         return JsonResponse(
             data,
             content_type="application/json",

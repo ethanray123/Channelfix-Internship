@@ -5,52 +5,41 @@
 
 {% block content %}
 
-<h1>{{ object.name }}</h1>
-<ul>
-    {% for stream in streams %}
-    <li>
-        <div>
-            <h3>{{ stream.title }}</h3>
-            <img width="10%" height="20%" src="{{ lobby.image.url }}">
-        </div><br>
+{% if user.is_authenticated %}
+    <h1>{{ object.name }}</h1>
+    <input id="user" type="hidden" value="{{ request.user.username }}">
+    <ul>
+        {% for stream in streams %}
+        <li>
+            <div>
+                <h3>{{ stream.title }}</h3>
+                <img width="10%" height="20%" src="{{ lobby.image.url }}">
+            </div><br>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Comments</h2>
+    <form>
+        {% csrf_token %}
+        <input type="text" id="txtComment">
+        <button id="btnComment">send</button>
+    </form>
+    <li class="comment template" hidden="True">
+        <div id="container">
+            <div>
+                <img class="avatar" src="" width="2%" height="2%">
+                <span class="username"></span>(<span class="when"></span>)
+            </div>
+            <span class="text"></span>
+        </div><br><br>
     </li>
-    {% endfor %}
-</ul>
-<h2>Comments</h2>
-<form>
-    {% csrf_token %}
-    <input type="text" id="txtComment">
-    <button id="btnComment">send</button>
-</form>
-<li class="comment template" hidden="True">
-    <div>
-        <div>
-            <img class="avatar" src="" width="2%" height="2%">
-            <span class="username"></span>(<span class="when"></span>)
-        </div>
-        <span class="text"></span>
-    </div>
-    <span class="remove"> [remove] </span><span class="report"> [report] </span>
-    <br><br>
-</li>
-<ul id="ulComment">
-</ul>
-
+    <ul id="ulComment">
+    </ul>
+{% else %}
+    <h3>You are not logged in...</h3>
+    <a href="{% url 'login' %}" class="btn">login</a>
+{% endif %}
 {% endblock content %}
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 {% endblock additionalJS %}
-
-<!--
-    {% for comment in comments %}
-    <li>
-        <div>
-            <img width="2%" height="2%" src="{{ comment.owner.profile.avatar.url }}">
-            <label>
-                {{ comment.owner.username }}
-                <span>{{ comment.when }}</span>
-            </label>
-        </div>
-        <p>{{ comment.text }}</p>
-    </li>
-    {% endfor %} -->
