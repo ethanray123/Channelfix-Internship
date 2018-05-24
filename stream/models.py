@@ -159,7 +159,7 @@ class Report(models.Model):
     content_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE,
         null=True)
-    object_id = models.PositiveIntegerField(null=True)
+    content_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     removed = models.BooleanField(default=False)
