@@ -133,7 +133,7 @@ class Comment(models.Model):
         content_type = ContentType.objects.get_for_model(self)
         return Report.objects.filter(
             reporter=user, content_type=content_type,
-            object_id=self.id).exists()
+            content_id=self.id).exists()
 
 
 class LobbyMembership(models.Model):
@@ -152,6 +152,12 @@ class LobbyMembership(models.Model):
         return self.member.owner.username
 
 
+REASONS = (
+    (0, "Pornographic content."),
+    (1, "Copyright infringement."),
+    (2, "Racist content."))
+
+
 class Report(models.Model):
     reporter = models.ForeignKey(
         User, on_delete=models.CASCADE,
@@ -160,10 +166,10 @@ class Report(models.Model):
         ContentType, on_delete=models.CASCADE,
         null=True)
     content_id = models.PositiveIntegerField(null=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
-
+    content_object = GenericForeignKey('content_type', 'content_id')
+    reason = models.CharField(choices=REASONS, max_length=50)
     removed = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} reported {} of id {}'.format(
-            self.reporter.username, self.content_type, self.object_id)
+            self.reporter.username, self.content_type, self.content_id)
