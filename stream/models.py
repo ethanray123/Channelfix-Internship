@@ -59,6 +59,10 @@ class Lobby(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
+    @property
+    def member(self):
+        return self.memberships.filter(lobby=self)
+
     def __str__(self):
         return self.name
 

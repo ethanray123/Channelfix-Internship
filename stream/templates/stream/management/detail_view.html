@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Lobby{% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated and object.owner == user%}
+        <h1>{{ object.name }} Management</h1>
+        <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+        <h2>{{ streams.count }} - Streams</h2>
+        <ol>
+            {% for stream in streams %}
+                <li>
+                    <div>
+                        <p>{{ stream.title }}<input type="checkbox" {% if stream.removed %} checked {% endif %}></p>
+
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+        <h2>{{ lobby.memberships.count }} - Members</h2>
+        <ol>
+            {% for members in lobby.member %}
+            <li>
+                <div>
+                    <p>{{ members.member.nickname }}<input type="checkbox"></p>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+        <h2>{{ comments.count }} - Comments</h2>
+        <ol>
+            {% for comment in comments %}
+            <li>
+                <div>
+                    <label>
+                        {{ comment.owner.username }}
+                        <span>{{ comment.when }}</span>
+                    </label>
+                </div>
+                <p>{{ comment.text }}</p>
+            </li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+    {% endif %}
+
+{% endblock content %}

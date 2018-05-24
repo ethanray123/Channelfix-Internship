@@ -5,29 +5,36 @@
 {% block content %}
 
 <h1>{{ object.name }}</h1>
+        {% if user.is_authenticated and object.owner == user%}
+            <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
+        {% endif %}
 <ul>
     {% for stream in streams %}
-    <li>
-        <div>
-            <h3>{{ stream.title }}</h3>
-            <img width="10%" height="20%" src="{{ lobby.image.url }}">
-        </div><br>
-    </li>
+        {% if stream.removed != True %}
+            <li>
+                <div>
+                    <h3>{{ stream.title }}</h3>
+                    <img width="10%" height="20%" src="{{ lobby.image.url }}">
+                </div><br>
+            </li>
+        {% endif %}
     {% endfor %}
 </ul>
 <h2>Comments</h2>
 <ul>
     {% for comment in comments %}
-    <li>
-        <div>
-            <img width="2%" height="2%" src="{{ comment.owner.profile.avatar.url }}">
-            <label>
-                {{ comment.owner.username }}
-                <span>{{ comment.when }}</span>
-            </label>
-        </div>
-        <p>{{ comment.text }}</p>
-    </li>
+        {% if stream.removed != True %}
+            <li>
+                <div>
+                    <img width="2%" height="2%" src="{{ comment.owner.profile.avatar.url }}">
+                    <label>
+                        {{ comment.owner.username }}
+                        <span>{{ comment.when }}</span>
+                    </label>
+                </div>
+                <p>{{ comment.text }}</p>
+            </li>
+        {% endif %}
     {% endfor %}
 </ul>
 
