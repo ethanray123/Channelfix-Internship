@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 STREAM_TAGS = (
     (0, 'Guest'),
@@ -127,6 +129,12 @@ class Comment(models.Model):
     def __str__(self):
         return self.owner.username
 
+    def is_reported(self, user):
+        content_type = ContentType.objects.get_for_model(self)
+        return Report.objects.filter(
+            reporter=user, content_type=content_type,
+            object_id=self.id).exists()
+
 
 class LobbyMembership(models.Model):
     member = models.ForeignKey(
@@ -142,3 +150,20 @@ class LobbyMembership(models.Model):
 
     def __str__(self):
         return self.member.owner.username
+
+
+class Report(models.Model):
+    reporter = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='reported_comments')
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        null=True)
+    object_id = models.PositiveIntegerField(null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{} reported {} of id {}'.format(
+            self.reporter.username, self.content_type, self.object_id)
