@@ -11,4 +11,6 @@ urlpatterns = [
          management.DetailView.as_view(), name='manage_detailview'),
     path('managelobby/<int:pk>/edit',
          management.LobbyFormView.as_view(), name='lobby_edit'),
+    path('managelobby/<int:pk>/remove',
+         management.RemoveView.as_view(), name='manage_remove'),
 ]

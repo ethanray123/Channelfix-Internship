@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Lobby{% endblock title %}
 
 {% block content %}
@@ -11,7 +11,7 @@
             {% for stream in streams %}
                 <li>
                     <div>
-                        <p>{{ stream.title }}<input type="checkbox" {% if stream.removed %} checked {% endif %}></p>
+                        <p>{{ stream.title }}<input id="{{ stream.id }}" class="removed" type="checkbox" name="stream" {% if stream.removed %} checked {% endif %}></p>
 
                     </div>
                 </li>
@@ -22,7 +22,7 @@
             {% for members in lobby.member %}
             <li>
                 <div>
-                    <p>{{ members.member.nickname }}<input type="checkbox"></p>
+                    <p>{{ members.member }}<input id="{{ members.id }}" class="removed" type="checkbox" name="member" {% if members.removed %} checked {% endif %}></p>
                 </div>
             </li>
             {% endfor %}
@@ -38,6 +38,7 @@
                     </label>
                 </div>
                 <p>{{ comment.text }}</p>
+                <input id="{{ comment.id }}" class="removed" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}>
             </li>
             {% endfor %}
         </ol>
@@ -46,3 +47,7 @@
     {% endif %}
 
 {% endblock content %}
+
+{% block additionalJS %}
+<script src="{% static 'stream/js/remove.js' %}"></script>
+{% endblock additionalJS %}

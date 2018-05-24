@@ -143,6 +143,26 @@ class LobbyMembership(models.Model):
         on_delete=models.CASCADE,
         related_name='memberships'
     )
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.member.owner.username
+
+
+class LobbyViews(models.Model):
+    viewer = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='views'
+    )
+    lobby = models.ForeignKey(
+        Lobby,
+        on_delete=models.CASCADE,
+        related_name='views'
+    )
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.viewer.owner.username
