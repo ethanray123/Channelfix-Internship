@@ -35,6 +35,29 @@
     </li>
     <ul id="ulComment">
     </ul>
+    <div class="ui mini modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Report Comment
+      </div>
+      <div>
+        <span style="color: red" id="error"></span>
+      </div>
+      <div class="ui selection dropdown">
+        <input id="reason" type="hidden">
+        <i class="dropdown icon"></i>
+        <div class="default text">State Your Reason</div>
+        <div class="menu">
+          <div class="item" data-value="0">Pornographic content.</div>
+          <div class="item" data-value="1">Copyright infringement.</div>
+          <div class="item" data-value="2">Racist content..</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui button" id="ok">REPORT</div>
+      </div>
+    </div>
+</div>
 {% else %}
     <h3>You are not logged in...</h3>
     <a href="{% url 'login' %}" class="btn">login</a>

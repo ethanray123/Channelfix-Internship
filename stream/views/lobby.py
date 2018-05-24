@@ -40,7 +40,7 @@ class CommentView(generic.View):
                     models.Comment)
                 models.Report.objects.create(
                     reporter=self.request.user, content_type=content_type,
-                    object_id=comment.pk)
+                    content_id=comment.pk, reason=request.POST['reason'])
         data = {'pk': comment.pk, 'text': comment.text,
                 'owner': comment.owner.username, 'when': comment.when}
         return JsonResponse(data, content_type="application/json", safe=False)
@@ -49,6 +49,7 @@ class CommentView(generic.View):
         if not request.is_ajax():
             raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
+        comments = lobby.comments.filter(removed=False).order_by('-when')
         comments = lobby.comments.values(
             'pk', 'text', 'owner__username', 'when',
             'owner__profile__avatar').filter(removed=False).order_by('-when')

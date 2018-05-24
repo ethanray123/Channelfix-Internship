@@ -28,11 +28,8 @@ $(function(){
                                 comment_holder.find("span.remove").click(function(event){remove_comment(event);});
                             }
                             else{
-                                if(!comment.reported){
-                                    comment_holder.find("div#container").after("<span class='report'> [report] </span>");
-                                    comment_holder.find("span.report").attr("id", comment.pk);
-                                    comment_holder.find("span.report").click(function(event){report_comment(event);});
-                                }
+                                comment_holder.find("div#container").after("<span class='report' id='" + comment.pk +  "'> [report] </span>");
+                                comment_holder.find("span.report").click(report_comment);
                             }
                             comment_holder.appendTo("ul#ulComment");
                         });
@@ -44,13 +41,30 @@ $(function(){
         }, 500);
     })();
 
-    function ajax_post(event, type, text, pk){
+    function report_comment(){
+        $("span#error").html("");
+        $('.ui.modal').attr("id", $(this).attr("id"))
+        $('.ui.modal').modal('show')
+    };
+
+    $(".ui.button#ok").click(function(event){
+        if($("input#reason").val()){
+            ajax_post(event, type="report", text="", pk=$("div.ui.modal").attr("id"), reason=$("input#reason").val());
+            $('.ui.modal').modal('hide')
+        }
+        else{
+            $("span#error").html("State Your Reason");
+        }
+    });
+
+
+    function ajax_post(event, type, text, pk, reason){
         event.preventDefault();
         $.ajax({
             type: 'POST',
             url: window.location.pathname +'/comments/',
             data: {csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
-                'type': type,'txtComment': text,'pk': pk
+                'type': type,'txtComment': text,'pk': pk, 'reason': reason
             },
             success: function(data){
                 console.log(data);
@@ -60,14 +74,11 @@ $(function(){
     }
 
     function remove_comment(event){
-        ajax_post(event, type="remove", text="", pk=$(event.target).attr("id"));
-    }
-
-    function report_comment(event){
-        ajax_post(event, type="report", text="", pk=$(event.target).attr("id"));
+        ajax_post(event, type="remove", text="", pk=$(event.target).attr("id"), reason="");
     }
 
     $("button#btnComment").click(function(event){
-        ajax_post(event, type="create", text=$("input#txtComment").val(), pk=0);
+        ajax_post(event, type="create", text=$("input#txtComment").val(), pk=0, reason="");
     });//end of comment function
+
 });
