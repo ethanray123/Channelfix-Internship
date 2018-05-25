@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 STREAM_TAGS = (
     (0, 'Guest'),
@@ -54,10 +56,20 @@ class Profile(models.Model):
     avatar = models.ImageField(
         upload_to='stream/static/images',
         blank=True,
-        null=True
+        null=True,
+        default='stream/static/images/default_avatar.png'
     )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(owner=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def is_viewed(self, lobby):
         return LobbyViews.objects.filter(viewer=self, lobby=lobby).exists()
