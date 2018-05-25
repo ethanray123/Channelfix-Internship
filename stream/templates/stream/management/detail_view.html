@@ -43,7 +43,21 @@
             </li>
             {% endfor %}
         </ol>
-
+        <h2>{{ reports.count }} - Reported Comments</h2>
+        <ol>
+            {% for report in reports %}
+            <li>
+                <div>
+                    <label>
+                        {{ report.owner.username }}
+                        <span>{{ report.when }}</span>
+                    </label>
+                </div>
+                <p>{{ report.text }}</p>
+                <input id="{{ report.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}>
+            </li>
+            {% endfor %}
+        </ol>
     {% else %}
         <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
     {% endif %}
