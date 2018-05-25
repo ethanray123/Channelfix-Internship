@@ -4,6 +4,7 @@
   {% load static %}
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock title %}</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.min.css" %}">
   <link rel="stylesheet" type="text/css" href="{% static "stream/base.css" %}">
 </head>
@@ -13,7 +14,7 @@
       <a class="item" href="{% url 'home' %}">
         <img id="logo" class="ui avatar image" src="{% static "images/default_logo.png" %}">
       </a>
-      
+
       <div class="right menu">
         <div class="item">
           <div class="ui icon input">
@@ -22,7 +23,7 @@
           </div>
 
           {% if user.is_authenticated %}
-          
+
           <img id="profilepic" class="ui avatar image" src="{{user.profile.avatar.url}}">
           <div class="ui pointing dropdown link item">
             <span id="name" class="text">{{ user.username }}</span>
@@ -35,7 +36,7 @@
           </div>
 
 
-          
+
           {% else %}
 
           <div class="item">
@@ -48,7 +49,7 @@
       </div>
 
     </div>
-        
+
   </div>
   <div class="content">
     {% block content %}
@@ -59,6 +60,7 @@
   </div>
 </body>
 </html>
+{% block additionalJS %}{% endblock additionalJS %}
 <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
