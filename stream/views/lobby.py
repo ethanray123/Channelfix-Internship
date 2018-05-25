@@ -50,10 +50,17 @@ class CommentView(generic.View):
             raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         comments = lobby.comments.filter(removed=False).order_by('-when')
-        comments = lobby.comments.values(
-            'pk', 'text', 'owner__username', 'when',
-            'owner__profile__avatar').filter(removed=False).order_by('-when')
-        data = {'comments': list(comments)}
+        comment_list = []
+        for comment in comments:
+            temp = {}
+            temp['pk'] = comment.pk
+            temp['text'] = comment.text
+            temp['isreported'] = comment.is_reported(request.user)
+            temp['owner__profile__avatar'] = str(comment.owner.profile.avatar)
+            temp['owner__username'] = comment.owner.username
+            temp['when'] = comment.when
+            comment_list.append(temp)
+        data = {'comments': comment_list}
         return JsonResponse(
             data,
             content_type="application/json",

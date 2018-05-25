@@ -3,13 +3,14 @@ $(function(){
     $("input#txtComment").attr("autocomplete", "Off");
 
     var ctr = 0;
+    var flag = false;
     (function ajax_get(){
         setTimeout(function(){
             $.ajax({
                 type: 'GET',
                 url: window.location.pathname +'/comments/',
                 success: function(data){
-                    if(ctr != data.comments.length){
+                    if(ctr != data.comments.length || flag){
                         $("ul#ulComment").empty();
                         var comment_holder;
                         console.log(data)
@@ -28,11 +29,17 @@ $(function(){
                                 comment_holder.find("span.remove").click(function(event){remove_comment(event);});
                             }
                             else{
-                                comment_holder.find("div#container").after("<span class='report' id='" + comment.pk +  "'> [report] </span>");
-                                comment_holder.find("span.report").click(report_comment);
+                                if(!comment.isreported){
+                                    comment_holder.find("div#container").after("<button class='report' id='" + comment.pk +  "'> report </button>");
+                                    comment_holder.find("button.report").click(report_comment);
+                                }
+                                else{
+                                    comment_holder.find("div#container").after("<span> reported </span>");
+                                }
                             }
                             comment_holder.appendTo("ul#ulComment");
                         });
+                        flag = false;
                     }
                     ctr = data.comments.length
                     ajax_get();
@@ -51,6 +58,7 @@ $(function(){
         if($("input#reason").val()){
             ajax_post(event, type="report", text="", pk=$("div.ui.modal").attr("id"), reason=$("input#reason").val());
             $('.ui.modal').modal('hide')
+            flag = true;
         }
         else{
             $("span#error").html("State Your Reason");
