@@ -7,6 +7,9 @@
 
 {% if user.is_authenticated %}
     <h1>{{ object.name }}</h1>
+    {% if object.owner == user%}
+        <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
+    {% endif %}
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <ul>
         {% for stream in streams %}
@@ -66,3 +69,4 @@
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 {% endblock additionalJS %}
+>>>>>>> 1d01a330dc776d7eec90bc1fe74830efd6cbc2cb

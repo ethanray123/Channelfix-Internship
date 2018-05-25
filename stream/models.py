@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 
 STREAM_TAGS = (
     (0, 'Guest'),
@@ -20,6 +21,29 @@ class Category(models.Model):
         return self.name
 
 
+REASONS = (
+    (0, "Pornographic content."),
+    (1, "Copyright infringement."),
+    (2, "Racist content."))
+
+
+class Report(models.Model):
+    reporter = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='reported_comments')
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        null=True, related_name='reports')
+    content_id = models.PositiveIntegerField(null=True)
+    content_object = GenericForeignKey('content_type', 'content_id')
+    reason = models.CharField(choices=REASONS, max_length=50)
+    removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{} reported {} of id {}'.format(
+            self.reporter.username, self.content_type, self.content_id)
+
+
 class Profile(models.Model):
     owner = models.OneToOneField(
         User,
@@ -34,6 +58,9 @@ class Profile(models.Model):
     )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
+
+    def is_viewed(self, lobby):
+        return LobbyViews.objects.filter(viewer=self, lobby=lobby).exists()
 
     def __str__(self):
         return self.owner.username
@@ -60,6 +87,10 @@ class Lobby(models.Model):
     description = models.CharField(max_length=50, blank=True, null=True)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
+
+    @property
+    def member(self):
+        return self.memberships.filter(lobby=self)
 
     def __str__(self):
         return self.name
@@ -123,6 +154,7 @@ class Comment(models.Model):
         related_name='comments',
         null=True
     )
+    report = GenericRelation(Report, related_query_name='comments', content_type_field="content_type", object_id_field="content_id")
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
@@ -134,6 +166,12 @@ class Comment(models.Model):
         return Report.objects.filter(
             reporter=user, content_type=content_type,
             content_id=self.id).exists()
+
+    @property
+    def reported(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return Report.objects.filter(
+            content_type=content_type, content_id=self.id).exists()
 
 
 class LobbyMembership(models.Model):
@@ -147,29 +185,26 @@ class LobbyMembership(models.Model):
         on_delete=models.CASCADE,
         related_name='memberships'
     )
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.member.owner.username
 
 
-REASONS = (
-    (0, "Pornographic content."),
-    (1, "Copyright infringement."),
-    (2, "Racist content."))
-
-
-class Report(models.Model):
-    reporter = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name='reported_comments')
-    content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE,
-        null=True)
-    content_id = models.PositiveIntegerField(null=True)
-    content_object = GenericForeignKey('content_type', 'content_id')
-    reason = models.CharField(choices=REASONS, max_length=50)
+class LobbyViews(models.Model):
+    viewer = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='views'
+    )
+    lobby = models.ForeignKey(
+        Lobby,
+        on_delete=models.CASCADE,
+        related_name='views'
+    )
+    when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
     def __str__(self):
-        return '{} reported {} of id {}'.format(
-            self.reporter.username, self.content_type, self.content_id)
+        return self.viewer.owner.username
