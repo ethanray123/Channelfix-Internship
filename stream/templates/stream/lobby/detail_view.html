@@ -1,41 +1,72 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Lobby{% endblock title %}
 
 {% block content %}
 
-<h1>{{ object.name }}</h1>
-        {% if user.is_authenticated and object.owner == user%}
-            <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
-        {% endif %}
-<ul>
-    {% for stream in streams %}
-        {% if stream.removed != True %}
-            <li>
-                <div>
-                    <h3>{{ stream.title }}</h3>
-                    <img width="10%" height="20%" src="{{ lobby.image.url }}">
-                </div><br>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
-<h2>Comments</h2>
-<ul>
-    {% for comment in comments %}
-        {% if stream.removed != True %}
-            <li>
-                <div>
-                    <img width="2%" height="2%" src="{{ comment.owner.profile.avatar.url }}">
-                    <label>
-                        {{ comment.owner.username }}
-                        <span>{{ comment.when }}</span>
-                    </label>
-                </div>
-                <p>{{ comment.text }}</p>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
-
+{% if user.is_authenticated %}
+    <h1>{{ object.name }}</h1>
+    {% if object.owner == user%}
+        <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
+    {% endif %}
+    <input id="user" type="hidden" value="{{ request.user.username }}">
+    <ul>
+        {% for stream in streams %}
+        <li>
+            <div>
+                <h3>{{ stream.title }}</h3>
+                <img width="10%" height="20%" src="{{ lobby.image.url }}">
+            </div><br>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Comments</h2>
+    <form>
+        {% csrf_token %}
+        <input type="text" id="txtComment">
+        <button id="btnComment">send</button>
+    </form>
+    <li class="comment template" hidden="True">
+        <div id="container">
+            <div>
+                <img class="avatar" src="" width="2%" height="2%">
+                <span class="username"></span>(<span class="when"></span>)
+            </div>
+            <span class="text"></span>
+        </div><br><br>
+    </li>
+    <ul id="ulComment">
+    </ul>
+    <div class="ui mini modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Report Comment
+      </div>
+      <div>
+        <span style="color: red" id="error"></span>
+      </div>
+      <div class="ui selection dropdown">
+        <input id="reason" type="hidden">
+        <i class="dropdown icon"></i>
+        <div class="default text">State Your Reason</div>
+        <div class="menu">
+          <div class="item" data-value="0">Pornographic content.</div>
+          <div class="item" data-value="1">Copyright infringement.</div>
+          <div class="item" data-value="2">Racist content..</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui button" id="ok">REPORT</div>
+      </div>
+    </div>
+</div>
+{% else %}
+    <h3>You are not logged in...</h3>
+    <a href="{% url 'login' %}" class="btn">login</a>
+{% endif %}
 {% endblock content %}
+{% block additionalJS %}
+<script src="{% static 'stream/js/lobby.js' %}"></script>
+{% endblock additionalJS %}
+>>>>>>> 1d01a330dc776d7eec90bc1fe74830efd6cbc2cb
