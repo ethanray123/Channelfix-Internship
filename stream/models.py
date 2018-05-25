@@ -33,6 +33,9 @@ class Profile(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
+    def is_viewed(self, lobby):
+        return LobbyViews.objects.filter(viewer=self, lobby=lobby).exists()
+
     def __str__(self):
         return self.owner.username
 

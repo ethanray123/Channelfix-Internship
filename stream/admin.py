@@ -23,6 +23,11 @@ class ListMembership(admin.ModelAdmin):
     list_filter = ['lobby']
 
 
+class ListViews(admin.ModelAdmin):
+    list_display = ('viewer', 'lobby')
+    list_filter = ['lobby']
+
+
 admin.site.register(Category)
 admin.site.register(Profile, ListProfiles)
 admin.site.register(Lobby)
@@ -30,3 +35,4 @@ admin.site.register(Moderator, ListModerators)
 admin.site.register(Stream)
 admin.site.register(Comment, ListComments)
 admin.site.register(LobbyMembership, ListMembership)
+admin.site.register(LobbyViews, ListViews)

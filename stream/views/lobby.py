@@ -10,4 +10,9 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['streams'] = self.object.streams.order_by('-tag')
         context['comments'] = self.object.comments.order_by('-when')
+        profile = models.Profile.objects.get(owner=self.request.user)
+        if(not profile.is_viewed(self.object)):
+            models.LobbyViews.objects.create(
+                lobby=self.object,
+                viewer=profile)
         return context
