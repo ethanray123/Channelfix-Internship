@@ -18,9 +18,8 @@
             {% if stream.title != "" and stream.image != Null %}
               <h3>{{ stream.title }}</h3>
               <p>{{ stream.owner }}
-                {% if stream.owner.id != request.user.id %}
+                {% if stream.owner.id != request.user.id  and not stream.subscribed %}
                   <button id="subscribe" name="{{ stream.owner.id }}" class="ui yellow active button">
-                    <i class="user icon"></i>
                     Follow
                   </button>
                 {% endif %}

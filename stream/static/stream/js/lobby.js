@@ -90,3 +90,24 @@ $(function(){
     });//end of comment function
 
 });
+
+$("button#subscribe").click(function(){
+    console.log($(this).attr("name"));
+    $.ajax({
+        type: 'GET',
+        url: 'subscribe/',
+        data: {
+            'streamer_id': $(this).attr("name")
+        },
+        success: function(data){
+            if(data.message != ""){
+                alert(data.message);
+            }
+        }
+    });
+    if($(this).text() == "Follow"){
+        $(this).text("Unfollow");
+    }else{
+        $(this).text("Follow");
+    }
+});
