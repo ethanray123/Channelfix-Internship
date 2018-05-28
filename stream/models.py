@@ -104,6 +104,13 @@ class Lobby(models.Model):
     def member(self):
         return self.memberships.filter(lobby=self)
 
+    def is_member(self, user):
+        return LobbyMembership.objects.filter(
+            lobby=self, member=user, removed=False)
+
+    def has_stream(self, user):
+        return self.streams.filter(owner=user, removed=False)
+
     def __str__(self):
         return self.name
 
