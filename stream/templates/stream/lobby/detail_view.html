@@ -9,17 +9,19 @@
     <h1>{{ object.name }}</h1>
     {% if object.owner == user%}
         <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
-    {% endif %}
-    {% if is_member %}
-      <button id="join_lobby" disabled>Joined</button>
-      {% if stream %}
-        <a href="{% url 'stream:stream_updateview' stream.id %}">Update my Stream</a>
-        <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove my Stream</a>
-      {% else %}
-        <a href="{% url 'stream:stream_createview' lobby.pk %}">Create my Stream</a>
-      {% endif %}
+        <a href="{% url 'stream:stream_createview' lobby.pk %}">Create Stream</a><br>
     {% else %}
-      <button id="join_lobby">Join</button>
+      {% if is_member %}
+        <button id="join_lobby" disabled>Joined</button>
+        {% if has_stream %}
+          <a href="{% url 'stream:stream_updateview' stream.id %}">Update my Stream</a>
+          <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove my Stream</a>
+        {% else %}
+          <a href="{% url 'stream:stream_createview' lobby.pk %}">Create my Stream</a>
+        {% endif %}
+      {% else %}
+        <button id="join_lobby">Join</button>
+      {%endif%}
     {%endif%}
 
     <br>

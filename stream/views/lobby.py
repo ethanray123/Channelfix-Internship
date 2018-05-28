@@ -20,11 +20,9 @@ class DetailView(generic.DetailView):
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
         context['is_member'] = self.object.is_member(profile)
-        try:
-            context['stream'] = self.object.streams.get(
-                owner=self.request.user, removed=False)
-        except models.Stream.DoesNotExist:
-            pass
+        if(not self.object.owner == self.request.user):
+            context['has_stream'] = self.object.streams.filter(
+                owner=self.request.user, removed=False).exists()
         return context
 
 
