@@ -14,10 +14,20 @@
     <ul>
         {% for stream in streams %}
         <li>
-            <div>
-                <h3>{{ stream.title }}</h3>
-                <img width="10%" height="20%" src="{{ lobby.image.url }}">
-            </div><br>
+          <div>
+            {% if stream.title != "" and stream.image != Null %}
+              <h3>{{ stream.title }}</h3>
+              <p>{{ stream.owner }}
+                {% if stream.owner.id != request.user.id %}
+                  <button id="subscribe" name="{{ stream.owner.id }}" class="ui yellow active button">
+                    <i class="user icon"></i>
+                    Follow
+                  </button>
+                {% endif %}
+              </p>
+              <img width="10%" height="20%" src="{{ lobby.image.url }}">
+            {% endif %}
+          </div><br>
         </li>
         {% endfor %}
     </ul>
