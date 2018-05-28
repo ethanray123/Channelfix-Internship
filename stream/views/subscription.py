@@ -7,8 +7,8 @@ from django.http import Http404, JsonResponse
 
 class SubscribeView(generic.View):
     """
-    Used to subscribe user to an owner of a stream via follow button.
-    Passes a message if successful.
+    Used to subscribe or unsubscribe a user
+    to an owner of a stream.
     """
 
     def post(self, request, *args, **kwargs):
