@@ -10,9 +10,6 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-
-        context['streams'] = self.object.streams.order_by('-tag')
-        context['comments'] = self.object.comments.order_by('-when')
         profile = models.Profile.objects.get(owner=self.request.user)
         if(not profile.is_viewed(self.object)):
             models.LobbyViews.objects.create(
@@ -22,6 +19,12 @@ class DetailView(generic.DetailView):
             removed=False).order_by('-tag')
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
+        context['is_member'] = self.object.is_member(profile)
+        try:
+            context['stream'] = self.object.streams.get(
+                owner=self.request.user, removed=False)
+        except models.Stream.DoesNotExist:
+            pass
         return context
 
 
