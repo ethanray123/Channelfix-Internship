@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Stream{% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated and object.owner == user %}
+      <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'stream/form-template.html' %}
+            <div class="form-group">
+              <button type="submit">Update</button>
+            </div>
+        </form>
+      </div>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+    {% endif %}
+</body>
+{% endblock content %}

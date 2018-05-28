@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Delete Stream{% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated and object.owner == user %}
+        <div>
+          <h4>Confirm Delete</h4>
+            <div>
+            	<form method="post">{% csrf_token %}
+    			    <p>Are you sure you want to remove stream: "{{ object }}"?</p>
+    			    <button type="submit">Remove</button>
+    			</form>
+    			<a href="{% url 'stream:home' %}">Go Back</a>
+          </div>
+        </div>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+    {% endif %}
+{% endblock content %}
