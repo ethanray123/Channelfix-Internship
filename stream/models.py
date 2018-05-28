@@ -6,13 +6,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-STREAM_TAGS = (
-    (0, 'Guest'),
-    (1, 'Sponsor'),
-    (2, 'Player'),
-    (3, 'Main'),
-)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -126,6 +119,14 @@ class Moderator(models.Model):
         return self.owner.username
 
 
+STREAM_TAGS = (
+    (0, 'Guest'),
+    (1, 'Sponsor'),
+    (2, 'Player'),
+    (3, 'Main'),
+)
+
+
 class Stream(models.Model):
     lobby = models.ForeignKey(
         Lobby,
@@ -166,7 +167,12 @@ class Comment(models.Model):
         related_name='comments',
         null=True
     )
-    report = GenericRelation(Report, related_query_name='comments', content_type_field="content_type", object_id_field="content_id")
+    report = GenericRelation(
+        Report,
+        related_query_name='comments',
+        content_type_field="content_type",
+        object_id_field="content_id"
+    )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 

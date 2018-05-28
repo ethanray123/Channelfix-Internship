@@ -17,6 +17,7 @@
             <div>
                 <h3>{{ stream.title }}</h3>
                 <img width="10%" height="20%" src="{{ lobby.image.url }}">
+                <h5>{{ stream.get_tag_display }}</h5>
             </div><br>
         </li>
         {% endfor %}
@@ -69,4 +70,3 @@
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 {% endblock additionalJS %}
->>>>>>> 1d01a330dc776d7eec90bc1fe74830efd6cbc2cb

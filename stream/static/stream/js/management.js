@@ -16,4 +16,20 @@ $(function(){
             });
         }        
     });
+    $('.tags').dropdown({
+        onChange: function() {
+            // console.log($(this).find("input").attr("id"));]
+            $.ajax({
+                type: "GET",
+                url: window.location.pathname +'/tags',
+                data: {
+                    'stream_id': $(this).find("input").attr("id"),
+                    'tag': $(this).find("input").attr("value")
+                },
+                success: function(data_receive){
+                    console.log("success");
+                }
+            });
+        }
+    });
 });

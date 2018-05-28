@@ -13,6 +13,8 @@ urlpatterns = [
          management.LobbyFormView.as_view(), name='lobby_edit'),
     path('managelobby/<int:pk>/remove',
          management.RemoveView.as_view(), name='manage_remove'),
+    path('managelobby/<int:pk>/tags',
+         management.TagsView.as_view(), name='manage_tags'),
     path('lobby/<int:pk>/comments/',
          lobby.CommentView.as_view(), name='lobby_commentview'),
 ]
