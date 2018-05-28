@@ -92,22 +92,21 @@ $(function(){
 });
 
 $("button#subscribe").click(function(){
-    console.log($(this).attr("name"));
+    var subscribe = $(this);
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: 'subscribe/',
         data: {
-            'streamer_id': $(this).attr("name")
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+            'streamer_id': subscribe.attr("name")
         },
-        success: function(data){
-            if(data.message != ""){
-                alert(data.message);
+        success: function(response){
+            console.log(response);
+            if(response){
+                subscribe.text("Unfollow");
+            }else{
+                subscribe.text("Follow");
             }
         }
     });
-    if($(this).text() == "Follow"){
-        $(this).text("Unfollow");
-    }else{
-        $(this).text("Follow");
-    }
 });
