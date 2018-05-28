@@ -15,8 +15,7 @@ class DetailView(generic.DetailView):
             models.LobbyViews.objects.create(
                 lobby=self.object,
                 viewer=profile)
-        context['streams'] = self.object.streams.filter(
-            removed=False).order_by('-tag')
+        context['streams'] = self.get_streams()
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
         context['is_member'] = self.object.is_member(profile)
@@ -24,6 +23,24 @@ class DetailView(generic.DetailView):
             context['has_stream'] = self.object.streams.filter(
                 owner=self.request.user, removed=False).exists()
         return context
+
+    def get_streams(self):
+        queryset = self.object.streams.filter(
+            removed=False).order_by('-tag')
+        results = []
+        for obj in queryset:
+            temp = {}
+            temp['id'] = obj.id
+            temp['title'] = obj.title
+            temp['owner'] = {
+                'id': obj.owner.id,
+                'username': obj.owner.username,
+                'is_subscribed': obj.owner.profile.is_subscribed(
+                    self.request.user)
+            }
+            temp['image'] = obj.image
+            results.append(temp)
+        return results
 
 
 class CommentView(generic.View):

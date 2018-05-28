@@ -7,16 +7,13 @@
 
 {% if user.is_authenticated %}
     <h1>{{ object.name }}</h1>
-    {% if object.owner == user%}
+    {% if object.owner.id == request.user.id %}
         <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
         <a href="{% url 'stream:stream_createview' lobby.pk %}">Create Stream</a><br>
     {% else %}
       {% if is_member %}
         <button id="join_lobby" disabled>Joined</button>
-        {% if has_stream %}
-          <a href="{% url 'stream:stream_updateview' stream.id %}">Update my Stream</a>
-          <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove my Stream</a>
-        {% else %}
+        {% if not has_stream %}
           <a href="{% url 'stream:stream_createview' lobby.pk %}">Create my Stream</a>
         {% endif %}
       {% else %}
@@ -30,16 +27,28 @@
     <ul>
         {% for stream in streams %}
         <li>
-            <div>
-                <h3>{{ stream.title }}</h3>
-                {% if stream.owner == user %}
+          <div>
+            {% if stream.title != "" and stream.image != Null %}
+              <h3>{{ stream.title }}</h3>
+              <p>{{ stream.owner.username }}
+                {% if stream.owner.id != request.user.id  %}
+                  {% if stream.owner.is_subscribed %}
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                      Unfollow
+                    </button>
+                  {% else %}
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                      Follow
+                    </button>
+                  {% endif %}
+                {% else %}
                   <a href="{% url 'stream:stream_updateview' stream.id %}">Update</a>
                   <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove</a>
-                {% endif%}
-                <div>
-                  <img width="10%" height="20%" src="{{ stream.image.url }}">
-                </div>
-            </div><br>
+                {% endif %}
+              </p>
+              <img width="10%" height="20%" src="{{ stream.image.url }}">
+            {% endif %}
+          </div><br>
         </li>
         {% endfor %}
     </ul>

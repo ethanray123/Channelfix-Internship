@@ -1,5 +1,5 @@
 from django.urls import path
-from stream.views import home, lobby, management, stream
+from stream.views import home, lobby, management, stream, subscription
 
 app_name = 'stream'
 
@@ -21,4 +21,6 @@ urlpatterns = [
          stream.DeleteView.as_view(), name='stream_deleteview'),
     path('lobby/<int:pk>/create_stream/',
          stream.CreateView.as_view(), name='stream_createview'),
+    path('lobby/subscribe/',
+         subscription.SubscribeView.as_view(), name='subscribe'),
 ]
