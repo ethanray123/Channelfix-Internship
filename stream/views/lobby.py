@@ -11,18 +11,32 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
 
-        context['streams'] = self.object.streams.order_by('-tag')
-        context['comments'] = self.object.comments.order_by('-when')
         profile = models.Profile.objects.get(owner=self.request.user)
         if(not profile.is_viewed(self.object)):
             models.LobbyViews.objects.create(
                 lobby=self.object,
                 viewer=profile)
-        context['streams'] = self.object.streams.filter(
-            removed=False).order_by('-tag')
+        context['streams'] = self.get_streams()
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
         return context
+
+    def get_streams(self):
+        queryset = self.object.streams.filter(
+            removed=False).order_by('-tag')
+        results = []
+        for obj in queryset:
+            temp = {}
+            temp['title'] = obj.title
+            temp['owner'] = {
+                'id': obj.owner.id,
+                'username': obj.owner.username,
+                'is_subscribed': obj.owner.profile.is_subscribed(
+                    self.request.user)
+            }
+            temp['image'] = obj.image
+            results.append(temp)
+        return results
 
 
 class CommentView(generic.View):

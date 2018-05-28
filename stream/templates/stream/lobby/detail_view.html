@@ -17,11 +17,17 @@
           <div>
             {% if stream.title != "" and stream.image != Null %}
               <h3>{{ stream.title }}</h3>
-              <p>{{ stream.owner }}
-                {% if stream.owner.id != request.user.id  and not stream.subscribed %}
-                  <button id="subscribe" name="{{ stream.owner.id }}" class="ui yellow active button">
-                    Follow
-                  </button>
+              <p>{{ stream.owner.username }}
+                {% if stream.owner.id != request.user.id  %}
+                  {% if stream.owner.is_subscribed %}
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                      Unfollow
+                    </button>
+                  {% else %}
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                      Follow
+                    </button>
+                  {% endif %}
                 {% endif %}
               </p>
               <img width="10%" height="20%" src="{{ lobby.image.url }}">
