@@ -1,6 +1,5 @@
 from django.urls import path
 from stream.views import home, lobby, management, stream, subscription
-
 app_name = 'stream'
 
 urlpatterns = [
