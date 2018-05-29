@@ -67,6 +67,14 @@ class Profile(models.Model):
     def is_viewed(self, lobby):
         return LobbyViews.objects.filter(viewer=self, lobby=lobby).exists()
 
+    def is_subscribed(self, user):
+        """
+        if there exists a subscription wherein the
+        current user is subscribed to the streamer
+        """
+        return Subscription.objects.filter(
+            subscriber=user, publisher=self.owner).exists()
+
     def __str__(self):
         return self.owner.username
 
@@ -232,3 +240,19 @@ class LobbyViews(models.Model):
 
     def __str__(self):
         return self.viewer.owner.username
+
+
+class Subscription(models.Model):
+    """
+    docstring for Subscription
+    """
+    subscriber = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE, related_name="subscribers")
+    publisher = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE, related_name="publishers")
+
+    def __str__(self):
+        return ("{} is subscribed to {}").format(
+            self.subscriber, self.publisher)

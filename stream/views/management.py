@@ -83,19 +83,19 @@ class TagsView(generic.View):
             raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         streams = lobby.streams.order_by('-tag')
-        temp3 = []
-        for stream in streams:
-            temp2 = {}
-            temp2['id'] = stream.id
-            temp2['tag'] = stream.tag
-            temp2['tag_display'] = stream.get_tag_display()
-            temp3.append(temp2)
+        stream_list = []
+        for obj in streams:
+            stream = {}
+            stream['id'] = obj.id
+            stream['tag'] = obj.tag
+            stream['tag_display'] = obj.get_tag_display()
+            stream_list.append(stream)
         temp = {}
         if lobby.has_main():
             main = lobby.get_main()
             temp['id'] = main.pk
         data = {
-            'streams': list(temp3),
+            'streams': list(stream_list),
             'main': temp
         }
         return JsonResponse(

@@ -1,5 +1,5 @@
 from django.urls import path
-from stream.views import home, lobby, management
+from stream.views import home, lobby, management, subscription
 
 app_name = 'stream'
 
@@ -17,4 +17,6 @@ urlpatterns = [
          management.TagsView.as_view(), name='manage_tags'),
     path('lobby/<int:pk>/comments/',
          lobby.CommentView.as_view(), name='lobby_commentview'),
+    path('lobby/subscribe/',
+         subscription.SubscribeView.as_view(), name='subscribe'),
 ]
