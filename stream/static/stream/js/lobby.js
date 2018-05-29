@@ -13,7 +13,6 @@ $(function(){
                     if(ctr != data.comments.length || flag){
                         $("ul#ulComment").empty();
                         var comment_holder;
-                        console.log(data)
                         $.each(data.comments, function(ctr, comment){
                             comment_holder = $('li.comment.template').clone();
                             comment_holder.removeClass("template");
@@ -23,7 +22,6 @@ $(function(){
                             comment_holder.find("span.when").html(comment.when);
                             comment_holder.find("span.text").html(comment.text);
                             if($("input#user").val() == comment.owner__username){
-                                console.log("dsdsd");
                                 comment_holder.find("div#container").after("<span class='remove'> [remove] </span>");
                                 comment_holder.find("span.remove").attr("id", comment.pk);
                                 comment_holder.find("span.remove").click(function(event){remove_comment(event);});
@@ -45,7 +43,7 @@ $(function(){
                     ajax_get();
                 }
             });
-        }, 500);
+        }, 3000);
     })();
 
     function report_comment(){
@@ -75,7 +73,6 @@ $(function(){
                 'type': type,'txtComment': text,'pk': pk, 'reason': reason
             },
             success: function(data){
-                console.log(data);
                 $("input#txtComment").val("");
             }
         });

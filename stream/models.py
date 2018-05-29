@@ -97,6 +97,12 @@ class Lobby(models.Model):
     def member(self):
         return self.memberships.filter(lobby=self)
 
+    def has_main(self):
+        return self.streams.filter(tag=3, removed=False).exists()
+
+    def get_main(self):
+        return self.streams.get(tag=3, removed=False)
+
     def __str__(self):
         return self.name
 

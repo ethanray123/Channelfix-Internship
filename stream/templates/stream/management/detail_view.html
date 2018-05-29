@@ -5,23 +5,38 @@
 {% block content %}
     {% if user.is_authenticated and object.owner == user%}
         <h1>{{ object.name }} Management</h1>
+    <div class="ui mini modal tags">
+      <i class="close icon"></i>
+      <div class="header">
+        Change previous main
+      </div>
+      <div class="actions">
+        <div class="ui button" id="change">Change</div>
+      </div>
+    </div>
+    <form>
+      {% csrf_token %}
+    </form>
         <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
         <h2>Total views: {{ lobby.views.count }}</h2>
         <h2>{{ streams.count }} - Streams</h2>
+        {% if main %}
+          <input type="hidden" id="main" value="{{ main.id }}">
+        {% endif %}
         <ol>
             {% for stream in streams %}
                 <li>
                     <div>
                         <p>{{ stream.title }} - {{ stream.owner.username }}</p>
-                        <div class="ui selection dropdown tags">
+                        <div class="ui selection dropdown tags" id="{{ stream.id }}">
                             <input id="{{ stream.id }}" type="hidden" value="{{ stream.tag }}">
+                            <span  id="stream_title" hidden>{{ stream.title }}</span>
                             <i class="dropdown icon"></i>
                             <div class="text">{{ stream.get_tag_display }}</div>
                             <div class="menu">
-                              <div class="item" data-value="0">Guest</div>
-                              <div class="item" data-value="1">Sponsor</div>
-                              <div class="item" data-value="2">Player</div>
-                              <div class="item" data-value="3">Main</div>
+                              {% for value, tag in tags %}
+                                <div class="item" data-value="{{ value }}">{{ tag }}</div>
+                              {% endfor %}
                             </div>
                         </div>
                         <p>Remove? <input id="{{ stream.id }}" class="remove" type="checkbox" name="stream" {% if stream.removed %} checked {% endif %}></p>
