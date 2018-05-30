@@ -76,8 +76,9 @@ class Profile(models.Model):
 
     def is_subscribed(self, user):
         """
-        if there exists a subscription wherein the
-        current user is subscribed to the streamer
+        Checks if there exists a subscription wherein the
+        current user is subscribed to the streamer owning 
+        this profile. Returns boolean value.
         """
         return Subscription.objects.filter(
             subscriber=user, publisher=self.owner).exists()
@@ -231,9 +232,6 @@ class LobbyViews(models.Model):
 
 
 class Subscription(models.Model):
-    """
-    docstring for Subscription
-    """
     subscriber = models.ForeignKey(
         User,
         on_delete=models.CASCADE, related_name="subscribers")
