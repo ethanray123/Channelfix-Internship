@@ -247,3 +247,38 @@ class Subscription(models.Model):
     def __str__(self):
         return ("{} is subscribed to {}").format(
             self.subscriber, self.publisher)
+
+
+NOTIFICATION_TEMPLATES = (
+    (0, 'User has subscribed to you'),
+    (1, 'User has started a stream: streamname in lobbyname'),
+    (2, 'User has created a lobby: lobbyname'),
+    (3, 'User has commented in lobby: lobbyname'),
+    (4, 'Your comment has been removed due to reason'),
+    (5, 'Your stream has been removed due to reason'),
+    (6, 'Your stream has been updated as tag'),
+)
+
+
+class Notification(object):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=True
+    )
+
+    target_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        null=True, related_name='notifications')
+    target_id = models.PositiveIntegerField(null=True)
+    target_object = GenericForeignKey('target_type', 'target_id')
+
+    template = models.CharField(choices=NOTIFICATION_TEMPLATES, max_length=100)
+
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{} was notified {} of notif id {}'.format(
+            self.owner.username, self.target_type, self.target_id)
