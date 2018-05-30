@@ -155,7 +155,7 @@ class Lobby(models.Model):
     )
     notify = GenericRelation(
         Notification,
-        related_query_name='profile',
+        related_query_name='lobbies',
         content_type_field="target_type",
         object_id_field="target_id"
     )
@@ -207,7 +207,7 @@ class Stream(models.Model):
     )
     notify = GenericRelation(
         Notification,
-        related_query_name='profile',
+        related_query_name='streams',
         content_type_field="target_type",
         object_id_field="target_id"
     )
@@ -243,7 +243,7 @@ class Comment(models.Model):
     )
     notify = GenericRelation(
         Notification,
-        related_query_name='profile',
+        related_query_name='comments',
         content_type_field="target_type",
         object_id_field="target_id"
     )
