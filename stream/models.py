@@ -6,13 +6,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-STREAM_TAGS = (
-    (0, 'Guest'),
-    (1, 'Sponsor'),
-    (2, 'Player'),
-    (3, 'Main'),
-)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -113,6 +106,12 @@ class Lobby(models.Model):
     def member(self):
         return self.memberships.filter(lobby=self)
 
+    def has_main(self):
+        return self.streams.filter(tag=3, removed=False).exists()
+
+    def get_main(self):
+        return self.streams.get(tag=3, removed=False)
+
     def __str__(self):
         return self.name
 
@@ -133,6 +132,14 @@ class Moderator(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+
+STREAM_TAGS = (
+    (0, 'Guest'),
+    (1, 'Sponsor'),
+    (2, 'Player'),
+    (3, 'Main'),
+)
 
 
 class Stream(models.Model):

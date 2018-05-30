@@ -34,6 +34,7 @@ class DetailView(generic.DetailView):
                 'is_subscribed': obj.owner.profile.is_subscribed(
                     self.request.user)
             }
+            temp['tag'] = obj.get_tag_display()
             temp['image'] = obj.image
             results.append(temp)
         return results
