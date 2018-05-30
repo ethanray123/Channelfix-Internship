@@ -5,7 +5,7 @@
 {% block content %}
     {% if user.is_authenticated and object.owner == user%}
         <h1>{{ object.name }} Management</h1>
-    <div class="ui mini modal tags">
+      <div class="ui mini modal tags">
       <i class="close icon"></i>
       <div class="header">
         Change previous main

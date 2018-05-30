@@ -33,9 +33,9 @@ class RemoveView(generic.View):
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             raise Http404
+        value = False
         if request.POST['model'] == "stream":
             stream = models.Stream.objects.get(pk=request.POST['pk'])
-            value = False
             if request.POST['value'] == "true":
                 value = True
             stream.removed = value
@@ -45,14 +45,12 @@ class RemoveView(generic.View):
             lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
             member = models.LobbyMembership.objects.get(
                 member=user, lobby=lobby)
-            value = False
             if request.POST['value'] == "true":
                 value = True
             member.removed = value
             member.save()
         elif request.POST['model'] == "comment":
             comment = models.Comment.objects.get(pk=request.POST['pk'])
-            value = False
             if request.POST['value'] == "true":
                 value = True
             comment.removed = value
