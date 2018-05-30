@@ -4,97 +4,97 @@
 
 {% block content %}
     {% if user.is_authenticated and object.owner == user%}
-        <h1>{{ object.name }} Management</h1>
+      <h1>{{ object.name }} Management</h1>
       <div class="ui mini modal tags">
-      <i class="close icon"></i>
-      <div class="header">
-        Change previous main
+        <i class="close icon"></i>
+        <div class="header">
+          Change previous main
+        </div>
+        <div class="actions">
+          <div class="ui button" id="change">Change</div>
+        </div>
       </div>
-      <div class="actions">
-        <div class="ui button" id="change">Change</div>
-      </div>
-    </div>
-    <form>
-      {% csrf_token %}
-    </form>
-        <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
-        <h2>Total views: {{ lobby.views.count }}</h2>
-        <h2>{{ streams.count }} - Streams</h2>
-        {% if main %}
-          <input type="hidden" id="main" value="{{ main.id }}">
-        {% endif %}
-        <ol>
-            {% for stream in streams %}
-                <li>
-                    <div>
-                        <p>{{ stream.title }} - {{ stream.owner.username }}</p>
-                        <div class="ui selection dropdown tags" id="{{ stream.id }}">
-                            <input id="{{ stream.id }}" type="hidden" value="{{ stream.tag }}">
-                            <span  id="stream_title" hidden>{{ stream.title }}</span>
-                            <i class="dropdown icon"></i>
-                            <div class="text">{{ stream.get_tag_display }}</div>
-                            <div class="menu">
-                              {% for value, tag in tags %}
-                                <div class="item" data-value="{{ value }}">{{ tag }}</div>
-                              {% endfor %}
-                            </div>
-                        </div>
-                        <p>Remove? <input id="{{ stream.id }}" class="remove" type="checkbox" name="stream" {% if stream.removed %} checked {% endif %}></p>
-                    </div>
-                </li>
-                <br>
-            {% endfor %}
-        </ol>
-        <h2>{{ lobby.memberships.count }} - Members</h2>
-        <ol>
-            {% for members in lobby.member %}
-            <li>
-                <div>
-                    <p>{{ members.member }}</p>
-                     <span>Remove? <input id="{{ members.id }}" class="remove" type="checkbox" name="member" {% if members.removed %} checked {% endif %}></span>
+      <form>
+        {% csrf_token %}
+      </form>
+      <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+      <h2>Total views: {{ lobby.views.count }}</h2>
+      <h2>{{ streams.count }} - Streams</h2>
+      {% if main %}
+        <input type="hidden" id="main" value="{{ main.id }}">
+      {% endif %}
+      <ol>
+        {% for stream in streams %}
+          <li>
+            <div>
+              <p>{{ stream.title }} - {{ stream.owner.username }}</p>
+              <div class="ui selection dropdown tags" id="{{ stream.id }}">
+                <input id="{{ stream.id }}" type="hidden" value="{{ stream.tag }}">
+                <span  id="stream_title" hidden>{{ stream.title }}</span>
+                <i class="dropdown icon"></i>
+                <div class="text">{{ stream.get_tag_display }}</div>
+                <div class="menu">
+                  {% for value, tag in tags %}
+                    <div class="item" data-value="{{ value }}">{{ tag }}</div>
+                  {% endfor %}
                 </div>
-                <br>
-            </li>
-            {% endfor %}
-        </ol>
-        <h2>{{ comments.count }} - Comments</h2>
-        <ol>
-            {% for comment in comments %}
-            <li>
-                <div>
-                    <label>
-                        {{ comment.owner.username }}
-                        <span>{{ comment.when }}</span>
-                    </label>
-                </div>
-                <p>{{ comment.text }}</p>
-                 <span>Remove? <input id="{{ comment.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
-            </li>
-            <br>
-            {% endfor %}
-        </ol>
-        <h2>{{ reports.count }} - Reported Comments</h2>
-        <ol>
-            {% for report in reports %}
-            <li>
-                <div>
-                    <label>
-                        {{ report.owner.username }}
-                        <span>{{ report.when }}</span>
-                    </label>
-                </div>
-                <p>{{ report.text }}</p>
-                 <span>Remove? <input id="{{ report.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
-            </li>
-            <br>
-            {% endfor %}
-        </ol>
+              </div>
+                <p>Remove? <input id="{{ stream.id }}" class="remove" type="checkbox" name="stream" {% if stream.removed %} checked {% endif %}></p>
+            </div>
+          </li>
+          <br>
+        {% endfor %}
+      </ol>
+      <h2>{{ lobby.memberships.count }} - Members</h2>
+      <ol>
+        {% for members in lobby.member %}
+        <li>
+          <div>
+            <p>{{ members.member }}</p>
+            <span>Remove? <input id="{{ members.id }}" class="remove" type="checkbox" name="member" {% if members.removed %} checked {% endif %}></span>
+          </div>
+          <br>
+        </li>
+        {% endfor %}
+      </ol>
+      <h2>{{ comments.count }} - Comments</h2>
+      <ol>
+        {% for comment in comments %}
+        <li>
+          <div>
+            <label>
+              {{ comment.owner.username }}
+              <span>{{ comment.when }}</span>
+            </label>
+          </div>
+          <p>{{ comment.text }}</p>
+          <span>Remove? <input id="{{ comment.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
+        </li>
+        <br>
+        {% endfor %}
+      </ol>
+      <h2>{{ reports.count }} - Reported Comments</h2>
+      <ol>
+        {% for report in reports %}
+        <li>
+          <div>
+            <label>
+              {{ report.owner.username }}
+              <span>{{ report.when }}</span>
+            </label>
+          </div>
+          <p>{{ report.text }}</p>
+          <span>Remove? <input id="{{ report.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
+        </li>
+        <br>
+        {% endfor %}
+      </ol>
     {% else %}
-        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+      <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
     {% endif %}
 
 {% endblock content %}
 
 {% block additionalJS %}
-<script src="{% static 'stream/js/management.js' %}"></script>
+  <script src="{% static 'stream/js/management.js' %}"></script>
 {% endblock additionalJS %}
