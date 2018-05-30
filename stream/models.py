@@ -77,7 +77,7 @@ class Profile(models.Model):
     def is_subscribed(self, user):
         """
         Checks if there exists a subscription wherein the
-        current user is subscribed to the streamer owning 
+        current user is subscribed to the streamer owning
         this profile. Returns boolean value.
         """
         return Subscription.objects.filter(
@@ -175,7 +175,12 @@ class Comment(models.Model):
         related_name='comments',
         null=True
     )
-    report = GenericRelation(Report, related_query_name='comments', content_type_field="content_type", object_id_field="content_id")
+    report = GenericRelation(
+        Report,
+        related_query_name='comments',
+        content_type_field="content_type",
+        object_id_field="content_id"
+    )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
