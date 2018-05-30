@@ -46,6 +46,48 @@ class Report(models.Model):
             self.reporter.username, self.content_type, self.content_id)
 
 
+NOTIFICATION_TEMPLATES = (
+    # Profile
+    (0, 'username has subscribed to you'),
+
+    # Stream
+    (1, 'username has started a stream: streamname in lobbyname'),
+    (2, 'Your stream has been updated as streamtag'),
+    (3, 'Your stream has been removed due to reportreason'),
+
+    # Lobby
+    (4, 'username has created a lobby: lobbyname'),
+    (5, 'username has commented in lobby: lobbyname'),
+
+    # Comment
+    (6, 'Your comment has been removed due to reportreason'),
+)
+
+
+class Notification(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=True
+    )
+
+    target_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        null=True, related_name='notifications')
+    target_id = models.PositiveIntegerField(null=True)
+    target_object = GenericForeignKey('target_type', 'target_id')
+
+    template = models.CharField(choices=NOTIFICATION_TEMPLATES, max_length=100)
+
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{} was notified {} of notif id {}'.format(
+            self.owner.username, self.target_type, self.target_id)
+
+
 class Profile(models.Model):
     owner = models.OneToOneField(
         User,
@@ -58,6 +100,12 @@ class Profile(models.Model):
         blank=True,
         null=True,
         default='stream/static/images/default_avatar.png'
+    )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='profile',
+        content_type_field="target_type",
+        object_id_field="target_id"
     )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
@@ -105,6 +153,12 @@ class Lobby(models.Model):
         on_delete=models.CASCADE,
         related_name='lobby'
     )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='profile',
+        content_type_field="target_type",
+        object_id_field="target_id"
+    )
     description = models.CharField(max_length=50, blank=True, null=True)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
@@ -151,6 +205,12 @@ class Stream(models.Model):
         blank=True,
         null=True
     )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='profile',
+        content_type_field="target_type",
+        object_id_field="target_id"
+    )
     title = models.CharField(max_length=50)
     URL = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=50, blank=True, null=True)
@@ -180,6 +240,12 @@ class Comment(models.Model):
         related_query_name='comments',
         content_type_field="content_type",
         object_id_field="content_id"
+    )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='profile',
+        content_type_field="target_type",
+        object_id_field="target_id"
     )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
@@ -247,38 +313,3 @@ class Subscription(models.Model):
     def __str__(self):
         return ("{} is subscribed to {}").format(
             self.subscriber, self.publisher)
-
-
-NOTIFICATION_TEMPLATES = (
-    (0, 'User has subscribed to you'),
-    (1, 'User has started a stream: streamname in lobbyname'),
-    (2, 'User has created a lobby: lobbyname'),
-    (3, 'User has commented in lobby: lobbyname'),
-    (4, 'Your comment has been removed due to reason'),
-    (5, 'Your stream has been removed due to reason'),
-    (6, 'Your stream has been updated as tag'),
-)
-
-
-class Notification(object):
-    owner = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='notifications',
-        null=True
-    )
-
-    target_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE,
-        null=True, related_name='notifications')
-    target_id = models.PositiveIntegerField(null=True)
-    target_object = GenericForeignKey('target_type', 'target_id')
-
-    template = models.CharField(choices=NOTIFICATION_TEMPLATES, max_length=100)
-
-    when = models.DateTimeField(auto_now_add=True, null=True)
-    removed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return '{} was notified {} of notif id {}'.format(
-            self.owner.username, self.target_type, self.target_id)
