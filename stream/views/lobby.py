@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views import generic
 from stream import models
 from django.http import Http404, JsonResponse
@@ -92,3 +93,15 @@ class CommentView(generic.View):
             data,
             content_type="application/json",
             safe=False)
+
+
+class RequestMembershipView(generic.View):
+
+    def post(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404
+        lobby = models.Lobby.objects.filter(pk=kwargs.get('pk'))
+        models.LobbyMembership.objects.create(
+            member=request.user, lobby=lobby,
+            status=models.LobbyMembership.PENDING)
+        return HttpResponse("Success!")

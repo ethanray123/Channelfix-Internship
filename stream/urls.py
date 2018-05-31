@@ -24,6 +24,6 @@ urlpatterns = [
          stream.CreateView.as_view(), name='stream_createview'),
     path('lobby/subscribe/',
          subscription.SubscribeView.as_view(), name='subscribe'),
-    path('lobby/<int:pk>/join_lobby',
-         lobby.JoinView.as_view(), name='join_lobby'),
+    path('lobby/<int:pk>/request_membership',
+         lobby.RequestMembershipView.as_view(), name='request_membership'),
 ]
