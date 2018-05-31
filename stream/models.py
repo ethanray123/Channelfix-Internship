@@ -250,6 +250,10 @@ class LobbyMembership(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
+    PENDING = 0
+    REJECTED = 1
+    ACCEPTED = 2
+
     def __str__(self):
         return self.member.owner.username
 
