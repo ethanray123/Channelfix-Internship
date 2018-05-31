@@ -116,7 +116,7 @@ class Lobby(models.Model):
 
     def is_member(self, user):
         return LobbyMembership.objects.filter(
-            lobby=self, member=user, status=2, removed=False)
+            lobby=self, member=user, status=2, removed=False).exists()
 
     def has_stream(self, user):
         return self.streams.filter(owner=user, removed=False)
