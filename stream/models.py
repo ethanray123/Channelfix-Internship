@@ -80,6 +80,12 @@ class Profile(models.Model):
         return self.owner.username
 
 
+LOBBY_TYPE = (
+    (0, "Public"),
+    (1, "Private")
+)
+
+
 class Lobby(models.Model):
     owner = models.ForeignKey(
         User,
@@ -99,6 +105,7 @@ class Lobby(models.Model):
         related_name='lobby'
     )
     description = models.CharField(max_length=50, blank=True, null=True)
+    lobby_type = models.IntegerField(choices=LOBBY_TYPE, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
