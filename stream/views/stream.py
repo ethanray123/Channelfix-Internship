@@ -19,6 +19,11 @@ class CreateView(generic.CreateView):
             raise Http404
         return super(CreateView, self).dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateView, self).get_context_data(**kwargs)
+        context['lobby'] = models.Lobby.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
     def form_valid(self, form):
         lobby = models.Lobby.objects.get(pk=self.kwargs.get('pk'))
         stream = form.save(commit=False)
