@@ -21,22 +21,10 @@ class CreateView(generic.CreateView):
 
     def form_valid(self, form):
         lobby = models.Lobby.objects.get(pk=self.kwargs.get('pk'))
-        if lobby.owner == self.request.user:
-            stream = form.save(commit=False)
-            stream.owner = self.request.user
-            stream.lobby = lobby
-            self.object = stream.save()
-        elif(lobby.is_member(self.request.user.profile) and
-             not lobby.has_stream(self.request.user)):
-            stream = form.save(commit=False)
-            stream.owner = self.request.user
-            stream.lobby = lobby
-            self.object = stream.save()
-        elif(not lobby.has_stream(self.request.user)):
-            stream = form.save(commit=False)
-            stream.owner = self.request.user
-            stream.lobby = lobby
-            self.object = stream.save()
+        stream = form.save(commit=False)
+        stream.owner = self.request.user
+        stream.lobby = lobby
+        self.object = stream.save()
         return HttpResponseRedirect(
             reverse('stream:lobby_detailview', args=[lobby.pk]))
 
