@@ -53,6 +53,7 @@ NOTIFICATION_TEMPLATES = (
     # Stream
     (1, '{} has started a stream: {} in {}'),
     (2, 'Your stream has been updated as {}'),
+    # Reported Stream
     (3, 'Your stream has been removed due to {}'),
 
     # Lobby
@@ -62,6 +63,7 @@ NOTIFICATION_TEMPLATES = (
 
     # Comment
     (7, '{} has commented in lobby: {}'),
+    # Reported Comment
     (8, 'Your comment has been removed due to {}'),
 )
 
@@ -96,7 +98,7 @@ class Notification(models.Model):
                 obj.owner.username, obj.title, obj.lobby.name)
         elif(self.template == '2'):
             notif = NOTIFICATION_TEMPLATES[2][1].format(
-                obj.tag)
+                STREAM_TAGS[int(obj.tag)][1])
         elif(self.template == '3'):
             notif = NOTIFICATION_TEMPLATES[3][1].format(
                 obj.reason)
@@ -105,23 +107,22 @@ class Notification(models.Model):
                 obj.owner, obj.name)
         elif(self.template == '5'):
             notif = NOTIFICATION_TEMPLATES[5][1].format(
-                obj.name)
+                obj.lobby.name)
         elif(self.template == '6'):
             notif = NOTIFICATION_TEMPLATES[6][1].format(
-                obj.name)
+                obj.lobby.name)
         elif(self.template == '7'):
             notif = NOTIFICATION_TEMPLATES[7][1].format(
                 obj.owner.username, obj.lobby.name)
         elif(self.template == '8'):
             notif = NOTIFICATION_TEMPLATES[8][1].format(
-                obj.reason)
+                REASONS[int(obj.reason)][1])
         else:
-            notif = "asdfasdf"
-
+            notif = ""
         return notif
 
     def __str__(self):
-        return '{} was notified {} of notif id {}'.format(
+        return '{} was notified about: {} with target id: {}'.format(
             self.owner.username, self.target_type, self.target_id)
 
 
