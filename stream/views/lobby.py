@@ -20,6 +20,9 @@ class DetailView(generic.DetailView):
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
         context['is_member'] = self.object.is_member(profile)
+        context['is_requesting'] = profile.memberships.filter(
+            lobby=self.object, status=models.LobbyMembership.PENDING,
+            removed=False).exists()
         if(not self.object.owner == self.request.user):
             context['has_stream'] = self.object.streams.filter(
                 owner=self.request.user, removed=False).exists()
@@ -100,8 +103,14 @@ class RequestMembershipView(generic.View):
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             raise Http404
-        lobby = models.Lobby.objects.filter(pk=kwargs.get('pk'))
+        lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
+
+        if request.user.profile.memberships.filter(
+            lobby=lobby, status=models.LobbyMembership.PENDING,
+                removed=False).exists():
+            return HttpResponse("Existing request!")
+
         models.LobbyMembership.objects.create(
-            member=request.user, lobby=lobby,
+            member=request.user.profile, lobby=lobby,
             status=models.LobbyMembership.PENDING)
         return HttpResponse("Success!")
