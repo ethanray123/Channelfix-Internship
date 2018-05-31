@@ -26,8 +26,11 @@
       </button>
       {% if object.owner.id == request.user.id %}
           <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">MANAGE</a>
-      {%endif%}
+      {% endif %}
     </div>
+    {% if is_member and not has_stream %}
+      <a href="{% url 'stream:stream_createview' object.pk %}" class="ui green button">Add Stream</a>
+    {% endif%}
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <ul>
         {% for stream in streams %}
@@ -47,8 +50,8 @@
                     </button>
                   {% endif %}
                 {% else %}
-                  <a href="{% url 'stream:stream_updateview' stream.id %}">Update</a>
-                  <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove</a>
+                  <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
+                  <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red button">Remove</a>
                 {% endif %}
               </p>
               <img width="10%" height="20%" src="{{ stream.image.url }}">
