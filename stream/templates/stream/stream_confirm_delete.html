@@ -5,18 +5,42 @@
 {% block title %}Delete Stream{% endblock title %}
 
 {% block content %}
+<style type="text/css">
+  body {
+    background-image: url({{ object.lobby.image.url }});
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .formContainer{
+    width: 50%;
+    background-color: lightgrey;
+    margin: auto;
+    padding: 20px;
+    opacity: .90;
+  }
+</style>
+<div class="formContainer">
     {% if user.is_authenticated and object.owner == user %}
         <div>
-          <h4>Confirm Delete</h4>
+          <h1>Confirm Delete</h1>
             <div>
             	<form method="post">{% csrf_token %}
-    			    <p>Are you sure you want to remove stream: "{{ object }}"?</p>
-    			    <button type="submit">Remove</button>
+    			    <h3>
+                        Are you sure you want to remove stream your stream?
+                        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.title }}</a>
+                    </h3>
+                    <hr>
+                    <div>
+    			         <button type="submit" class="ui red button">Remove</button>
+                        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui button">Cancel</a>
+                    </div>
     			</form>
-    			<a href="{% url 'stream:home' %}">Go Back</a>
           </div>
         </div>
     {% else %}
         <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui red button" class="ui button">Go Back</a>
     {% endif %}
+</div>
 {% endblock content %}

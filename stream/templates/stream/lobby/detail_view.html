@@ -6,15 +6,12 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-    <h1>{{ object.name }}</h1>
-    <div>
-      <a class="ui red tag label">{{ object.category.name }}</a>
-      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
-    </div>
-    <div>
+    <h1>
       {% csrf_token %}
       {% if object.owner.id == request.user.id %}
-          <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">MANAGE</a>
+        <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
+          MANAGE
+        </a>
       {% else %}
         <button
           id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
@@ -31,6 +28,13 @@
           JOIN
         </button>
       {% endif %}
+        <span>{{ object.name }}</span>
+      </h1>
+    <div>
+      <a class="ui red tag label">{{ object.category.name }}</a>
+      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+    </div>
+    <div>
     </div>
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <ul>
