@@ -12,7 +12,18 @@
       <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
     </div>
     <div>
-      <button class="ui green button">JOIN</button>
+      {% csrf_token %}
+      <button
+        id="joinBtn" class="ui green button {{ is_requesting|yesno:'disabled,'}}"
+        data-privacy="{{ object.get_lobby_type_display }}"
+        {% if object.get_lobby_type_display == 'Public' %}
+          data-url="{% url 'stream:stream_createview' object.pk %}"
+        {% elif object.get_lobby_type_display == 'Private' %}
+          data-url="{% url 'stream:request_membership' object.pk %}"
+        {% endif %}
+      >
+        JOIN
+      </button>
       {% if object.owner.id == request.user.id %}
           <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">MANAGE</a>
       {%endif%}
@@ -91,6 +102,18 @@
     <h3>You are not logged in...</h3>
     <a href="{% url 'login' %}" class="btn">login</a>
 {% endif %}
+
+<!-- start modals -->
+<div id="requestModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="users icon"></i>
+    Submitted Membership Request
+  </div>
+  <div class="content">
+    <p class="ui center aligned grid">Your request to join the lobby is now pending. Please wait for the approval.</p>
+  </div>
+</div>
+<!-- end of modals -->
 {% endblock content %}
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>
