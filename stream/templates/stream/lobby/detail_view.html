@@ -7,26 +7,16 @@
 
 {% if user.is_authenticated %}
     <h1>{{ object.name }}</h1>
-    <p>{{ object.get_lobby_type_display }}</p>
-    {% if object.owner.id == request.user.id %}
-        <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
-        <a href="{% url 'stream:stream_createview' lobby.pk %}">Create Stream</a><br>
-    {% elif object.is_private %}
-      <p>THis is private</p>
-      {% if is_member %}
-        <button id="join_lobby" disabled>Joined</button>
-        {% if not has_stream %}
-          <a href="{% url 'stream:stream_createview' lobby.pk %}">Create a Stream</a>
-        {% endif %}
-      {% else %}
-        <button id="join_lobby">Join</button>
+    <div>
+      <a class="ui red tag label">{{ object.category.name }}</a>
+      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+    </div>
+    <div>
+      <button class="ui green button">JOIN</button>
+      {% if object.owner.id == request.user.id %}
+          <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">MANAGE</a>
       {%endif%}
-    {% else %}
-      <a href="{% url 'stream:stream_createview' lobby.pk %}">Create a Stream</a>
-    {%endif%}
-
-    <br>
-
+    </div>
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <ul>
         {% for stream in streams %}
@@ -37,11 +27,11 @@
               <p>{{ stream.owner.username }}
                 {% if stream.owner.id != request.user.id  %}
                   {% if stream.owner.is_subscribed %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
                       Unfollow
                     </button>
                   {% else %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
                       Follow
                     </button>
                   {% endif %}
