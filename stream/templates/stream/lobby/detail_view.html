@@ -46,7 +46,8 @@
                   <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove</a>
                 {% endif %}
               </p>
-              <img width="10%" height="20%" src="{{ stream.image.url }}">
+              <img width="10%" height="20%" src="{{ lobby.image.url }}">
+              <h5>{{ stream.tag }}</h5>
             {% endif %}
           </div><br>
         </li>

@@ -6,13 +6,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-STREAM_TAGS = (
-    (0, 'Guest'),
-    (1, 'Sponsor'),
-    (2, 'Player'),
-    (3, 'Main'),
-)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -76,8 +69,9 @@ class Profile(models.Model):
 
     def is_subscribed(self, user):
         """
-        if there exists a subscription wherein the
-        current user is subscribed to the streamer
+        Checks if there exists a subscription wherein the
+        current user is subscribed to the streamer owning
+        this profile. Returns boolean value.
         """
         return Subscription.objects.filter(
             subscriber=user, publisher=self.owner).exists()
@@ -119,6 +113,12 @@ class Lobby(models.Model):
     def has_stream(self, user):
         return self.streams.filter(owner=user, removed=False)
 
+    def has_main(self):
+        return self.streams.filter(tag=3, removed=False).exists()
+
+    def get_main(self):
+        return self.streams.get(tag=3, removed=False)
+
     def __str__(self):
         return self.name
 
@@ -139,6 +139,14 @@ class Moderator(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+
+STREAM_TAGS = (
+    (0, 'Guest'),
+    (1, 'Sponsor'),
+    (2, 'Player'),
+    (3, 'Main'),
+)
 
 
 class Stream(models.Model):
@@ -181,7 +189,12 @@ class Comment(models.Model):
         related_name='comments',
         null=True
     )
-    report = GenericRelation(Report, related_query_name='comments', content_type_field="content_type", object_id_field="content_id")
+    report = GenericRelation(
+        Report,
+        related_query_name='comments',
+        content_type_field="content_type",
+        object_id_field="content_id"
+    )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
@@ -238,9 +251,6 @@ class LobbyViews(models.Model):
 
 
 class Subscription(models.Model):
-    """
-    docstring for Subscription
-    """
     subscriber = models.ForeignKey(
         User,
         on_delete=models.CASCADE, related_name="subscribers")
