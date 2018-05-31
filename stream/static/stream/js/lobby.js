@@ -86,24 +86,23 @@ $(function(){
         ajax_post(event, type="create", text=$("input#txtComment").val(), pk=0, reason="");
     });//end of comment function
 
-});
-
-$("button#subscribe").click(function(){
-    var subscribe = $(this);
-    $.ajax({
-        type: 'POST',
-        url: 'subscribe/',
-        data: {
-            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
-            'streamer_id': subscribe.attr("name")
-        },
-        success: function(response){
-            console.log(response);
-            if(response){
-                subscribe.text("Unfollow");
-            }else{
-                subscribe.text("Follow");
+    $("button#subscribe").click(function(){
+        var subscribe = $(this);
+        $.ajax({
+            type: 'POST',
+            url: 'subscribe/',
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+                'streamer_id': subscribe.attr("name")
+            },
+            success: function(response){
+                console.log(response);
+                if(response){
+                    subscribe.text("Unfollow");
+                }else{
+                    subscribe.text("Follow");
+                }
             }
-        }
+        });
     });
 });
