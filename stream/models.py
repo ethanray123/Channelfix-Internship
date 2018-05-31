@@ -48,23 +48,27 @@ class Report(models.Model):
 
 NOTIFICATION_TEMPLATES = (
     # Profile
-    (0, '{} has subscribed to you'),
+    (0, '{target.owner.username} has subscribed to you'),
 
     # Stream
-    (1, '{} has started a stream: {} in {}'),
-    (2, 'Your stream has been updated as {}'),
+    (1, '{target.owner.username} has started a stream: \
+        {target.title} in {target.lobby.name}'),
+    (2, 'Your stream has been updated as {target.tag}'),
     # Reported Stream
-    (3, 'Your stream has been removed due to {}'),
+    (3, 'Your stream has been removed due to {target.reason}'),
 
     # Lobby
-    (4, '{} has created a lobby: {}'),
-    (5, 'You have been accepted as a member in the lobby: {}'),
-    (6, 'You have been rejected as a member in the lobby: {}'),
+    (4, '{target.owner.username} has created a lobby: {target.name}'),
+    # LobbyMembership
+    (5, 'You have been accepted as a member in the lobby: \
+        {target.lobby.name}'),
+    (6, 'You have been rejected as a member in the lobby: \
+        {target.lobby.name}'),
 
     # Comment
-    (7, '{} has commented in lobby: {}'),
+    (7, '{target.owner.username} has commented in lobby: {target.lobby.name}'),
     # Reported Comment
-    (8, 'Your comment has been removed due to {}'),
+    (8, 'Your comment has been removed due to {target.reason}'),
 )
 
 
@@ -89,37 +93,8 @@ class Notification(models.Model):
 
     @property
     def get_notification(self):
-        obj = self.target_object
-        if(self.template == '0'):
-            notif = NOTIFICATION_TEMPLATES[0][1].format(
-                obj.owner.username)
-        elif(self.template == '1'):
-            notif = NOTIFICATION_TEMPLATES[1][1].format(
-                obj.owner.username, obj.title, obj.lobby.name)
-        elif(self.template == '2'):
-            notif = NOTIFICATION_TEMPLATES[2][1].format(
-                STREAM_TAGS[int(obj.tag)][1])
-        elif(self.template == '3'):
-            notif = NOTIFICATION_TEMPLATES[3][1].format(
-                REASONS[int(obj.reason)][1])
-        elif(self.template == '4'):
-            notif = NOTIFICATION_TEMPLATES[4][1].format(
-                obj.owner, obj.name)
-        elif(self.template == '5'):
-            notif = NOTIFICATION_TEMPLATES[5][1].format(
-                obj.lobby.name)
-        elif(self.template == '6'):
-            notif = NOTIFICATION_TEMPLATES[6][1].format(
-                obj.lobby.name)
-        elif(self.template == '7'):
-            notif = NOTIFICATION_TEMPLATES[7][1].format(
-                obj.owner.username, obj.lobby.name)
-        elif(self.template == '8'):
-            notif = NOTIFICATION_TEMPLATES[8][1].format(
-                REASONS[int(obj.reason)][1])
-        else:
-            notif = ""
-        return notif
+        return NOTIFICATION_TEMPLATES[int(
+            self.template)][1].format(target=self.target_object)
 
     def __str__(self):
         return '{} was notified about: {} with target id: {}'.format(
