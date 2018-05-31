@@ -101,7 +101,7 @@ class Notification(models.Model):
                 STREAM_TAGS[int(obj.tag)][1])
         elif(self.template == '3'):
             notif = NOTIFICATION_TEMPLATES[3][1].format(
-                obj.reason)
+                REASONS[int(obj.reason)][1])
         elif(self.template == '4'):
             notif = NOTIFICATION_TEMPLATES[4][1].format(
                 obj.owner, obj.name)
