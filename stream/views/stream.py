@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.views import generic
 from django.urls import reverse
 from stream import models
@@ -10,6 +10,15 @@ class CreateView(generic.CreateView):
     form_class = forms.StreamForm
     template_name = 'stream/stream/create_view.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        lobby = models.Lobby.objects.get(pk=self.kwargs.get('pk'))
+        if(lobby.is_private()):
+            if(not lobby.is_member(self.request.user.profile)):
+                raise Http404
+        if(lobby.has_stream(self.request.user)):
+            raise Http404
+        return super(CreateView, self).dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         lobby = models.Lobby.objects.get(pk=self.kwargs.get('pk'))
         if lobby.owner == self.request.user:
@@ -19,6 +28,11 @@ class CreateView(generic.CreateView):
             self.object = stream.save()
         elif(lobby.is_member(self.request.user.profile) and
              not lobby.has_stream(self.request.user)):
+            stream = form.save(commit=False)
+            stream.owner = self.request.user
+            stream.lobby = lobby
+            self.object = stream.save()
+        elif(not lobby.has_stream(self.request.user)):
             stream = form.save(commit=False)
             stream.owner = self.request.user
             stream.lobby = lobby
