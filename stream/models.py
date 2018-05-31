@@ -31,7 +31,7 @@ class Report(models.Model):
         null=True, related_name='reports')
     content_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'content_id')
-    reason = models.CharField(choices=REASONS, max_length=50)
+    reason = models.IntegerField(choices=REASONS)
     removed = models.BooleanField(default=False)
 
     def __str__(self):
