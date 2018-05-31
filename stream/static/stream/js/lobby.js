@@ -113,20 +113,25 @@ $(function(){
             window.location = $this.data("url");
         }
         else if(privacy == "Private"){
-            $.ajax({
-                type: 'POST',
-                url: $this.data("url"),
-                data: {
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val()
-                },
-                success: function(response){
-                    $('#requestModal').modal('show');
-                    setTimeout(function(){
-                        $('#requestModal').modal('hide');
-                        $this.addClass("disabled");
-                    }, 5000);
-                }
-            });
+            if($this.attr("data-ismember")){
+                window.location = $this.data("url");
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: $this.data("url"),
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val()
+                    },
+                    success: function(response){
+                        $('#requestModal').modal('show');
+                        setTimeout(function(){
+                            $('#requestModal').modal('hide');
+                            $this.addClass("disabled");
+                        }, 5000);
+                    }
+                });
+            }
         }
     });
 });
