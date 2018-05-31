@@ -7,18 +7,22 @@
 
 {% if user.is_authenticated %}
     <h1>{{ object.name }}</h1>
+    <p>{{ object.get_lobby_type_display }}</p>
     {% if object.owner.id == request.user.id %}
         <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
         <a href="{% url 'stream:stream_createview' lobby.pk %}">Create Stream</a><br>
-    {% else %}
+    {% elif object.is_private %}
+      <p>THis is private</p>
       {% if is_member %}
         <button id="join_lobby" disabled>Joined</button>
         {% if not has_stream %}
-          <a href="{% url 'stream:stream_createview' lobby.pk %}">Create my Stream</a>
+          <a href="{% url 'stream:stream_createview' lobby.pk %}">Create a Stream</a>
         {% endif %}
       {% else %}
         <button id="join_lobby">Join</button>
       {%endif%}
+    {% else %}
+      <a href="{% url 'stream:stream_createview' lobby.pk %}">Create a Stream</a>
     {%endif%}
 
     <br>
@@ -46,7 +50,7 @@
                   <a href="{% url 'stream:stream_deleteview' stream.id %}">Remove</a>
                 {% endif %}
               </p>
-              <img width="10%" height="20%" src="{{ lobby.image.url }}">
+              <img width="10%" height="20%" src="{{ stream.image.url }}">
               <h5>{{ stream.tag }}</h5>
             {% endif %}
           </div><br>
