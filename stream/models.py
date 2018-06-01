@@ -31,12 +31,68 @@ class Report(models.Model):
         null=True, related_name='reports')
     content_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'content_id')
-    reason = models.CharField(choices=REASONS, max_length=50)
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    reason = models.IntegerField(choices=REASONS)
     removed = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} reported {} of id {}'.format(
             self.reporter.username, self.content_type, self.content_id)
+
+
+NOTIFICATION_TEMPLATES = (
+    # Profile
+    (0, '{target.owner.username} has subscribed to you'),
+
+    # Stream
+    (1, '{target.owner.username} has started a stream: \
+        {target.title} in {target.lobby.name}'),
+    (2, 'Your stream has been updated as {target.tag}'),
+    # Reported Stream
+    (3, 'Your stream has been removed due to {target.reason}'),
+
+    # Lobby
+    (4, '{target.owner.username} has created a lobby: {target.name}'),
+    # LobbyMembership
+    (5, 'You have been accepted as a member in the lobby: \
+        {target.lobby.name}'),
+    (6, 'You have been rejected as a member in the lobby: \
+        {target.lobby.name}'),
+
+    # Comment
+    (7, '{target.owner.username} has commented in lobby: {target.lobby.name}'),
+    # Reported Comment
+    (8, 'Your comment has been removed due to {target.reason}'),
+)
+
+
+class Notification(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=True
+    )
+
+    target_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        null=True, related_name='notifications')
+    target_id = models.PositiveIntegerField(null=True)
+    target_object = GenericForeignKey('target_type', 'target_id')
+
+    template = models.IntegerField(choices=NOTIFICATION_TEMPLATES)
+
+    when = models.DateTimeField(auto_now_add=True, null=True)
+    removed = models.BooleanField(default=False)
+
+    @property
+    def get_notification(self):
+        return NOTIFICATION_TEMPLATES[int(
+            self.template)][1].format(target=self.target_object)
+
+    def __str__(self):
+        return '{} was notified about: {} with target id: {}'.format(
+            self.owner.username, self.target_type, self.target_id)
 
 
 class Profile(models.Model):
@@ -51,6 +107,12 @@ class Profile(models.Model):
         blank=True,
         null=True,
         default='stream/static/images/default_avatar.png'
+    )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='profile',
+        content_type_field="target_type",
+        object_id_field="target_id"
     )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
@@ -80,6 +142,12 @@ class Profile(models.Model):
         return self.owner.username
 
 
+LOBBY_TYPE = (
+    (0, "Public"),
+    (1, "Private")
+)
+
+
 class Lobby(models.Model):
     owner = models.ForeignKey(
         User,
@@ -98,7 +166,14 @@ class Lobby(models.Model):
         on_delete=models.CASCADE,
         related_name='lobby'
     )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='lobbies',
+        content_type_field="target_type",
+        object_id_field="target_id"
+    )
     description = models.CharField(max_length=50, blank=True, null=True)
+    lobby_type = models.IntegerField(choices=LOBBY_TYPE, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
@@ -106,11 +181,24 @@ class Lobby(models.Model):
     def member(self):
         return self.memberships.filter(lobby=self)
 
+    def is_member(self, user):
+        return LobbyMembership.objects.filter(
+            lobby=self, member=user, status=2, removed=False).exists()
+
+    def has_stream(self, user):
+        return self.streams.filter(owner=user, removed=False)
+
     def has_main(self):
         return self.streams.filter(tag=3, removed=False).exists()
 
     def get_main(self):
         return self.streams.get(tag=3, removed=False)
+
+    def is_private(self):
+        flag = False
+        if self.lobby_type == 1:
+            flag = True
+        return flag
 
     def __str__(self):
         return self.name
@@ -158,6 +246,12 @@ class Stream(models.Model):
         blank=True,
         null=True
     )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='streams',
+        content_type_field="target_type",
+        object_id_field="target_id"
+    )
     title = models.CharField(max_length=50)
     URL = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=50, blank=True, null=True)
@@ -188,6 +282,12 @@ class Comment(models.Model):
         content_type_field="content_type",
         object_id_field="content_id"
     )
+    notify = GenericRelation(
+        Notification,
+        related_query_name='comments',
+        content_type_field="target_type",
+        object_id_field="target_id"
+    )
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
@@ -207,6 +307,13 @@ class Comment(models.Model):
             content_type=content_type, content_id=self.id).exists()
 
 
+STATUS = (
+    (0, 'PENDING'),
+    (1, 'REJECTED'),
+    (2, 'ACCEPTED'),
+)
+
+
 class LobbyMembership(models.Model):
     member = models.ForeignKey(
         Profile,
@@ -218,8 +325,13 @@ class LobbyMembership(models.Model):
         on_delete=models.CASCADE,
         related_name='memberships'
     )
+    status = models.IntegerField(choices=STATUS, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
+
+    PENDING = 0
+    REJECTED = 1
+    ACCEPTED = 2
 
     def __str__(self):
         return self.member.owner.username

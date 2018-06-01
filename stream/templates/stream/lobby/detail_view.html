@@ -6,10 +6,36 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-    <h1>{{ object.name }}</h1>
-    {% if object.owner == user%}
-        <a href="{% url 'stream:manage_detailview' lobby.id %}">Manage Lobby</a><br>
-    {% endif %}
+    <h1>
+      {% csrf_token %}
+      {% if object.owner.id == request.user.id %}
+        <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
+          MANAGE
+        </a>
+      {% else %}
+        <button
+          id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
+          data-privacy="{{ object.get_lobby_type_display }}"
+          {% if object.get_lobby_type_display == 'Public' or is_member %}
+            data-url="{% url 'stream:stream_createview' object.pk %}"
+          {% elif object.get_lobby_type_display == 'Private' %}
+            data-url="{% url 'stream:request_membership' object.pk %}"
+          {% endif %}
+          {% if is_member %}
+            data-ismember="True"
+          {% endif %}
+        >
+          JOIN
+        </button>
+      {% endif %}
+        <span>{{ object.name }}</span>
+      </h1>
+    <div>
+      <a class="ui red tag label">{{ object.category.name }}</a>
+      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+    </div>
+    <div>
+    </div>
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <ul>
         {% for stream in streams %}
@@ -20,17 +46,20 @@
               <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
                 {% if stream.owner.id != request.user.id  %}
                   {% if stream.owner.is_subscribed %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
                       Unfollow
                     </button>
                   {% else %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
                       Follow
                     </button>
                   {% endif %}
+                {% else %}
+                  <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
+                  <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red button">Remove</a>
                 {% endif %}
               </p>
-              <img width="10%" height="20%" src="{{ lobby.image.url }}">
+              <img width="10%" height="20%" src="{{ stream.image.url }}">
               <h5>{{ stream.tag }}</h5>
             {% endif %}
           </div><br>
@@ -81,6 +110,18 @@
     <h3>You are not logged in...</h3>
     <a href="{% url 'login' %}" class="btn">login</a>
 {% endif %}
+
+<!-- start modals -->
+<div id="requestModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="users icon"></i>
+    Submitted Membership Request
+  </div>
+  <div class="content">
+    <p class="ui center aligned grid">Your request to join the lobby is now pending. Please wait for the approval.</p>
+  </div>
+</div>
+<!-- end of modals -->
 {% endblock content %}
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>

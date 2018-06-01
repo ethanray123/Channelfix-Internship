@@ -86,4 +86,33 @@ $(function(){
         ajax_post(event, type="create", text=$("input#txtComment").val(), pk=0, reason="");
     });//end of comment function
 
+    $("button#joinBtn").click(function(event){
+        event.preventDefault();
+        var $this = $(this)
+        var privacy = $this.data("privacy");
+        if(privacy == "Public"){
+            window.location = $this.data("url");
+        }
+        else if(privacy == "Private"){
+            if($this.attr("data-ismember")){
+                window.location = $this.data("url");
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: $this.data("url"),
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val()
+                    },
+                    success: function(response){
+                        $('#requestModal').modal('show');
+                        setTimeout(function(){
+                            $('#requestModal').modal('hide');
+                            $this.addClass("disabled");
+                        }, 5000);
+                    }
+                });
+            }
+        }
+    });
 });

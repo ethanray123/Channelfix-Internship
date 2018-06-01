@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views import generic
 from stream import models
 from django.http import Http404, JsonResponse
@@ -10,7 +11,6 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-
         profile = models.Profile.objects.get(owner=self.request.user)
         if(not profile.is_viewed(self.object)):
             models.LobbyViews.objects.create(
@@ -19,6 +19,13 @@ class DetailView(generic.DetailView):
         context['streams'] = self.get_streams()
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
+        context['is_member'] = self.object.is_member(profile)
+        context['is_requesting'] = profile.memberships.filter(
+            lobby=self.object, status=models.LobbyMembership.PENDING,
+            removed=False).exists()
+        if(not self.object.owner == self.request.user):
+            context['has_stream'] = self.object.streams.filter(
+                owner=self.request.user, removed=False).exists()
         return context
 
     def get_streams(self):
@@ -27,6 +34,7 @@ class DetailView(generic.DetailView):
         results = []
         for obj in queryset:
             temp = {}
+            temp['id'] = obj.id
             temp['title'] = obj.title
             temp['owner'] = {
                 'id': obj.owner.id,
@@ -89,3 +97,21 @@ class CommentView(generic.View):
             data,
             content_type="application/json",
             safe=False)
+
+
+class RequestMembershipView(generic.View):
+
+    def post(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404
+        lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
+
+        if request.user.profile.memberships.filter(
+            lobby=lobby, status=models.LobbyMembership.PENDING,
+                removed=False).exists():
+            return HttpResponse("Existing request!")
+
+        models.LobbyMembership.objects.create(
+            member=request.user.profile, lobby=lobby,
+            status=models.LobbyMembership.PENDING)
+        return HttpResponse("Success!")
