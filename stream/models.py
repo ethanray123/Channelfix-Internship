@@ -31,6 +31,7 @@ class Report(models.Model):
         null=True, related_name='reports')
     content_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'content_id')
+    when = models.DateTimeField(auto_now_add=True, null=True)
     reason = models.IntegerField(choices=REASONS)
     removed = models.BooleanField(default=False)
 
@@ -141,6 +142,12 @@ class Profile(models.Model):
         return self.owner.username
 
 
+LOBBY_TYPE = (
+    (0, "Public"),
+    (1, "Private")
+)
+
+
 class Lobby(models.Model):
     owner = models.ForeignKey(
         User,
@@ -166,6 +173,7 @@ class Lobby(models.Model):
         object_id_field="target_id"
     )
     description = models.CharField(max_length=50, blank=True, null=True)
+    lobby_type = models.IntegerField(choices=LOBBY_TYPE, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
@@ -173,11 +181,24 @@ class Lobby(models.Model):
     def member(self):
         return self.memberships.filter(lobby=self)
 
+    def is_member(self, user):
+        return LobbyMembership.objects.filter(
+            lobby=self, member=user, status=2, removed=False).exists()
+
+    def has_stream(self, user):
+        return self.streams.filter(owner=user, removed=False)
+
     def has_main(self):
         return self.streams.filter(tag=3, removed=False).exists()
 
     def get_main(self):
         return self.streams.get(tag=3, removed=False)
+
+    def is_private(self):
+        flag = False
+        if self.lobby_type == 1:
+            flag = True
+        return flag
 
     def __str__(self):
         return self.name
@@ -286,6 +307,13 @@ class Comment(models.Model):
             content_type=content_type, content_id=self.id).exists()
 
 
+STATUS = (
+    (0, 'PENDING'),
+    (1, 'REJECTED'),
+    (2, 'ACCEPTED'),
+)
+
+
 class LobbyMembership(models.Model):
     member = models.ForeignKey(
         Profile,
@@ -297,8 +325,13 @@ class LobbyMembership(models.Model):
         on_delete=models.CASCADE,
         related_name='memberships'
     )
+    status = models.IntegerField(choices=STATUS, default=0)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
+
+    PENDING = 0
+    REJECTED = 1
+    ACCEPTED = 2
 
     def __str__(self):
         return self.member.owner.username
