@@ -17,6 +17,8 @@ class DetailView(generic.DetailView):
                 lobby=self.object,
                 viewer=profile)
         context['streams'] = self.get_streams()
+        context['moderators'] = self.object.moderators.filter(
+            owner=self.request.user).exists()
         context['comments'] = self.object.comments.filter(
             removed=False).order_by('-when')
         return context
