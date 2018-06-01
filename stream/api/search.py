@@ -19,7 +19,9 @@ class SearchAPI(generic.View):
             user['id'] = obj.pk,
             user['username'] = obj.owner.username,
             user['avatar'] = obj.avatar.url,
-            user['nickname'] = obj.nickname
+            user['nickname'] = obj.nickname,
+            user['url'] = reverse(
+                'stream:profile', args=[obj.pk])
             user_results.append(user)
         streams = models.Stream.objects.filter(
             title__icontains=text, removed=False)[:5]

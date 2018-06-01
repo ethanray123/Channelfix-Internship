@@ -34,7 +34,8 @@ $(function(){
                         category    : 'User',
                         title       : item.username,
                         description : item.nickname,
-                        image       : item.avatar
+                        image       : item.avatar,
+                        url         : item.url
                     });
                 });
                 return convertedResponse;
