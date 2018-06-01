@@ -102,10 +102,6 @@ class Lobby(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
-    @property
-    def member(self):
-        return self.memberships.filter(lobby=self)
-
     def has_main(self):
         return self.streams.filter(tag=3, removed=False).exists()
 

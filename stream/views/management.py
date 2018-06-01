@@ -15,6 +15,7 @@ class DetailView(generic.DetailView):
         context['comments'] = self.object.comments.order_by('when')
         context['reports'] = self.object.comments.filter(report__isnull=False)
         context['tags'] = models.STREAM_TAGS
+        context['members'] = self.object.memberships.order_by('-member')
         context['moderators'] = self.object.moderators.filter(
             owner=self.request.user).exists()
         if self.object.has_main():
