@@ -18,9 +18,12 @@
 
       <div class="right menu">
         <div class="item">
-          <div class="ui icon input">
-              <input type="text" placeholder="Search...">
-              <i class="search link icon"></i>
+          <div class="ui fluid category search">
+            <div class="ui icon input">
+              <input class="prompt" placeholder="Search animals..." type="text" value="">
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
           </div>
 
           {% if user.is_authenticated %}
@@ -72,4 +75,5 @@
     .dropdown()
   ;
 </script>
+<script src="{% static 'stream/js/search.js' %}"></script>
 
