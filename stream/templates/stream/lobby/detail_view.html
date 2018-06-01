@@ -17,7 +17,7 @@
           <div>
             {% if stream.title != "" and stream.image != Null %}
               <h3>{{ stream.title }}</h3>
-              <p>{{ stream.owner.username }}
+              <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
                 {% if stream.owner.id != request.user.id  %}
                   {% if stream.owner.is_subscribed %}
                     <button id="subscribe" name="{{ stream.owner.id }}" class="ui active button">
@@ -84,4 +84,5 @@
 {% endblock content %}
 {% block additionalJS %}
 <script src="{% static 'stream/js/lobby.js' %}"></script>
+<script src="{% static 'stream/js/subscription.js' %}"></script>
 {% endblock additionalJS %}

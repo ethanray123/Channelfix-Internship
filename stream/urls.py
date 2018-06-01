@@ -1,5 +1,6 @@
 from django.urls import path
-from stream.views import home, lobby, management, subscription
+from stream.views import home, lobby, management, subscription, profile
+from django.views.decorators.csrf import csrf_exempt
 
 app_name = 'stream'
 
@@ -19,4 +20,8 @@ urlpatterns = [
          lobby.CommentView.as_view(), name='lobby_commentview'),
     path('lobby/subscribe/',
          subscription.SubscribeView.as_view(), name='subscribe'),
+    path('profile/<int:pk>',
+         profile.DetailView.as_view(), name='profile'),
+    path('profile/subscribe/',
+         csrf_exempt(subscription.SubscribeView.as_view()), name='subscribe'),
 ]

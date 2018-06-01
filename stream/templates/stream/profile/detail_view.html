@@ -3,8 +3,36 @@
 
 {% block title %}Profile{% endblock title %}
 
+{% block additionalCss %}
+  <link rel="stylesheet" type="text/css" href="{% static "stream/css/profile.css" %}">
+{% endblock additionalCss%}
+
 {% block content %}
-<img class="ui medium circular image" src="/images/wireframe/square-image.png">
+<div class="ui grid">
+  <div class="three wide column">
+    <img class="ui small circular image" src="{{ object.avatar.url }}">
+  </div>
+  {% if user.is_authenticated and object.owner != user %}
+  <div id="profile-owner-name" class="eleven wide column">
+    <h1 class="ui header">{{ object.owner.username }}</h1>
+  </div>
+    {% if is_subscribed %}
+  <div id="profile-sub-btn" class="two wide column">
+    <button id="subscribe" name="{{ object.owner.id }}" class="ui active button">
+      Unfollow
+    </button>
+    {% else %}
+    <button id="subscribe" name="{{ object.owner.id }}" class="ui active button">
+      Follow
+    </button>
+  </div>
+    {% endif %}
+  {% endif %}
+</div>
+
+
+
+
 <div class="ui grid">
   <div class="four wide column">
     <div class="ui vertical fluid tabular menu">
@@ -29,9 +57,10 @@
   </div>
 </div>
 <div class="ui items">
+  {% for stream in streams %}
   <div class="item">
     <div class="image">
-      <img src="/images/wireframe/image.png">
+      <img src="{{ stream.image.url }}">
     </div>
     <div class="content">
       <a class="header">Header</a>
@@ -46,22 +75,11 @@
       </div>
     </div>
   </div>
-  <div class="item">
-    <div class="image">
-      <img src="/images/wireframe/image.png">
-    </div>
-    <div class="content">
-      <a class="header">Header</a>
-      <div class="meta">
-        <span>Description</span>
-      </div>
-      <div class="description">
-        <p></p>
-      </div>
-      <div class="extra">
-        Additional Details
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 {% endblock content %}
+
+{% block additionalJS %}
+<script src="{% static 'stream/js/subscription.js' %}"></script>
+<script src="{% static 'stream/js/profile.js' %}"></script>
+{% endblock additionalJS %}
