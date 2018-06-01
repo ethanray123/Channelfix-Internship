@@ -27,3 +27,16 @@ class StreamForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'autocomplete': 'off',
             })
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ['nickname', 'avatar']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'autocomplete': 'off',
+            })

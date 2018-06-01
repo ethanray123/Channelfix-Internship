@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 from stream import views, api
 app_name = 'stream'
 
@@ -24,6 +25,13 @@ urlpatterns = [
          views.stream.CreateView.as_view(), name='stream_createview'),
     path('lobby/subscribe/',
          views.subscription.SubscribeView.as_view(), name='subscribe'),
+    path('profile/<int:pk>',
+         views.profile.DetailView.as_view(), name='profile'),
+    path('profile/subscribe/',
+         csrf_exempt(views.subscription.SubscribeView.as_view()),
+         name='subscribe'),
+    path('update_profile/<int:pk>/',
+         views.profile.UpdateView.as_view(), name='profile_updateview'),
     path('lobby/<int:pk>/request_membership',
          views.lobby.RequestMembershipView.as_view(),
          name='request_membership'),
