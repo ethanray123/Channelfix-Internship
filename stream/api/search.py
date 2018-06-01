@@ -1,6 +1,7 @@
 from django.views import generic
 from django.http import Http404, JsonResponse
 from stream import models
+from django.urls import reverse
 
 
 class SearchAPI(generic.View):
@@ -28,7 +29,9 @@ class SearchAPI(generic.View):
             stream['id'] = obj.pk,
             stream['title'] = obj.title,
             stream['image'] = obj.image.url,
-            stream['tag'] = obj.get_tag_display()
+            stream['tag'] = obj.get_tag_display(),
+            stream['url'] = reverse(
+                'stream:lobby_detailview', args=[obj.lobby.pk])
             stream_results.append(stream)
         lobbies = models.Lobby.objects.filter(
             name__icontains=text,
@@ -40,6 +43,8 @@ class SearchAPI(generic.View):
             lobby['name'] = obj.name,
             lobby['image'] = obj.image.url,
             lobby['type'] = obj.get_lobby_type_display()
+            lobby['url'] = reverse(
+                'stream:lobby_detailview', args=[obj.pk])
             lobby_results.append(lobby)
         data = {
             'streams': stream_results,

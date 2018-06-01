@@ -16,7 +16,8 @@ $(function(){
                         category    : 'Stream',
                         title       : item.title,
                         description : item.tag,
-                        image       : item.image
+                        image       : item.image,
+                        url         : item.url
                     });
                 });
                 $.each(response.lobbies, function(index, item) {
@@ -24,7 +25,8 @@ $(function(){
                         category    : 'Lobby',
                         title       : item.name,
                         description : item.type,
-                        image       : item.image
+                        image       : item.image,
+                        url         : item.url
                     });
                 });
                 $.each(response.users, function(index, item) {
