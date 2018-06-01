@@ -10,9 +10,7 @@ class LobbyAPI(generic.View):
         if not request.is_ajax():
             raise Http404
         # Create queryset.
-        queryset = self.model.objects.exclude(removed=True)
-        queryset = queryset.filter(
-            pk=request.GET['pk'])
+        queryset = self.model.objects.exclude(removed=True).order_by('-when')
 
         # Get offset.
         queryset = queryset[int(request.GET['start']):int(request.GET['end'])]
