@@ -2,19 +2,19 @@ $(document).ready(function() {
   $('.ui.form')
     .form({
       fields: {
-        email: {
-          identifier  : 'email',
-          rules: [
-            {
-              type   : 'empty',
-              prompt : 'Please enter your e-mail'
-            },
-            {
-              type   : 'email',
-              prompt : 'Please enter a valid e-mail'
-            }
-          ]
-        },
+        // username: {
+        //   identifier  : 'username',
+        //   rules: [
+        //     {
+        //       type   : 'empty',
+        //       prompt : 'Please enter your username'
+        //     },
+        //     {
+        //       type   : 'username',
+        //       prompt : 'Please enter a valid username'
+        //     }
+        //   ]
+        // },
         password: {
           identifier  : 'password',
           rules: [
