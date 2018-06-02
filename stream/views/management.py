@@ -15,9 +15,11 @@ class DetailView(generic.DetailView):
         context['comments'] = self.object.comments.order_by('when')
         context['reports'] = self.object.comments.filter(report__isnull=False)
         context['tags'] = models.STREAM_TAGS
-        context['members'] = self.object.memberships.order_by('-member')
-        context['moderators'] = self.object.moderators.filter(
-            owner=self.request.user).exists()
+        context['statuses'] = models.STATUS
+        context['members'] = self.object.memberships.filter(status=2)
+        context['requests'] = self.object.memberships.filter(status=0)
+        # context['moderators'] = self.object.moderators.order_by('owner')
+        context['is_moderator'] = self.object.is_moderator(self.request.user)
         if self.object.has_main():
             context['main'] = self.object.get_main()
         return context
@@ -32,6 +34,30 @@ class LobbyFormView(generic.UpdateView):
         return reverse_lazy('stream:home')
 
 
+class ModeratorView(generic.View):
+    def post(self, request, *args, **kwargs):
+        cond = models.Moderator.objects.filter(
+            owner__username=request.POST['user']).exists()
+        if cond is True:
+            moderator = models.Moderator.objects.get(
+                owner__username=request.POST['user'])
+            print(request.POST['value'])
+            if request.POST['value'] == "true":
+                value = False
+            else:
+                value = True
+            moderator.removed = value
+            moderator.save()
+        else:
+            lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
+            owner = models.User.objects.get(
+                username=request.POST['user'])
+            new = models.Moderator.objects.create(owner=owner, lobby=lobby)
+            new.save()
+        return JsonResponse(
+            "data", content_type="application/json", safe=False)
+
+
 class RemoveView(generic.View):
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
@@ -44,14 +70,16 @@ class RemoveView(generic.View):
             stream.removed = value
             stream.save()
         elif request.POST["model"] == "member":
-            user = models.Profile.objects.get(pk=request.POST['pk'])
+            member = models.LobbyMembership.objects.get(pk=request.POST['pk'])
             lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
-            member = models.LobbyMembership.objects.get(
-                member=user, lobby=lobby)
+            stream = models.Stream.objects.get(
+                owner__username=member, lobby=lobby)
             if request.POST['value'] == "true":
                 value = True
             member.removed = value
+            stream.removed = value
             member.save()
+            stream.save()
         elif request.POST['model'] == "comment":
             comment = models.Comment.objects.get(pk=request.POST['pk'])
             if request.POST['value'] == "true":
@@ -103,3 +131,17 @@ class TagsView(generic.View):
             data,
             content_type="application/json",
             safe=False)
+
+
+class StatusView(generic.View):
+    def post(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404
+        data = ""
+        member = models.LobbyMembership.objects.get(
+            pk=request.POST['request_id'])
+        member.status = request.POST['status']
+        member.save()
+
+        return JsonResponse(
+            data, content_type="application/json", safe=False)

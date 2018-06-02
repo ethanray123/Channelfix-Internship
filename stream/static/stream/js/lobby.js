@@ -86,23 +86,51 @@ $(function(){
         ajax_post(event, type="create", text=$("input#txtComment").val(), pk=0, reason="");
     });//end of comment function
 
-});
-
-$("button#subscribe").click(function(){
-    var subscribe = $(this);
-    $.ajax({
-        type: 'POST',
-        url: 'subscribe/',
-        data: {
-            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
-            'streamer_id': subscribe.attr("name")
-        },
-        success: function(response){
-            console.log(response);
-            if(response){
-                subscribe.text("Unfollow");
-            }else{
-                subscribe.text("Follow");
+    $("button#subscribe").click(function(){
+        var subscribe = $(this);
+        $.ajax({
+            type: 'POST',
+            url: 'subscribe/',
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+                'streamer_id': subscribe.attr("name")
+            },
+            success: function(response){
+                console.log(response);
+                if(response){
+                    subscribe.text("Unfollow");
+                }else{
+                    subscribe.text("Follow");
+                }
+            }
+        });
+    });
+    $("button#joinBtn").click(function(event){
+        event.preventDefault();
+        var $this = $(this)
+        var privacy = $this.data("privacy");
+        if(privacy == "Public"){
+            window.location = $this.data("url");
+        }
+        else if(privacy == "Private"){
+            if($this.attr("data-ismember")){
+                window.location = $this.data("url");
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: $this.data("url"),
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val()
+                    },
+                    success: function(response){
+                        $('#requestModal').modal('show');
+                        setTimeout(function(){
+                            $('#requestModal').modal('hide');
+                            $this.addClass("disabled");
+                        }, 5000);
+                    }
+                });
             }
         }
     });
