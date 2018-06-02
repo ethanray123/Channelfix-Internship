@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Profile{% endblock title %}
+
+{% block content %}
+<style type="text/css">
+  body {
+    background-image: url({{ object.lobby.image.url }});
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .formContainer{
+    width: 50%;
+    background-color: lightgrey;
+    margin: auto;
+    padding: 20px;
+    opacity: .90;
+  }
+</style>
+<div class="formContainer">
+    {% if user.is_authenticated and object.owner == user %}
+      <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'stream/form-template.html' %}
+            <hr>
+            <div class="form-group">
+              <button type="submit" class="ui blue button">Update</button>
+              <a href="{% url 'stream:profile' object.id %}" class="ui button">Cancel</a>
+            </div>
+        </form>
+      </div>
+    {% else %}
+        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+        <a href="{% url 'stream:profile' object.id %}" class="ui red button" class="ui button">Go Back</a>
+    {% endif %}
+</div>
+{% endblock content %}

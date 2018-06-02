@@ -42,7 +42,8 @@ class DetailView(generic.DetailView):
                 'id': obj.owner.id,
                 'username': obj.owner.username,
                 'is_subscribed': obj.owner.profile.is_subscribed(
-                    self.request.user)
+                    self.request.user),
+                'profile_id': obj.owner.profile.id
             }
             temp['tag'] = obj.get_tag_display()
             temp['image'] = obj.image
