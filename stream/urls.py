@@ -58,4 +58,5 @@ urlpatterns = [
          api.lobby_membership.LobbyMembershipAPI.as_view(),
          name='api_lobby_membership'),
     path('api/lobby', api.lobby.LobbyAPI.as_view(), name='api_lobby'),
+    path('api/search', api.search.SearchAPI.as_view(), name='api_search'),
 ]
