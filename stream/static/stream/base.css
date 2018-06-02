@@ -1,6 +1,9 @@
+body{
+	background-color: #EFF1FF;
+}
 #logo{
-	height: 4rem;
-	width: 4rem;
+	height: 3rem;
+	width: 3rem;
 	padding: 0px;
 	margin: 0px;
 }
@@ -8,13 +11,25 @@
 #profilepic{
 	height: 3rem;
 	width: 3rem;
-	margin: 1em;
-}
-
-#name{
-	font-weight: bold;
 }
 
 .content{
-	padding: 0px 0px 30px 30px;
+	padding: 20px 0px 30px 30px;
+}
+
+.navbar{
+	background-color: #173753;
+}
+
+.navbar span{
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.navbar div.item{
+	padding: 0px; !important
+}
+.ui.secondary.menu{
+	height: 60px;
 }
