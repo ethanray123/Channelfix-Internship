@@ -18,6 +18,25 @@
     {% endfor %}
     </ul>
 
+    {# <div class="two column"></div> #}
+    <div class="">
+      <div class="ui items">
+      {% for notif in notifications %}
+        <div class="item">
+          <div class="content">
+            <div class="meta">
+              <span>Description</span>
+            </div>
+            <div class="description">
+              <p>{{ notif.description }}</p>
+              <p>{{ notif.when }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
   {% else %}
 
     <h3>You are not logged in...</h3>
