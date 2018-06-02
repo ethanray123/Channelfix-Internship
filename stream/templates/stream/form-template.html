@@ -1,11 +1,15 @@
+
 {% for field in form %}
-	<div class="form-group">
-		<div class="row">
-			<div class="col s12">
-				<span class="red-text">{{ field.errors }}</span>
+	<div class="ui form">
+		<div class="ui grid">
+			<div class="twelve column">
+				<div class="ui error message">
+					<div class="header">{{ field.errors }}</div>
+				</div>
+
+				<label>{{ field.label_tag }}</label>
+				<div class="field">{{ field }}</div>
 			</div>
-			<label class="control-label">{{ field.label_tag }}</label>
-			<div class="input-field col s12">{{ field }}</div>
         </div>
 	</div>
 {% endfor %}
