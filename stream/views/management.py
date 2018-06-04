@@ -18,7 +18,6 @@ class DetailView(generic.DetailView):
         context['statuses'] = models.STATUS
         context['members'] = self.object.memberships.filter(status=2)
         context['requests'] = self.object.memberships.filter(status=0)
-        # context['moderators'] = self.object.moderators.order_by('owner')
         context['is_moderator'] = self.object.is_moderator(self.request.user)
         if self.object.has_main():
             context['main'] = self.object.get_main()
