@@ -41,7 +41,6 @@ class ModeratorView(generic.View):
         if cond is True:
             moderator = models.Moderator.objects.get(
                 owner__username=request.POST['user'])
-            print(request.POST['value'])
             if request.POST['value'] == "true":
                 value = False
             else:
@@ -137,11 +136,10 @@ class StatusView(generic.View):
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             raise Http404
-        data = ""
         member = models.LobbyMembership.objects.get(
             pk=request.POST['request_id'])
         member.status = request.POST['status']
         member.save()
 
         return JsonResponse(
-            data, content_type="application/json", safe=False)
+            "data", content_type="application/json", safe=False)
