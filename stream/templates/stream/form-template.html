@@ -1,16 +1,12 @@
 
 {% for field in form %}
-	<div class="ui form">
-		<div class="ui grid">
-			<div class="twelve column">
-				<div class="ui error message">
-					<div class="header">{{ field.errors }}</div>
-				</div>
+	<div class="twelve wide column">
+		<div class="ui error message">
+			<div class="header">{{ field.errors }}</div>
+		</div>
 
-				<label>{{ field.label_tag }}</label>
-				<div class="field">{{ field }}</div>
-			</div>
-        </div>
+		<label>{{ field.label_tag }}</label>
+		<div class="field">{{ field }}</div><br>
 	</div>
 {% endfor %}
 <style type="text/css">

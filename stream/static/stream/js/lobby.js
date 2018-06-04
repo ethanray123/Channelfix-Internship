@@ -28,7 +28,7 @@ $(function(){
                             }
                             else{
                                 if(!comment.isreported){
-                                    comment_holder.find("div#container").after("<button class='report' id='" + comment.pk +  "'> report </button>");
+                                    comment_holder.find("div#container").after("<button class='report negative ui button' id='" + comment.pk +  "'> report </button>");
                                     comment_holder.find("button.report").click(report_comment);
                                 }
                                 else{

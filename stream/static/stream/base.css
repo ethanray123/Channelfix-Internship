@@ -1,5 +1,5 @@
 body{
-	background-color: #EFF1FF;
+	background-color: #E1E1E1; !important
 }
 #logo{
 	height: 3rem;
@@ -18,7 +18,7 @@ body{
 }
 
 .navbar{
-	background-color: #173753;
+	background-color: #000000;
 }
 
 .navbar span{

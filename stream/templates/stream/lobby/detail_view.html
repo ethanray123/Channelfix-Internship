@@ -46,17 +46,23 @@
               <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
                 {% if stream.owner.id != request.user.id  %}
                   {% if stream.owner.is_subscribed %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui primary button">
                       Unfollow
                     </button>
                   {% else %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
+                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui primary button">
                       Follow
                     </button>
                   {% endif %}
                 {% else %}
                   <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
-                  <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red button">Remove</a>
+                  <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
+                    {% csrf_token %}
+                    <button 
+                      type="submit"
+                      class="negative ui button confirmation">Remove
+                    </button>
+                  </form>
                 {% endif %}
               </p>
               <img width="10%" height="20%" src="{{ stream.image.url }}">
@@ -67,10 +73,12 @@
         {% endfor %}
     </ul>
     <h2>Comments</h2>
-    <form>
+    <form class="ui form">
         {% csrf_token %}
-        <input type="text" id="txtComment">
-        <button id="btnComment">send</button>
+        <div class="six wide field">
+          <input type="text" id="txtComment">
+        </div>
+        <button id="btnComment" class="ui positive button">send</button>
     </form>
     <li class="comment template" hidden="True">
         <div id="container">
@@ -124,6 +132,7 @@
 <!-- end of modals -->
 {% endblock content %}
 {% block additionalJS %}
+<script src="{% static 'stream/js/confirmation.js' %}"></script>
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 <script src="{% static 'stream/js/subscription.js' %}"></script>
 {% endblock additionalJS %}
