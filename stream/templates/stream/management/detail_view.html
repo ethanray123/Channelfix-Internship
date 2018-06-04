@@ -3,7 +3,8 @@
 {% block title %}Lobby{% endblock title %}
 
 {% block content %}
-    {% if user.is_authenticated and object.owner == user%}
+  {% if user.is_authenticated %}
+    {% if object.owner == user or is_moderator == True %}
       <h1>{{ object.name }} Management</h1>
       <div class="ui mini modal tags">
         <i class="close icon"></i>
@@ -17,7 +18,9 @@
       <form>
         {% csrf_token %}
       </form>
-      <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+      {% if object.owner == user%}
+        <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+      {% endif%}
       <h2>Total views: {{ lobby.views.count }}</h2>
       <h2>{{ streams.count }} - Streams</h2>
       {% if main %}
@@ -45,18 +48,39 @@
           <br>
         {% endfor %}
       </ol>
-      <h2>{{ lobby.memberships.count }} - Members</h2>
-      <ol>
-        {% for members in lobby.member %}
-        <li>
-          <div>
-            <p>{{ members.member }}</p>
-            <span>Remove? <input id="{{ members.id }}" class="remove" type="checkbox" name="member" {% if members.removed %} checked {% endif %}></span>
-          </div>
-          <br>
-        </li>
-        {% endfor %}
-      </ol>
+      {% if object.owner == user%}
+        <h2>{{ members.count }} - Members</h2>
+        <ol>
+          {% for member in members %}
+            <li>
+              <div>
+                <p>{{ member.member }}</p>
+                <p>Remove? <input id="{{ member.id }}" class="remove" type="checkbox" name="member" {% if member.removed %} checked {% endif %}></p>
+                <p>Moderator? <input class="moderate" type="checkbox" name="{{ member.member }}" {% if member.is_moderator %} checked {% endif %}></p>
+              </div>
+              <br>
+            </li>
+          {% endfor %}
+        </ol>
+        <h2>{{ requests.count }} - Membership Requests</h2>
+          <ol>
+            {% for request in requests %}
+              <li>
+                <p>{{ request.member }}</p>
+                <div class="ui selection dropdown statuses" id="{{ request.id }}">
+                  <input id="{{ request.id }}" type="hidden" value="{{ request.status }}">
+                  <i class="dropdown icon"></i>
+                  <div class="text">{{ request.get_status_display }}</div>
+                  <div class="menu">
+                    {% for value, status in statuses %}
+                      <div class="item" data-value="{{ value }}">{{ status }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ol>
+      {% endif %}
       <h2>{{ comments.count }} - Comments</h2>
       <ol>
         {% for comment in comments %}
@@ -92,7 +116,7 @@
     {% else %}
       <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
     {% endif %}
-
+  {% endif %}
 {% endblock content %}
 
 {% block additionalJS %}
