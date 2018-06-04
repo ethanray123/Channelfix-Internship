@@ -4,35 +4,23 @@
 {% block title %}Edit Lobby{% endblock title %}
 
 {% block content %}
-<style type="text/css">
-  body {
-    background-color: #E1E1E1;
-  }
-  .formContainer{
-    background-color: lightgrey;
-    margin: auto;
-    padding: 20px;
-    opacity: .90;
-  }
-</style>
-    {% if user.is_authenticated and object.owner == user%}
-      <br>
-      <div class="formContainer ui form grid">
+<br>
+  {% if user.is_authenticated and object.owner == user%}
+    <div class="formContainer ui form grid">
+      <div class="six wide column">
         <form method="post" enctype="multipart/form-data">
-          <div class="six wide column">
           <h1>Update Lobby</h1>
           {% csrf_token %}
           {% include 'stream/form-template.html' %}
-            <div class="grid container">
-            <div class="field">
-              <button class="primary ui button" type="submit">Update</button>
-            </div>
-          </div>
+          <hr>
+          <div class="field">
+            <button class="primary ui button" type="submit">Update</button>
+            <a href="{% url 'stream:manage_detailview' object.id %}" class="ui button">Cancel</a>
           </div>
         </form>
       </div>
-    {% else %}
-        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
-    {% endif %}
-</body>
+    </div>
+  {% else %}
+      <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+  {% endif %}
 {% endblock content %}

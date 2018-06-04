@@ -4,17 +4,6 @@
 {% block title %}Update Stream{% endblock title %}
 
 {% block content %}
-<style type="text/css">
-  body {
-    background-color: #E1E1E1;
-  }
-  .formContainer{
-    background-color: lightgrey;
-    margin: auto;
-    padding: 20px;
-    opacity: .90;
-  }
-</style>
 <br>
 <div class="formContainer ui form grid">
     {% if user.is_authenticated and object.owner == user %}
