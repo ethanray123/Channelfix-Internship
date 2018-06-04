@@ -7,37 +7,37 @@
 
 {% if user.is_authenticated %}
   <h1>{{ object.name }}</h1>
-    <h1>
-      {% csrf_token %}
-      {% if object.owner.id == request.user.id or is_moderator == True %}
-        <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
-          MANAGE
-        </a>
-      {% else %}
-        <button
-          id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
-          data-privacy="{{ object.get_lobby_type_display }}"
-          {% if object.get_lobby_type_display == 'Public' or is_member %}
-            data-url="{% url 'stream:stream_createview' object.pk %}"
-          {% elif object.get_lobby_type_display == 'Private' %}
-            data-url="{% url 'stream:request_membership' object.pk %}"
-          {% endif %}
-          {% if is_member %}
-            data-ismember="True"
-          {% endif %}
-        >
-          JOIN
-        </button>
-      {% endif %}
-      <span>{{ object.name }}</span>
-    </h1>
-    <div>
-      <a class="ui red tag label">{{ object.category.name }}</a>
-      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
-    </div>
-    <input id="user" type="hidden" value="{{ request.user.username }}">
-    <ul>
-      {% for stream in streams %}
+  <h1>
+    {% csrf_token %}
+    {% if object.owner.id == request.user.id or is_moderator == True %}
+      <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
+        MANAGE
+      </a>
+    {% else %}
+      <button
+        id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
+        data-privacy="{{ object.get_lobby_type_display }}"
+        {% if object.get_lobby_type_display == 'Public' or is_member %}
+          data-url="{% url 'stream:stream_createview' object.pk %}"
+        {% elif object.get_lobby_type_display == 'Private' %}
+          data-url="{% url 'stream:request_membership' object.pk %}"
+        {% endif %}
+        {% if is_member %}
+          data-ismember="True"
+        {% endif %}
+      >
+        JOIN
+      </button>
+    {% endif %}
+    <span>{{ object.name }}</span>
+  </h1>
+  <div>
+    <a class="ui red tag label">{{ object.category.name }}</a>
+    <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+  </div>
+  <input id="user" type="hidden" value="{{ request.user.username }}">
+  <ul>
+    {% for stream in streams %}
       <li>
         <div>
           {% if stream.title != "" and stream.image != Null %}
@@ -61,7 +61,6 @@
             <img width="10%" height="20%" src="{{ stream.image.url }}">
             <h5>{{ stream.tag }}</h5>
           {% endif %}
-        </p>
         </div><br>
       </li>
     {% endfor %}
