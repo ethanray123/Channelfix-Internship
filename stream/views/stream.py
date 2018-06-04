@@ -43,14 +43,17 @@ class UpdateView(generic.UpdateView):
         return reverse('stream:lobby_detailview', args=[self.object.lobby.pk])
 
 
-class DeleteView(generic.DeleteView):
-    model = models.Stream
+class RemoveView(generic.View):
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.removed = True
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return reverse('stream:lobby_detailview', args=[self.object.lobby.pk])
+    def post(self, request, *args, **kwargs):
+        stream = models.Stream.objects.get(pk=kwargs.get('pk'))
+        if (not stream.removed):
+            stream.removed = True
+            stream.save()
+            return HttpResponseRedirect(
+                reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
+        else:
+            stream.removed = False
+            stream.save()
+            return HttpResponseRedirect(
+                reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
