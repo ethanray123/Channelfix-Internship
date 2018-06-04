@@ -48,14 +48,14 @@ $(function(){
 
     function report_comment(){
         $("span#error").html("");
-        $('.ui.modal').attr("id", $(this).attr("id"))
-        $('.ui.modal').modal('show')
+        $('.modal.report').attr("id", $(this).attr("id"))
+        $('.modal.report').modal('show')
     };
 
     $(".ui.button#ok").click(function(event){
         if($("input#reason").val()){
-            ajax_post(event, type="report", text="", pk=$("div.ui.modal").attr("id"), reason=$("input#reason").val());
-            $('.ui.modal').modal('hide')
+            ajax_post(event, type="report", text="", pk=$("div.modal.report").attr("id"), reason=$("input#reason").val());
+            $('.modal.report').modal('hide')
             flag = true;
         }
         else{
