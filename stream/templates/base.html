@@ -56,10 +56,14 @@
 
     </div>
 
-  </div>
+  </div><br><br>
   <div class="content">
-    {% block content %}
-    {% endblock content %}
+    <div class="ui grid container">
+      <div class="ui sixteen wide column segment">
+        {% block content %}{% endblock content %}
+      </div>
+    </div>
+
     <div class="left pane"></div>
     <div class="middle pane"></div>
     <div class="right pane"></div>
@@ -69,18 +73,29 @@
         <i class="exclamation circle icon"></i>
         Confirmation
       </div>
-      <div class="content">
-        <p>Are you sure you want to do this?</p>
+      <div class="ui grid container">
+        <div class="five wide column"></div>
+        <div class="six wide column">
+          <div id="confmodaltext">
+            <p class="panel ">Are you sure you want to do this?</p>
+          </div>
+        </div>
+        <div class="five wide column"></div>
       </div>
-      <div class="actions">
-        <div class="ui red basic cancel inverted button">
-          <i class="remove icon"></i>
-          No
+
+      <div class="ui grid container">
+        <div class="five wide column"></div>
+        <div id="actbuttons" class="actions six wide column">
+          <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
         </div>
-        <div class="ui green ok inverted button">
-          <i class="checkmark icon"></i>
-          Yes
-        </div>
+        <div class="five wide column"></div>
       </div>
     </div>
 

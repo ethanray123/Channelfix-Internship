@@ -33,3 +33,11 @@ body{
 .ui.secondary.menu{
 	height: 60px;
 }
+
+#confmodaltext{
+	text-align: center;
+}
+
+#actbuttons{
+	padding-left: 75px;
+}

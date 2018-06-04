@@ -37,41 +37,63 @@
     <div>
     </div>
     <input id="user" type="hidden" value="{{ request.user.username }}">
-    <ul>
-        {% for stream in streams %}
-        <li>
-          <div>
-            {% if stream.title != "" and stream.image != Null %}
-              <h3>{{ stream.title }}</h3>
-              <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
+    <div class="ui divided items">
+      {% for stream in streams %}
+        {% if stream.title != "" and stream.image != Null %}
+          <div class="item">
+            <div class="image">
+              <img width="10%" height="20%" src="{{ stream.image.url }}">
+            </div>
+            <div class="content">
+              <a class="header">{{ stream.title }}</a>
+              <div class="meta">
+                <a href="{% url 'stream:profile' stream.owner.profile_id %}" class="owner">
+                  {{ stream.owner.username }}
+                </a>
+              </div>
+              <div class="description">
+                <p>{{ stream.description }}</p>
+              </div>
+              <div class="extra">
                 {% if stream.owner.id != request.user.id  %}
                   {% if stream.owner.is_subscribed %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui primary button">
-                      Unfollow
+                    <button 
+                      id="subscribe" 
+                      name="{{ stream.owner.id }}" 
+                      class="ui left floated primary button">
+                        Unfollow
                     </button>
                   {% else %}
-                    <button id="subscribe" name="{{ stream.owner.id }}" class="ui primary button">
-                      Follow
+                    <button 
+                      id="subscribe" 
+                      name="{{ stream.owner.id }}" 
+                      class="ui left floated primary button">
+                        Follow
                     </button>
                   {% endif %}
                 {% else %}
-                  <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
+                  <a 
+                    href="{% url 'stream:stream_updateview' stream.id %}" 
+                    class="ui blue left floated button">
+                      Update
+                  </a>
                   <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
                     {% csrf_token %}
                     <button 
                       type="submit"
-                      class="negative ui button confirmation">Remove
+                      class="negative ui left floated button confirmation"
+                      style="margin-top: 4px">Remove
                     </button>
                   </form>
                 {% endif %}
-              </p>
-              <img width="10%" height="20%" src="{{ stream.image.url }}">
-              <h5>{{ stream.tag }}</h5>
-            {% endif %}
-          </div><br>
-        </li>
-        {% endfor %}
-    </ul>
+                <div class="ui label">{{ stream.tag }}</div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+          <br>
+      {% endfor %}
+    </div>
     <h2>Comments</h2>
     <form class="ui form">
         {% csrf_token %}

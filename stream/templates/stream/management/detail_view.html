@@ -17,7 +17,10 @@
       <form>
         {% csrf_token %}
       </form>
-      <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+      <a href="{% url 'stream:lobby_edit' lobby.id %}">
+        <button class="ui button primary">
+          Update Lobby Details
+        </button></a><br>
       <h2>Total views: {{ lobby.views.count }}</h2>
       <h2>{{ streams.count }} - Streams</h2>
       {% if main %}
