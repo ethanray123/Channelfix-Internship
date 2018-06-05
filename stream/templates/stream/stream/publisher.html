@@ -30,7 +30,9 @@ body{
 </style>
 
 <div class="container" id="lobby-container">
-    <h1>{{ object.lobby.name }}</h1>
+    <h1>
+        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a>
+    </h1>
 </div>
 <div class="container" id="stream-container">
     <h3>{{ object.title }}</h3>
