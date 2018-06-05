@@ -115,4 +115,43 @@ $(function(){
             }
         }
     });
+
+    var apiKey = "46119842";
+    function handleError(error) {
+      if (error) {
+        alert(error.message);
+      }
+    }
+
+    initializeSession();
+
+    function initializeSession() {
+      $.ajax({
+        type: 'GET',
+        url: '/stream/api/stream',
+        data: {
+          'lobby__pk': $("input#lobby").data("lobby_id"),
+          'start': 0,
+          'end': 5
+        },
+        success: function(response){
+          console.log(response);
+          $.each(response, function(ctr, stream){
+            showStream(stream.session_id, stream.sub_token);
+          });
+        }
+      });
+    }
+
+    function showStream(session_id, sub_token){
+      var session = OT.initSession(apiKey, session_id);
+      session.on('streamCreated', function(event) {
+        session.subscribe(event.stream, session_id, {
+          insertMode: 'append',
+          width: '100%',
+          height: '100%'
+        }, handleError);
+      });
+      session.connect(sub_token);
+    }
 });
