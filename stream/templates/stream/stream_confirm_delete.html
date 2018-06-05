@@ -33,7 +33,7 @@
                     <hr>
                     <div>
     			         <button type="submit" class="ui red button">Remove</button>
-                        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui button">Cancel</a>
+                        <a href="{% url 'stream:publisher_view' object.lobby.id object.id%}" class="ui button">Cancel</a>
                     </div>
     			</form>
           </div>

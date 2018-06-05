@@ -55,7 +55,9 @@ class UpdateView(generic.UpdateView):
     template_name = 'stream/stream/update_view.html'
 
     def get_success_url(self):
-        return reverse('stream:lobby_detailview', args=[self.object.lobby.pk])
+        return reverse(
+            'stream:publisher_view',
+            args=[self.object.lobby.pk, self.object.id])
 
 
 class DeleteView(generic.DeleteView):
