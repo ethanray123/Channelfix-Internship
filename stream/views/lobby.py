@@ -45,6 +45,9 @@ class DetailView(generic.DetailView):
                     self.request.user),
                 'profile_id': obj.owner.profile.id
             }
+            temp['session_id'] = obj.session_id
+            temp['pub_token'] = obj.pub_token
+            temp['sub_token'] = obj.sub_token
             temp['tag'] = obj.get_tag_display()
             temp['image'] = obj.image
             results.append(temp)
