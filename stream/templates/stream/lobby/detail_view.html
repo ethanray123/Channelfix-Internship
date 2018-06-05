@@ -50,9 +50,9 @@
   <input id="user" type="hidden" value="{{ request.user.username }}">
   <ul>
     {% for stream in streams %}
+      {% if stream.title and stream.session_id %}
       <li>
         <div>
-          {% if stream.title != "" and stream.image != Null %}
             <h3>{{ stream.title }}</h3>
             <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
               {% if stream.owner.id != request.user.id  %}
@@ -66,16 +66,15 @@
                   </button>
                 {% endif %}
               {% else %}
-                <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
-                <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red button">Remove</a>
+                <a href="{% url 'stream:publisher_view' lobby.id stream.id%}" class="ui blue button">Creator Studio</a>
               {% endif %}
             </p>
-            <img width="10%" height="20%" src="{{ stream.image.url }}">
+
             <div class="subscriber" id="{{ stream.session_id }}" data-sub_token="{{ stream.sub_token }}"></div>
             <h5>{{ stream.tag }}</h5>
-          {% endif %}
         </div><br>
       </li>
+      {% endif %}
     {% endfor %}
   </ul>
   <h2>Comments</h2>
