@@ -27,6 +27,8 @@ urlpatterns = [
          views.stream.DeleteView.as_view(), name='stream_deleteview'),
     path('lobby/<int:pk>/create_stream/',
          views.stream.CreateView.as_view(), name='stream_createview'),
+    path('lobby/<int:lobby_pk>/publisher/<int:pk>',
+         views.stream.PublisherView.as_view(), name='publisher_view'),
     path('lobby/subscribe/',
          views.subscription.SubscribeView.as_view(), name='subscribe'),
     path('profile/<int:pk>',

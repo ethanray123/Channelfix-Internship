@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style type="text/css">
+#publisher {
+    width: 500px;
+    height: 500px;
+    bottom: 10px;
+    left: 0;
+    z-index: 100;
+    border-radius: 3px;
+}
+</style>
+    <h1>{{ object.title }}</h1>
+    <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}"></div>
+    <button class="ui green labeled icon button disabled" id="goliveBtn">
+        <i class="play icon"></i>
+        Go Live
+    </button>
+    <button class="ui red labeled icon button disabled" id="offlineBtn">
+        <i class="pause icon"></i>
+        Go Offline
+    </button>
+    <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">
+        <i class="edit icon"></i>
+        Update Stream
+    </a>
+    <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui labeled icon button" id="offlineBtn">
+        <i class="stop icon"></i>
+        Stop Streaming
+    </a>
+{% endblock content %}
+
+{% block additionalJS %}
+<script src="{% static 'stream/js/publisher.js' %}"></script>
+{% endblock additionalJS %}
