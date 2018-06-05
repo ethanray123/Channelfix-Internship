@@ -4,32 +4,56 @@
 {% block content %}
 <style type="text/css">
 #publisher {
-    width: 500px;
-    height: 500px;
+    width: 750px;
+    height: 422px;
     bottom: 10px;
     left: 0;
     z-index: 100;
     border-radius: 3px;
+    background-color: #e1e1e1;
+    margin: auto;
+}
+.container{
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    width: 50%;
+    margin-bottom: 10px;
+}
+.stream-actions{
+    padding: 10px;
+}
+body{
+    background-color: #e1e1e1;
 }
 </style>
-    <h1>{{ object.title }}</h1>
+
+<div class="container" id="lobby-container">
+    <h1>{{ object.lobby.name }}</h1>
+</div>
+<div class="container" id="stream-container">
+    <h3>{{ object.title }}</h3>
     <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}"></div>
-    <button class="ui green labeled icon button disabled" id="goliveBtn">
-        <i class="play icon"></i>
-        Go Live
-    </button>
-    <button class="ui red labeled icon button disabled" id="offlineBtn">
-        <i class="pause icon"></i>
-        Go Offline
-    </button>
-    <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">
-        <i class="edit icon"></i>
-        Update Stream
-    </a>
-    <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui labeled icon button" id="offlineBtn">
-        <i class="stop icon"></i>
-        Stop Streaming
-    </a>
+    <div class="stream-actions">
+        <button class="ui labeled icon button disabled" id="goliveBtn">
+            <i class="play icon"></i>
+            Live
+        </button>
+        <button class="ui labeled icon button disabled" id="offlineBtn">
+            <i class="pause icon"></i>
+            Pause
+        </button>
+        <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui button">
+            <i class="edit icon"></i>
+            Update
+        </a>
+        <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red labeled icon button" id="offlineBtn">
+            <i class="stop icon"></i>
+            Offline
+        </a>
+    </div>
+</div>
 {% endblock content %}
 
 {% block additionalJS %}
