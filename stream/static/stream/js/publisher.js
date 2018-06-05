@@ -11,15 +11,13 @@ $(function(){
         console(error.message);
       }
     }
-
     var session = OT.initSession(apiKey, session_id);
     var publisher = null;
     var offlineBtn = $("button#offlineBtn");
     var goliveBtn = $("button#goliveBtn");
     session.connect(pub_token, function(error) {
-        if (error) {
+        if (error)
             handleError(error);
-        }
         else{
             goliveBtn.removeClass('disabled');
             publisher = OT.initPublisher('publisher', {
@@ -27,9 +25,12 @@ $(function(){
                 width: '100%',
                 height: '100%'
             }, handleError);
-            session.publish(publisher, handleError);
+            session.publish(publisher, function(){
+                //do something here
+            });
             publisher.publishVideo(false);
             publisher.publishAudio(false);
+
             offlineBtn.click(function(){
                 if (publisher) {
                     publisher.publishVideo(false);
@@ -46,6 +47,6 @@ $(function(){
                     goliveBtn.addClass('disabled');
                 }
             });
-        }
+        } //end of else
     });
 });
