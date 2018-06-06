@@ -49,11 +49,7 @@ class RemoveView(generic.View):
         stream = models.Stream.objects.get(pk=kwargs.get('pk'))
         if (not stream.removed):
             stream.removed = True
-            stream.save()
-            return HttpResponseRedirect(
-                reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
-        else:
-            stream.removed = False
-            stream.save()
-            return HttpResponseRedirect(
-                reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
+        
+        stream.save()
+        return HttpResponseRedirect(
+            reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
