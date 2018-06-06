@@ -39,6 +39,10 @@ class Report(models.Model):
         return '{} reported {} of id {}'.format(
             self.reporter.username, self.content_type, self.content_id)
 
+    @property
+    def get_reason(self):
+        return REASONS[int(self.reason)][1]
+
 
 NOTIFICATION_TEMPLATES = (
     # Profile
@@ -47,9 +51,9 @@ NOTIFICATION_TEMPLATES = (
     # Stream
     (1, '{target.owner.username} has started a stream: \
         {target.title} in {target.lobby.name}'),
-    (2, 'Your stream has been updated as {target.tag}'),
+    (2, 'Your stream has been updated as {target.get_tag}'),
     # Reported Stream
-    (3, 'Your stream has been removed due to {target.reason}'),
+    (3, 'Your stream has been removed due to {target.get_reason}'),
 
     # Lobby
     (4, '{target.owner.username} has created a lobby: {target.name}'),
@@ -62,7 +66,7 @@ NOTIFICATION_TEMPLATES = (
     # Comment
     (7, '{target.owner.username} has commented in lobby: {target.lobby.name}'),
     # Reported Comment
-    (8, 'Your comment has been removed due to {target.reason}'),
+    (8, 'Your comment has been removed due to {target.get_reason}'),
 )
 
 
@@ -261,6 +265,10 @@ class Stream(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def get_tag(self):
+        return STREAM_TAGS[int(self.tag)][1]
 
 
 class Comment(models.Model):
