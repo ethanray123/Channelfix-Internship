@@ -35,6 +35,8 @@ body{
     </h1>
 </div>
 <div class="container" id="stream-container">
+    {% csrf_token %}
+    <input type="hidden" id="pk" data-value="{{ object.id }}">
     <h3>{{ object.title }}</h3>
     <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}"></div>
     <div class="stream-actions">

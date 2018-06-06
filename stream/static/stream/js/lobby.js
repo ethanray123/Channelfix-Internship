@@ -123,35 +123,46 @@ $(function(){
       }
     }
 
-    initializeSession();
+    // initializeSession();
 
-    function initializeSession() {
-      $.ajax({
-        type: 'GET',
-        url: '/stream/api/stream',
-        data: {
-          'lobby__pk': $("input#lobby").data("lobby_id"),
-          'start': 0,
-          'end': 5
-        },
-        success: function(response){
-          console.log(response);
-          $.each(response, function(ctr, stream){
-            showStream(stream.session_id, stream.sub_token);
-          });
-        }
-      });
-    }
+    // function initializeSession() {
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: '/stream/api/stream',
+    //     data: {
+    //       'lobby__pk': $("input#lobby").data("lobby_id"),
+    //       'start': 0,
+    //       'end': 5
+    //     },
+    //     success: function(response){
+    //       console.log(response);
+    //       $.each(response, function(ctr, stream){
+    //         showStream(stream.session_id, stream.sub_token);
+    //       });
+    //     }
+    //   });
+    // }
+    var session = null;
 
     function showStream(session_id, sub_token){
-      var session = OT.initSession(apiKey, session_id);
-      session.on('streamCreated', function(event) {
-        session.subscribe(event.stream, session_id, {
-          insertMode: 'append',
-          width: '100%',
-          height: '100%'
-        }, handleError);
-      });
-      session.connect(sub_token);
+        console.log(apiKey);
+        session = OT.initSession(apiKey, session_id);
+        $('#lll').append('<div id="streamlll"></div>');
+        session.on('streamCreated', function(event) {
+            session.subscribe(event.stream, 'streamlll', {
+                    insertMode: 'replace',
+                    width: '100%',
+                    height: '100%'
+                }, handleError);
+        });
+        session.connect(sub_token);
     }
+
+// var place = "";
+    $('.streams').click(function(){
+        if(session)
+           session.disconnect();
+        $('#lll').empty();
+        showStream($(this).attr('id'), $(this).data('sub_token'));
+    });
 });
