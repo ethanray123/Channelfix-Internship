@@ -1,9 +1,11 @@
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.views import generic
 from django.urls import reverse
 from stream import models
 from stream import forms
 from opentok import OpenTok, Roles
+import base64
+import re
 
 api_key = "46119842"
 api_secret = "a061d4a5aa1e22cf68b449dcbdd05ce3e403b0f4"
@@ -86,3 +88,17 @@ class PublisherView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(PublisherView, self).get_context_data(**kwargs)
         return context
+
+
+class GetImage(generic.View):
+
+    def post(self, request, *args, **kwargs):
+        image_data = base64.b64decode(request.POST['image'])
+        filename = 'stream/static/images/some_image.png'
+        with open("media/" + filename, 'wb') as f:
+            f.write(image_data)
+        f.close()
+        stream = models.Stream.objects.get(pk=request.POST['pk'])
+        stream.image = filename
+        stream.save()
+        return HttpResponse('success')
