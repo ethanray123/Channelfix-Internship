@@ -10,6 +10,7 @@
       <div class="six wide column">
         <form method="post" enctype="multipart/form-data">
             <h1>You are in lobby <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a></h1>
+            <div class="ui horizontal divider">Details</div>
             {% csrf_token %}
             {% include 'stream/form-template.html' %}
             <hr>
