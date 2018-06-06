@@ -5,6 +5,7 @@
 {% block content %}
   {% if user.is_authenticated %}
     <div class="ui items">
+    <h1>Lobbies</h1>
     {% for lobby in lobbies %}
       <div class="item">
         <div class="image">
@@ -18,6 +19,16 @@
           <div class="description">
             <p>{{ lobby.description }}</p>
           </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    <div class="ui items">
+    <h1>Notifications</h1>
+    {% for notif in notifications %}
+      <div class="item">
+        <div class="content">
+          <a class="header" href="">{{ notif.details }}</a>
         </div>
       </div>
     {% endfor %}
