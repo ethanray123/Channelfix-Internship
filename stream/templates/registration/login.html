@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% block additionalCss %}
+	<!-- Site Properties -->
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/reset.css' %}">
+  {# <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/site.css' %}"> #}
+
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/container.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/grid.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/header.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/image.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/menu.css' %}">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/divider.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/segment.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/form.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/input.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/button.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/list.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/message.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/components/icon.css' %}">
+{% endblock additionalCss %}
+
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -7,11 +29,48 @@
 		<h3>You are already logged in</h3>
 		<a href="{% url 'login' %}">Home</a>
 	{% else %}
-		<h2>Login</h2>
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">Login</button>
-		</form>
+    <div class="ui middle aligned center aligned grid container">
+      <div class="six wide column">
+        <br><br>
+        <h2 class="ui header">
+            Log-in to your account
+        </h2>
+        <br>
+      	<form class="ui medium form" method="post">
+    		{% csrf_token %}
+          <div class="ui stacked segment">
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="username" placeholder="Username">
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="Password">
+              </div>
+            </div>
+            <button class="ui fluid medium black submit button field" type="submit">Login</button>
+          </div>
+      		<div class="ui error message"></div>
+      	</form>
+
+        <a href="{% url 'social:begin' 'facebook' %}">
+          <button class="ui primary button">
+            Login with Facebook<i class="facebook icon big right"></i>
+          </button>
+        </a>
+        <div class="ui message">
+          New to us? <a href="#">Sign Up</a>
+        </div>
+      </div>
+    </div>
 	{% endif %}
-{% endblock %}
+{% endblock content %}
+
+{% block additionalJS %}
+  <script type="text/javascript" src="{% static "stream/js/login.js" %}"></script>
+  <script src="{% static 'semantic/dist/components/form.js' %}"></script>
+  <script src="{% static 'semantic/dist/components/transition.js' %}"></script>
+{% endblock additionalJS %}

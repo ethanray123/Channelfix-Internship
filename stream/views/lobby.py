@@ -45,6 +45,7 @@ class DetailView(generic.DetailView):
                     self.request.user),
                 'profile_id': obj.owner.profile.id
             }
+            temp['description'] = obj.description
             temp['tag'] = obj.get_tag_display()
             temp['image'] = obj.image
             results.append(temp)

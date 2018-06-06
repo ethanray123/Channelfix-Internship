@@ -6,107 +6,145 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-  <h1>{{ object.name }}</h1>
-  <h1>
-    {% csrf_token %}
-    {% if object.owner.id == request.user.id or is_moderator == True %}
-      <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
-        MANAGE
-      </a>
-    {% else %}
-      <button
-        id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
-        data-privacy="{{ object.get_lobby_type_display }}"
-        {% if object.get_lobby_type_display == 'Public' or is_member %}
-          data-url="{% url 'stream:stream_createview' object.pk %}"
-        {% elif object.get_lobby_type_display == 'Private' %}
-          data-url="{% url 'stream:request_membership' object.pk %}"
-        {% endif %}
-        {% if is_member %}
-          data-ismember="True"
-        {% endif %}
-      >
-        JOIN
-      </button>
-    {% endif %}
-    <span>{{ object.name }}</span>
-  </h1>
-  <div>
-    <a class="ui red tag label">{{ object.category.name }}</a>
-    <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
-  </div>
-  <input id="user" type="hidden" value="{{ request.user.username }}">
-  <ul>
-    {% for stream in streams %}
-      <li>
-        <div>
-          {% if stream.title != "" and stream.image != Null %}
-            <h3>{{ stream.title }}</h3>
-            <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
-              {% if stream.owner.id != request.user.id  %}
-                {% if stream.owner.is_subscribed %}
-                  <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
-                    Unfollow
-                  </button>
-                {% else %}
-                  <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
-                    Follow
-                  </button>
-                {% endif %}
-              {% else %}
-                <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui blue button">Update</a>
-                <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red button">Remove</a>
-              {% endif %}
-            </p>
-            <img width="10%" height="20%" src="{{ stream.image.url }}">
-            <h5>{{ stream.tag }}</h5>
+    <h1>
+      {% csrf_token %}
+      {% if object.owner.id == request.user.id %}
+        <a href="{% url 'stream:manage_detailview' lobby.id %}" class="ui blue button">
+          MANAGE
+        </a>
+      {% else %}
+        <button
+          id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
+          data-privacy="{{ object.get_lobby_type_display }}"
+          {% if object.get_lobby_type_display == 'Public' or is_member %}
+            data-url="{% url 'stream:stream_createview' object.pk %}"
+          {% elif object.get_lobby_type_display == 'Private' %}
+            data-url="{% url 'stream:request_membership' object.pk %}"
           {% endif %}
-        </div><br>
-      </li>
-    {% endfor %}
-  </ul>
-  <h2>Comments</h2>
-  <form>
-    {% csrf_token %}
-    <input type="text" id="txtComment">
-    <button id="btnComment">send</button>
-  </form>
-  <li class="comment template" hidden="True">
-    <div id="container">
-      <div>
-        <img class="avatar" src="" width="2%" height="2%">
-        <span class="username"></span>(<span class="when"></span>)
-      </div>
-      <span class="text"></span>
-    </div><br><br>
-  </li>
-  <ul id="ulComment">
-  </ul>
-  <div class="ui mini modal">
-    <i class="close icon"></i>
-    <div class="header">
-      Report Comment
+          {% if is_member %}
+            data-ismember="True"
+          {% endif %}
+        >
+          JOIN
+        </button>
+      {% endif %}
+        <span>{{ object.name }}</span>
+      </h1>
+    <div>
+      <a class="ui red tag label">{{ object.category.name }}</a>
+      <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
     </div>
     <div>
-      <span style="color: red" id="error"></span>
     </div>
-    <div class="ui selection dropdown">
-      <input id="reason" type="hidden">
-      <i class="dropdown icon"></i>
-      <div class="default text">State Your Reason</div>
-      <div class="menu">
-        <div class="item" data-value="0">Pornographic content.</div>
-        <div class="item" data-value="1">Copyright infringement.</div>
-        <div class="item" data-value="2">Racist content..</div>
+    <input id="user" type="hidden" value="{{ request.user.username }}">
+    <div class="ui divided items">
+      {% for stream in streams %}
+        {% if stream.title != "" %}
+          <div class="item">
+            {% if stream.image %}
+            <div class="image">
+              <img width="15%" height="25%" src="{{ stream.image.url }}">
+            </div>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
+            <div class="content">
+              <a class="header">{{ stream.title }}</a>
+              <div class="meta">
+                <a href="{% url 'stream:profile' stream.owner.profile_id %}" class="owner">
+                  {{ stream.owner.username }}
+                </a>
+              </div>
+              <div class="description">
+                <p>{{ stream.description }}</p>
+              </div>
+              <div class="extra">
+                {% if stream.owner.id != request.user.id  %}
+                  {% if stream.owner.is_subscribed %}
+                    <button 
+                      id="subscribe" 
+                      name="{{ stream.owner.id }}" 
+                      class="ui left floated primary button">
+                        Unfollow
+                    </button>
+                  {% else %}
+                    <button 
+                      id="subscribe" 
+                      name="{{ stream.owner.id }}" 
+                      class="ui left floated primary button">
+                        Follow
+                    </button>
+                  {% endif %}
+                {% else %}
+                  <a 
+                    href="{% url 'stream:stream_updateview' stream.id %}" 
+                    class="ui blue left floated button">
+                      Update
+                  </a>
+                  <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
+                    {% csrf_token %}
+                    <button 
+                      type="submit"
+                      class="negative ui left floated button confirmation"
+                      style="margin-top: 4px">Remove
+                    </button>
+                  </form>
+                {% endif %}
+                <div class="ui label">{{ stream.tag }}</div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+          <br>
+      {% endfor %}
+    </div>
+    <h2>Comments</h2>
+    <form class="ui form">
+        {% csrf_token %}
+        <div class="six wide field">
+          <input type="text" id="txtComment">
+        </div>
+        <button id="btnComment" class="ui positive button">send</button>
+    </form>
+    <li class="comment template" hidden="True">
+        <div id="container">
+            <div>
+                <img class="avatar" src="" width="2%" height="2%">
+                <span class="username"></span>(<span class="when"></span>)
+            </div>
+            <span class="text"></span>
+        </div><br><br>
+    </li>
+    <ul id="ulComment">
+    </ul>
+    <div class="ui mini modal report">
+      <i class="close icon"></i>
+      <div class="header">
+        Report Comment
+      </div>
+      <div>
+        <span style="color: red" id="error"></span>
+      </div>
+      <div class="ui selection dropdown">
+        <input id="reason" type="hidden">
+        <i class="dropdown icon"></i>
+        <div class="default text">State Your Reason</div>
+        <div class="menu">
+          <div class="item" data-value="0">Pornographic content.</div>
+          <div class="item" data-value="1">Copyright infringement.</div>
+          <div class="item" data-value="2">Racist content..</div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui button" id="ok">REPORT</div>
       </div>
     </div>
-    <div class="actions">
-      <div class="ui button" id="ok">REPORT</div>
-    </div>
-  </div>
+</div>
 {% else %}
-  <h3>You are not logged in...</h3>
-  <a href="{% url 'login' %}" class="btn">login</a>
+    <h3>You are not logged in...</h3>
+    <a href="{% url 'login' %}" class="btn">login</a>
 {% endif %}
 
 <!-- start modals -->
@@ -122,6 +160,7 @@
 <!-- end of modals -->
 {% endblock content %}
 {% block additionalJS %}
+<script src="{% static 'stream/js/confirmation.js' %}"></script>
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 <script src="{% static 'stream/js/subscription.js' %}"></script>
 {% endblock additionalJS %}

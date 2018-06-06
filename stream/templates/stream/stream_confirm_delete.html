@@ -21,26 +21,30 @@
   }
 </style>
 <div class="formContainer">
-    {% if user.is_authenticated and object.owner == user %}
+  {% if user.is_authenticated and object.owner == user %}
+    <div>
+      <h1>Confirm Delete</h1>
         <div>
-          <h1>Confirm Delete</h1>
-            <div>
-            	<form method="post">{% csrf_token %}
-    			    <h3>
-                        Are you sure you want to remove stream your stream?
-                        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.title }}</a>
-                    </h3>
-                    <hr>
-                    <div>
-    			         <button type="submit" class="ui red button">Remove</button>
-                        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui button">Cancel</a>
-                    </div>
-    			</form>
-          </div>
+          <form method="post">{% csrf_token %}
+              <h3>
+                  Are you sure you want to remove stream your stream?
+                  <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.title }}</a>
+              </h3>
+              <hr>
+              <div>
+                  <button type="submit" class="ui red button">Yes</button>
+                  <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">
+                      <button class="ui button">No</button>
+                  </a>
+              </div>
+          </form>
         </div>
-    {% else %}
-        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
-        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui red button" class="ui button">Go Back</a>
-    {% endif %}
+    </div>
+  {% else %}
+    <h1 class="ui header">YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+    <a href="{% url 'stream:lobby_detailview' object.lobby.id %}" class="ui red button" class="ui button">
+      <button class="ui button">Go Back</button>
+    </a>
+  {% endif %}
 </div>
 {% endblock content %}

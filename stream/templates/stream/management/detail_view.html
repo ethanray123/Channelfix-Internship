@@ -19,7 +19,11 @@
         {% csrf_token %}
       </form>
       {% if object.owner == user%}
-        <a href="{% url 'stream:lobby_edit' lobby.id %}">Update Lobby Details</a><br>
+      <a href="{% url 'stream:lobby_edit' lobby.id %}">
+        <button class="ui button primary">
+          Update Lobby Details
+        </button>
+      </a><br>
       {% endif%}
       <h2>Total views: {{ lobby.views.count }}</h2>
       <h2>{{ streams.count }} - Streams</h2>
@@ -108,7 +112,7 @@
             </label>
           </div>
           <p>{{ report.text }}</p>
-          <span>Remove? <input id="{{ report.id }}" class="remove" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
+          <span>Remove? <input id="{{ report.id }}" class="remove confirmation" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
         </li>
         <br>
         {% endfor %}
@@ -120,5 +124,6 @@
 {% endblock content %}
 
 {% block additionalJS %}
+  <script src="{% static 'stream/js/confirmation.js' %}"></script>
   <script src="{% static 'stream/js/management.js' %}"></script>
 {% endblock additionalJS %}
