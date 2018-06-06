@@ -10,7 +10,7 @@
 {% block content %}
   <div class="sixteen wide column ui grid">
     <div class="three wide column">
-      <img class="ui small circular image" src="{{ object.avatar.url }}">
+      <img class="ui small circular image profile-image" src="{{ object.avatar.url }}">
     </div>
     <div id="profile-owner-name" class="eleven wide column">
       <h1 class="ui header">{{ object.owner.username }}</h1>
@@ -63,9 +63,15 @@
         <div class="ui items">
           {% for stream in streams %}
           <div class="item">
+            {% if stream.image %}
             <div class="image">
               <img src="{{ stream.image.url }}">
             </div>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
             <div class="content">
               <a class="header">{{ stream.title }}</a>
               <div class="meta">
@@ -87,9 +93,15 @@
         <div class="ui items">
           {% for lobby in lobbies %}
           <div class="item">
+            {% if lobby.image %}
             <div class="image">
               <img src="{{ lobby.image.url }}">
             </div>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
             <div class="content">
               <a class="header">{{ lobby.name }}</a>
               <div class="meta">

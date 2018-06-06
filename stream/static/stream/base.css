@@ -41,3 +41,12 @@ body{
 #actbuttons{
 	padding-left: 75px;
 }
+
+.noimagebox{
+	width: 175px !important;
+	height: 109.38px !important;
+	background-color: #A0A0A0;
+	text-align: center;
+	padding-top: 45px;
+	margin-right: 50px;
+}

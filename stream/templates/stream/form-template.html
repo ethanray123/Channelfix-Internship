@@ -5,8 +5,24 @@
 			<div class="header">{{ field.errors }}</div>
 		</div>
 
-		<label>{{ field.label_tag }}</label>
-		<div class="field">{{ field }}</div><br>
+		<label>{{ field.label_tag }}</label><br>
+		{% if field.label == "Image" %}
+			{% if not object.image %}
+				<div class="noimagebox">Currently No Image</div>
+			{% else %}
+				<img class="ui small circular image display-image" src="{{ object.image.url }}">
+			{% endif%}
+		{% elif field.label == "Avatar" %}
+			<img class="ui small circular image display-image" src="{{ object.avatar.url }}">
+		{% endif %}
+		
+		{% if field.label == "Description" %}
+			<div class="field">
+				<textarea name="description" id="id_description" cols="30" rows="10" maxlength="50">{{ object.description }}</textarea>
+			</div><br>
+		{% else %}
+			<div class="field">{{ field }}</div><br>
+		{% endif %}
 	</div>
 {% endfor %}
 <style type="text/css">
@@ -21,5 +37,19 @@ body {
 .formContainer{
 	background-color: white;
 	margin: auto;
+}
+
+.display-image{
+	width: 150px !important;
+	height: 150px !important;
+	margin: 10px;
+}
+
+.noimagebox{
+	width: 200px !important;
+	height: 150px !important;
+	background-color: #A0A0A0;
+	text-align: center;
+	padding-top: 60px;
 }
 </style>

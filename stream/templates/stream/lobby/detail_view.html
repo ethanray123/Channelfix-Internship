@@ -39,11 +39,17 @@
     <input id="user" type="hidden" value="{{ request.user.username }}">
     <div class="ui divided items">
       {% for stream in streams %}
-        {% if stream.title != "" and stream.image != Null %}
+        {% if stream.title != "" %}
           <div class="item">
+            {% if stream.image %}
             <div class="image">
-              <img width="10%" height="20%" src="{{ stream.image.url }}">
+              <img width="15%" height="25%" src="{{ stream.image.url }}">
             </div>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
             <div class="content">
               <a class="header">{{ stream.title }}</a>
               <div class="meta">
