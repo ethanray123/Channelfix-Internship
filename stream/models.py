@@ -177,9 +177,9 @@ class Lobby(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)
 
-    @property
-    def member(self):
-        return self.memberships.filter(lobby=self)
+    def is_moderator(self, user):
+        return Moderator.objects.filter(
+            lobby=self, owner=user, removed=False).exists()
 
     def is_member(self, user):
         return LobbyMembership.objects.filter(
@@ -332,6 +332,10 @@ class LobbyMembership(models.Model):
     PENDING = 0
     REJECTED = 1
     ACCEPTED = 2
+
+    def is_moderator(self):
+        return Moderator.objects.filter(
+            lobby=self.lobby, owner=self.member.owner, removed=False).exists()
 
     def __str__(self):
         return self.member.owner.username

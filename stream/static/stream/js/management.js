@@ -10,9 +10,20 @@ $(function(){
                     'value': $(this).is(':checked'),
                     'pk': $(this).attr("id")
                 },
-                success: function(data_receive){
-
-                }
+                success: function(data_receive){}
+            });
+        }
+    });
+    $(".moderate").click(function() {
+        if(confirm("Mark/Unmark as moderator?")){
+            $.ajax({
+                type: "POST",
+                url: window.location.pathname +'/moderator',
+                data: {csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+                    'user': $(this).attr("name"),
+                    'value': $(this).is(':checked'),
+                },
+                success: function(data_receive){}
             });
         }
     });
@@ -42,6 +53,19 @@ $(function(){
                     success: function(data_receive){}
                 });
             }
+        }
+    });
+    $('.dropdown.statuses').dropdown({
+        onChange: function() {
+            $.ajax({
+                type: "POST",
+                url: window.location.pathname +'/status',
+                data: {csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+                    'request_id': $(this).find("input").attr("id"),
+                    'status': $(this).find("input").attr("value")
+                },
+                success: function(data_receive){}
+            });
         }
     });
     $(".modal.tags div#change").click(function(){
