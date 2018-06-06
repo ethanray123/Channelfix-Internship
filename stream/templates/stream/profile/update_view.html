@@ -10,6 +10,7 @@
       <div class="six wide column">
         <form method="post" enctype="multipart/form-data">
           <h1>Update Profile</h1>
+          <div class="ui horizontal divider">Details</div>
           {% csrf_token %}
           {% include 'stream/form-template.html' %}
           <hr>
