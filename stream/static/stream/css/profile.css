@@ -2,3 +2,8 @@
 	display: flex;
 	align-items: center;
 }
+
+.profile-image{
+	width: 150px !important; 
+	height: 150px !important;
+}

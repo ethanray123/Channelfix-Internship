@@ -47,19 +47,23 @@ $(function(){
                     goliveBtn.addClass('disabled');
                     window.setTimeout(delay,3000);
                     function delay(){
-                        var imgData = publisher.getImgData();
-                        $.ajax({
-                            type: 'POST',
-                            url: '/stream/get_image',
-                            data: {
-                                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
-                                pk: $('input#pk').data('value'),
-                                image: imgData
-                            },
-                            success: function(response){
-                                console.log(reponse);
+                        setTimeout(function(){
+                            if(publisher.stream.hasVideo){
+                                var imgData = publisher.getImgData();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/stream/get_image',
+                                    data: {
+                                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
+                                        pk: $('input#pk').data('value'),
+                                        image: imgData
+                                    },
+                                    success: function(response){
+                                        delay();
+                                    }
+                                });
                             }
-                        });
+                        }, 5000);
                     }
                 }
             });

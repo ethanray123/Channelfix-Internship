@@ -28,7 +28,7 @@ $(function(){
                             }
                             else{
                                 if(!comment.isreported){
-                                    comment_holder.find("div#container").after("<button class='report' id='" + comment.pk +  "'> report </button>");
+                                    comment_holder.find("div#container").after("<button class='report negative ui button' id='" + comment.pk +  "'> report </button>");
                                     comment_holder.find("button.report").click(report_comment);
                                 }
                                 else{
@@ -123,37 +123,45 @@ $(function(){
       }
     }
 
-    // initializeSession();
+    (function getImage(){
+        setTimeout(function(){
+            $.ajax({
+                type: 'GET',
+                url: '/stream/api/stream',
+                data: {
+                    'lobby__pk': $("input#lobby").data("lobby_id"),
+                    'start': 0,
+                    'end': 10
+                },
+                success: function(response){
+                    d = new Date();
+                    $.each(response, function(ctr, stream){
+                        var session_id = stream.session_id;
+                        if(session_id)
+                            $('#img' + session_id).attr('src', stream.image + '?' + d.getTime());
+                    });
+                    getImage();
+                }
+            });
+        }, 5000);
+    })();
 
-    // function initializeSession() {
-    //   $.ajax({
-    //     type: 'GET',
-    //     url: '/stream/api/stream',
-    //     data: {
-    //       'lobby__pk': $("input#lobby").data("lobby_id"),
-    //       'start': 0,
-    //       'end': 5
-    //     },
-    //     success: function(response){
-    //       console.log(response);
-    //       $.each(response, function(ctr, stream){
-    //         showStream(stream.session_id, stream.sub_token);
-    //       });
-    //     }
-    //   });
-    // }
     var session = null;
 
     function showStream(session_id, sub_token){
-        console.log(apiKey);
         session = OT.initSession(apiKey, session_id);
         $('#lll').append('<div id="streamlll"></div>');
         session.on('streamCreated', function(event) {
             session.subscribe(event.stream, 'streamlll', {
-                    insertMode: 'replace',
-                    width: '100%',
-                    height: '100%'
-                }, handleError);
+                insertMode: 'replace',
+                width: '100%',
+                height: '100%'
+            }, handleError);
+        });
+
+        session.on("streamDestroyed", function(event) {
+            event.preventDefault();
+            session.unsubsribe(event.stream);
         });
         session.connect(sub_token);
     }
@@ -161,7 +169,7 @@ $(function(){
 // var place = "";
     $('.streams').click(function(){
         if(session)
-           session.disconnect();
+            session.disconnect();
         $('#lll').empty();
         showStream($(this).attr('id'), $(this).data('sub_token'));
     });

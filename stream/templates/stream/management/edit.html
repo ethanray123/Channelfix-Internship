@@ -4,19 +4,24 @@
 {% block title %}Edit Lobby{% endblock title %}
 
 {% block content %}
-    {% if user.is_authenticated and object.owner == user%}
-      <br>
-      <div>
+<br>
+  {% if user.is_authenticated and object.owner == user%}
+    <div class="formContainer ui form grid">
+      <div class="six wide column">
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form }}
-            <div class="form-group">
-              <button type="submit">Update</button>
-            </div>
+          <h1>Update Lobby</h1>
+          <div class="ui horizontal divider">Details</div>
+          {% csrf_token %}
+          {% include 'stream/form-template.html' %}
+          <hr>
+          <div class="field">
+            <button class="primary ui button" type="submit">Update</button>
+            <a href="{% url 'stream:manage_detailview' object.id %}" class="ui button">Cancel</a>
+          </div>
         </form>
       </div>
-    {% else %}
-        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
-    {% endif %}
-</body>
+    </div>
+  {% else %}
+      <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+  {% endif %}
 {% endblock content %}

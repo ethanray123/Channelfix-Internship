@@ -48,6 +48,7 @@ class DetailView(generic.DetailView):
             temp['session_id'] = obj.session_id
             temp['pub_token'] = obj.pub_token
             temp['sub_token'] = obj.sub_token
+            temp['description'] = obj.description
             temp['tag'] = obj.get_tag_display()
             temp['image'] = obj.image
             results.append(temp)

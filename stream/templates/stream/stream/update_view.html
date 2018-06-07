@@ -4,30 +4,17 @@
 {% block title %}Update Stream{% endblock title %}
 
 {% block content %}
-<style type="text/css">
-  body {
-    background-image: url({{ object.lobby.image.url }});
-    background-color: #cccccc;
-    background-repeat: no-repeat;
-    background-size: 100%;
-  }
-  .formContainer{
-    width: 50%;
-    background-color: lightgrey;
-    margin: auto;
-    padding: 20px;
-    opacity: .90;
-  }
-</style>
-<div class="formContainer">
+<br>
+<div class="formContainer ui form grid">
     {% if user.is_authenticated and object.owner == user %}
-      <div>
-        <h1>You are in lobby <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a></h1>
+      <div class="six wide column">
         <form method="post" enctype="multipart/form-data">
+            <h1>You are in lobby <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a></h1>
+            <div class="ui horizontal divider">Details</div>
             {% csrf_token %}
             {% include 'stream/form-template.html' %}
             <hr>
-            <div class="form-group">
+            <div class="fields">
               <button type="submit" class="ui blue button">Update</button>
               <a href="{% url 'stream:publisher_view' object.lobby.id object.id%}" class="ui button">Cancel</a>
             </div>

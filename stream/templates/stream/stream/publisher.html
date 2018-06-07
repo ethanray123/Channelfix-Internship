@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+{% block title %} My Stream {% endblock title %}
 {% block content %}
 <style type="text/css">
 #publisher {
     width: 750px;
     height: 422px;
-    bottom: 10px;
-    left: 0;
     z-index: 100;
     border-radius: 3px;
     background-color: #e1e1e1;
@@ -18,7 +18,6 @@
     text-align: center;
     padding: 10px;
     background-color: white;
-    width: 50%;
     margin-bottom: 10px;
 }
 .stream-actions{
@@ -28,7 +27,6 @@ body{
     background-color: #e1e1e1;
 }
 </style>
-
 <div class="container" id="lobby-container">
     <h1>
         <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a>
@@ -52,14 +50,21 @@ body{
             <i class="edit icon"></i>
             Update
         </a>
-        <a href="{% url 'stream:stream_deleteview' stream.id %}" class="ui red labeled icon button" id="offlineBtn">
+        {% comment %}
+        <a href="{% url 'stream:stream_removeview' stream.id %}" class="ui red labeled icon button" id="offlineBtn">
             <i class="stop icon"></i>
             Offline
         </a>
+        {% endcomment %}
+        <button class="ui labeled icon button confirmation" id="offlineBtn">
+            <i class="stop icon"></i>
+            Offline
+        </button>
     </div>
 </div>
 {% endblock content %}
 
 {% block additionalJS %}
 <script src="{% static 'stream/js/publisher.js' %}"></script>
+<script src="{% static 'stream/js/confirmation.js' %}"></script>
 {% endblock additionalJS %}

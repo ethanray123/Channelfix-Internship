@@ -78,7 +78,8 @@
               {% endif %}
             </p>
             <div class="streams" id="{{ stream.session_id }}" data-sub_token="{{ stream.sub_token }}">
-              <img id="{{ stream.session_id }}" width="100%" height="100%" src="{{ stream.image.url }}">
+              <img id="img{{ stream.session_id }}" width="100%" height="100%" src="{{ stream.image.url }}">
+              <img src="" id="specific">
             </div>
             <h5>{{ stream.tag }}</h5>
         </div><br>

@@ -8,128 +8,138 @@
 {% endblock additionalCss%}
 
 {% block content %}
-<div class="ui grid">
-  <div class="three wide column">
-    <img class="ui small circular image" src="{{ object.avatar.url }}">
-  </div>
-  <div id="profile-owner-name" class="eleven wide column">
-    <h1 class="ui header">{{ object.owner.username }}</h1>
-  </div>
-  {% if user.is_authenticated and object.owner != user %}
-  <div id="profile-sub-btn" class="two wide column">
-    {% if is_subscribed %}
-    <button id="subscribe" name="{{ object.owner.id }}" class="ui active button">
-      Unfollow
-    </button>
-    {% else %}
-    <button id="subscribe" name="{{ object.owner.id }}" class="ui active button">
-      Follow
-    </button>
-    {% endif %}
-  </div>
-  {% endif %}
-</div>
-
-<div class="ui grid">
-  <div class="four wide column">
-    <div class="ui vertical fluid tabular menu">
-      <a class="active item" data-tab="about">
-        About
-      </a>
-      <a class="item" data-tab="streams">
-        Streams
-      </a>
-      <a class="item" data-tab="lobbies">
-        Lobbies
-      </a>
-      <a class="item" data-tab="comments">
-        Comments
-      </a>
+  <div class="sixteen wide column ui grid">
+    <div class="three wide column">
+      <img class="ui small circular image profile-image" src="{{ object.avatar.url }}">
     </div>
-  </div>
-  <div class="twelve wide stretched column">
-    <div class="ui segment tab active" data-tab="about">
-      <h2>About</h2>
-      <h3>Nickname: {{ object.nickname }}</h3>
-      <h3>Joined: {{ object.when }}</h3>
-      {% if user.is_authenticated and object.owner == user %}
-        <div id="profile-update-btn">
-          <a href="{% url 'stream:profile_updateview' object.id %}" class="ui blue button">Update Profile</a>
-        </div>
+    <div id="profile-owner-name" class="eleven wide column">
+      <h1 class="ui header">{{ object.owner.username }}</h1>
+    </div>
+    {% if user.is_authenticated and object.owner != user %}
+    <div id="profile-sub-btn" class="two wide column">
+      {% if is_subscribed %}
+      <button id="subscribe" name="{{ object.owner.id }}" class="ui primary button">
+        Unfollow
+      </button>
+      {% else %}
+      <button id="subscribe" name="{{ object.owner.id }}" class="ui primary button">
+        Follow
+      </button>
       {% endif %}
     </div>
-    <div class="ui segment tab" data-tab="streams">
-      <h2>Streams</h2>
-      <div class="ui items">
-        {% for stream in streams %}
-        <div class="item">
-          <div class="image">
-            <img src="{{ stream.image.url }}">
+    {% endif %}
+  </div>
+
+  <div class="ui grid">
+    <div class="four wide column">
+      <div class="ui vertical fluid tabular menu">
+        <a class="active item" data-tab="about">
+          About
+        </a>
+        <a class="item" data-tab="streams">
+          Streams
+        </a>
+        <a class="item" data-tab="lobbies">
+          Lobbies
+        </a>
+        <a class="item" data-tab="comments">
+          Comments
+        </a>
+      </div>
+    </div>
+    <div class="twelve wide stretched column">
+      <div class="ui segment tab active" data-tab="about">
+        <h2>About</h2>
+        <h3>Nickname: {{ object.nickname }}</h3>
+        <h3>Joined: {{ object.when }}</h3>
+        {% if user.is_authenticated and object.owner == user %}
+          <div id="profile-update-btn">
+            <a href="{% url 'stream:profile_updateview' object.id %}" class="ui blue button">Update Profile</a>
           </div>
-          <div class="content">
-            <a class="header">{{ stream.title }}</a>
-            <div class="meta">
-              <span>{{ stream.tag }}</span>
+        {% endif %}
+      </div>
+      <div class="ui segment tab" data-tab="streams">
+        <h2>Streams</h2>
+        <div class="ui items">
+          {% for stream in streams %}
+          <div class="item">
+            {% if stream.image %}
+            <div class="image">
+              <img src="{{ stream.image.url }}">
             </div>
-            <div class="description">
-              <p>{{ stream.description }}</p>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
+            <div class="content">
+              <a class="header">{{ stream.title }}</a>
+              <div class="meta">
+                <span>{{ stream.tag }}</span>
+              </div>
+              <div class="description">
+                <p>{{ stream.description }}</p>
+              </div>
+              <div class="extra">
+                Created on: {{ stream.when }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="ui segment tab" data-tab="lobbies">
+        <h2>Lobbies</h2>
+        <div class="ui items">
+          {% for lobby in lobbies %}
+          <div class="item">
+            {% if lobby.image %}
+            <div class="image">
+              <img src="{{ lobby.image.url }}">
+            </div>
+            {% else %}
+            <div class="noimagebox">
+              Currently No Image
+            </div>
+            {% endif %}
+            <div class="content">
+              <a class="header">{{ lobby.name }}</a>
+              <div class="meta">
+                <span>{{ lobby.type }}</span>
+              </div>
+              <div class="description">
+                <p>{{ lobby.description }}</p>
+              </div>
+              <div class="extra">
+                Created on: {{ lobby.when }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="ui segment tab" data-tab="comments">
+        <h2>Comments</h2>
+        <div class="ui items">
+        {% for comment in comments %}
+        <div class="item">
+          <div class="content">
+            <div class="meta">
+              <span>Lobby: {{ comment.lobby }}</span>
+            </div>
+            <div class="text">
+              <p>{{ comment.text }}</p>
             </div>
             <div class="extra">
-              Created on: {{ stream.when }}
+              Created on: {{ comment.when }}
             </div>
           </div>
         </div>
         {% endfor %}
-      </div>
-    </div>
-    <div class="ui segment tab" data-tab="lobbies">
-      <h2>Lobbies</h2>
-      <div class="ui items">
-        {% for lobby in lobbies %}
-        <div class="item">
-          <div class="image">
-            <img src="{{ lobby.image.url }}">
-          </div>
-          <div class="content">
-            <a class="header">{{ lobby.name }}</a>
-            <div class="meta">
-              <span>{{ lobby.type }}</span>
-            </div>
-            <div class="description">
-              <p>{{ lobby.description }}</p>
-            </div>
-            <div class="extra">
-              Created on: {{ lobby.when }}
-            </div>
-          </div>
         </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="ui segment tab" data-tab="comments">
-      <h2>Comments</h2>
-      <div class="ui items">
-      {% for comment in comments %}
-      <div class="item">
-        <div class="content">
-          <div class="meta">
-            <span>Lobby: {{ comment.lobby }}</span>
-          </div>
-          <div class="text">
-            <p>{{ comment.text }}</p>
-          </div>
-          <div class="extra">
-            Created on: {{ comment.when }}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
       </div>
     </div>
   </div>
-</div>
-
-
 {% endblock content %}
 
 {% block additionalJS %}

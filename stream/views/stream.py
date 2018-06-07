@@ -5,7 +5,6 @@ from stream import models
 from stream import forms
 from opentok import OpenTok, Roles
 import base64
-import re
 
 api_key = "46119842"
 api_secret = "a061d4a5aa1e22cf68b449dcbdd05ce3e403b0f4"
@@ -94,7 +93,8 @@ class GetImage(generic.View):
 
     def post(self, request, *args, **kwargs):
         image_data = base64.b64decode(request.POST['image'])
-        filename = 'stream/static/images/some_image.png'
+        filename = 'stream/static/images/stream_image' \
+            + request.POST['pk'] + '.png'
         with open("media/" + filename, 'wb') as f:
             f.write(image_data)
         f.close()
@@ -102,3 +102,15 @@ class GetImage(generic.View):
         stream.image = filename
         stream.save()
         return HttpResponse('success')
+
+
+class RemoveView(generic.View):
+
+    def post(self, request, *args, **kwargs):
+        stream = models.Stream.objects.get(pk=kwargs.get('pk'))
+        if (not stream.removed):
+            stream.removed = True
+
+        stream.save()
+        return HttpResponseRedirect(
+            reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
