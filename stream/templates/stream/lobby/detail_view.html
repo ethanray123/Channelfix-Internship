@@ -39,7 +39,7 @@
       </a>
     {% else %}
       <button
-        id="joinBtn" class="ui green button {%if is_requesting or has_stream %}disabled{% endif %}"
+        id="joinBtn" class="ui green button {% if is_requesting or has_stream %}disabled{% endif %}"
         data-privacy="{{ object.get_lobby_type_display }}"
         {% if object.get_lobby_type_display == 'Public' or is_member %}
           data-url="{% url 'stream:stream_createview' object.pk %}"
@@ -53,7 +53,7 @@
         JOIN
       </button>
     {% endif %}
-    <div class="ui star rating" data-rating="0" data-max-rating="1"></div>
+    <div id="favorite" class="ui star rating" data-rating="{% if is_favorite %}1{% else %}0{% endif %}" data-max-rating="1"></div>
     <span>{{ object.name }}</span>
   </h1>
   <div>
@@ -155,4 +155,5 @@
 </script>
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 <script src="{% static 'stream/js/subscription.js' %}"></script>
+<script src="{% static 'stream/js/favorite.js' %}"></script>
 {% endblock additionalJS %}

@@ -41,6 +41,9 @@ urlpatterns = [
     path('lobby/<int:pk>/request_membership',
          views.lobby.RequestMembershipView.as_view(),
          name='request_membership'),
+    path('get_image', views.stream.GetImage.as_view(), name='get_image'),
+    path('lobby/<int:pk>/favorite',
+         views.lobby.FavoriteView.as_view(), name='favorite_view'),
     # apis
     path('api/stream',
          api.stream.StreamAPI.as_view(), name='api_stream'),
@@ -65,5 +68,4 @@ urlpatterns = [
          name='api_lobby_membership'),
     path('api/lobby', api.lobby.LobbyAPI.as_view(), name='api_lobby'),
     path('api/search', api.search.SearchAPI.as_view(), name='api_search'),
-    path('get_image', views.stream.GetImage.as_view(), name='get_image'),
 ]
