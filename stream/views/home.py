@@ -36,7 +36,7 @@ class HomeView(generic.TemplateView):
         results = []
         for obj in queryset:
             temp = {}
-            temp['target_type'] = obj.target_type
+            temp['target_type'] = str(obj.target_type)
             temp['target_id'] = obj.target_id
             temp['target_object'] = obj.target_object
             temp['details'] = obj.get_notification

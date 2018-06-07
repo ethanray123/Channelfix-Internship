@@ -1,14 +1,82 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 
 {% block left_content %}
-  <div class="content-container">Records</div>
-  <div class="content-container">Favorite Lobbies</div>
+  <div class="content-container inverted">
+    <div class="ui statistics ui centered grid">
+      <div class="statistic">
+        <div class="value">
+          14,000
+        </div>
+        <div class="label">
+          Active Streams
+        </div>
+      </div>
+      <div class="statistic">
+        <div class="value">
+          Mastah
+        </div>
+        <div class="label">
+          Most Followed User
+        </div>
+      </div>
+      <div class="statistic">
+        <div class="value">
+          Thraxx
+        </div>
+        <div class="label">
+          User with Most Streams Created
+        </div>
+      </div>
+      <div class="statistic">
+        <div class="value">
+          Meg
+        </div>
+        <div class="label">
+          User with Most Lobbies Created
+        </div>
+      </div>
+      <div class="statistic">
+        <div class="value">
+          DOTA
+        </div>
+        <div class="label">
+          Game with Most Lobbies Created
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container"><h3>Favorite Lobbies</h3>
+    <div class="ui inverted segment">
+  <div class="ui inverted relaxed divided list">
+    <div class="item">
+      <div class="content">
+        <div class="header">Snickerdoodle</div>
+        An excellent companion
+      </div>
+    </div>
+    <div class="item">
+      <div class="content">
+        <div class="header">Poodle</div>
+        A poodle, its pretty basic
+      </div>
+    </div>
+    <div class="item">
+      <div class="content">
+        <div class="header">Paulo</div>
+        He's also a dog
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
 {% endblock left_content %}
 
 {% block content %}
   {% if user.is_authenticated %}
+  <div class="content-container">
     <div class="ui items">
     <h1>Lobbies</h1>
     {% for lobby in lobbies %}
@@ -32,18 +100,68 @@
     <br><br>
     <h1>You are not logged in...</h1>
   {% endif %}
-
+  </div>
 {% endblock content %}
 
 {% block right_content %}
-<div class="content-container">Online Users</div>
+<div class="content-container"><h3>Online Users</h3>
+  <div class="ui middle aligned divided list">
+  <div class="item">
+    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
+    <div class="content">
+      <a class="header">Daniel Louise</a>
+    </div>
+  </div>
+  <div class="item">
+    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
+    <div class="content">
+      <a class="header">Stevie Feliciano</a>
+    </div>
+  </div>
+  <div class="item">
+    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
+    <div class="content">
+      <a class="header">Elliot Fu</a>
+    </div>
+  </div>
+</div>
+</div>
 <div class="content-container">
-  <div class="ui items">
-    <h1>Notifications</h1>
+  <div class="ui relaxed divided list">
+    <h3>Notifications</h3>
     {% for notif in notifications %}
       <div class="item">
+        <i class="bell icon"></i>
         <div class="content">
+        {% if notif.target_type == "profile" %}
+          <a class="header" href="{% url 'stream:profile' notif.target_id   %}">
+            {{ notif.details }}
+          </a>
+        {% elif notif.target_type == "stream" %}
+          <a class="header" 
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            {{ notif.details }}
+          </a>
+        {% elif notif.target_type == "report" %}
           <a class="header" href="">{{ notif.details }}</a>
+        {% elif notif.target_type == "lobby" %}
+          <a class="header" 
+            href="{% url 'stream:lobby_detailview' notif.target_id   %}">
+            {{ notif.details }}
+          </a>
+        {% elif notif.target_type == "lobby membership" %}
+          <a class="header" 
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            {{ notif.details }}
+          </a>
+        {% elif notif.target_type == "comment" %}
+          <a class="header" 
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            {{ notif.details }}
+          </a>
+        {% else %}
+        {{notif.target_type}}
+        {% endif %}
         </div>
       </div>
     {% endfor %}

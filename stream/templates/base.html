@@ -2,7 +2,6 @@
 {% load static %}
 <html lang="en">
 <head>
-  {% load static %}
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock title %}</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
@@ -65,9 +64,7 @@
           {% block left_content %}{% endblock left_content %}
       </div>
       <div class="ui eight wide column">
-        <div class="content-container">
           {% block content %}{% endblock content %}
-        </div>
       </div>
       <div class="ui four wide column">
           {% block right_content %}{% endblock right_content %}
