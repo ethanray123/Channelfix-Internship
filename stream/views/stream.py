@@ -108,9 +108,7 @@ class RemoveView(generic.View):
 
     def post(self, request, *args, **kwargs):
         stream = models.Stream.objects.get(pk=kwargs.get('pk'))
-        if (not stream.removed):
-            stream.removed = True
-
+        stream.removed = True
         stream.save()
         return HttpResponseRedirect(
             reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
