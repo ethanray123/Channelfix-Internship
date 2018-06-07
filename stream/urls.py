@@ -27,6 +27,8 @@ urlpatterns = [
          views.stream.RemoveView.as_view(), name='stream_removeview'),
     path('lobby/<int:pk>/create_stream/',
          views.stream.CreateView.as_view(), name='stream_createview'),
+    path('lobby/<int:lobby_pk>/publisher/<int:pk>',
+         views.stream.PublisherView.as_view(), name='publisher_view'),
     path('lobby/subscribe/',
          views.subscription.SubscribeView.as_view(), name='subscribe'),
     path('profile/<int:pk>',
@@ -63,4 +65,5 @@ urlpatterns = [
          name='api_lobby_membership'),
     path('api/lobby', api.lobby.LobbyAPI.as_view(), name='api_lobby'),
     path('api/search', api.search.SearchAPI.as_view(), name='api_search'),
+    path('get_image', views.stream.GetImage.as_view(), name='get_image'),
 ]

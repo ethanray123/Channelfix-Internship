@@ -39,6 +39,9 @@ class StreamAPI(generic.View):
             data['URL'] = obj.URL
             data['description'] = obj.description
             data['tag'] = obj.tag
+            data['session_id'] = obj.session_id
+            data['pub_token'] = obj.pub_token
+            data['sub_token'] = obj.sub_token
             data['when'] = obj.when.strftime("%b %d, %Y at %I:%M:%S %p")
             data['removed'] = obj.removed
             # List all fields here
