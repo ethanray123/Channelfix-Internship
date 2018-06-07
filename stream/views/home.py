@@ -8,7 +8,8 @@ class HomeView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         context['lobbies'] = models.Lobby.objects.all()
-        context['notifications'] = self.get_notifications()
+        if(self.request.user.is_authenticated):
+            context['notifications'] = self.get_notifications()
         return context
 
     def get_lobbies(self):
