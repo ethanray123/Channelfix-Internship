@@ -49,28 +49,28 @@
   </div>
 
   <div class="content-container"><h3>Favorite Lobbies</h3>
-    <div class="ui inverted segment">
-  <div class="ui inverted relaxed divided list">
-    <div class="item">
-      <div class="content">
-        <div class="header">Snickerdoodle</div>
-        An excellent companion
+    <div class="ui segment">
+    <div class="ui relaxed divided list">
+      <div class="item">
+        <div class="content">
+          <div class="header">Snickerdoodle</div>
+          An excellent companion
+        </div>
       </div>
-    </div>
-    <div class="item">
-      <div class="content">
-        <div class="header">Poodle</div>
-        A poodle, its pretty basic
+      <div class="item">
+        <div class="content">
+          <div class="header">Poodle</div>
+          A poodle, its pretty basic
+        </div>
       </div>
-    </div>
-    <div class="item">
-      <div class="content">
-        <div class="header">Paulo</div>
-        He's also a dog
+      <div class="item">
+        <div class="content">
+          <div class="header">Paulo</div>
+          He's also a dog
+        </div>
       </div>
     </div>
   </div>
-</div>
   </div>
 {% endblock left_content %}
 
@@ -143,7 +143,10 @@
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "report" %}
-          <a class="header" href="">{{ notif.details }}</a>
+          <a class="header" 
+            href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id   %}">
+            {{ notif.details }}
+          </a>
         {% elif notif.target_type == "lobby" %}
           <a class="header" 
             href="{% url 'stream:lobby_detailview' notif.target_id   %}">
