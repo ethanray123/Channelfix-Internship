@@ -115,4 +115,62 @@ $(function(){
             }
         }
     });
+
+    var apiKey = "46119842";
+    function handleError(error) {
+      if (error) {
+        alert(error.message);
+      }
+    }
+
+    (function getImage(){
+        setTimeout(function(){
+            $.ajax({
+                type: 'GET',
+                url: '/stream/api/stream',
+                data: {
+                    'lobby__pk': $("input#lobby").data("lobby_id"),
+                    'start': 0,
+                    'end': 10
+                },
+                success: function(response){
+                    d = new Date();
+                    $.each(response, function(ctr, stream){
+                        var session_id = stream.session_id;
+                        if(session_id)
+                            $('#img' + session_id).attr('src', stream.image + '?' + d.getTime());
+                    });
+                    getImage();
+                }
+            });
+        }, 5000);
+    })();
+
+    var session = null;
+
+    function showStream(session_id, sub_token){
+        session = OT.initSession(apiKey, session_id);
+        $('#current-stream').append('<div id="current-stream-opentok"></div>');
+        session.on('streamCreated', function(event) {
+            session.subscribe(event.stream, 'current-stream-opentok', {
+                insertMode: 'replace',
+                width: '100%',
+                height: '100%'
+            }, handleError);
+        });
+
+        session.on("streamDestroyed", function(event) {
+            event.preventDefault();
+            session.unsubsribe(event.stream);
+        });
+        session.connect(sub_token);
+    }
+
+// var place = "";
+    $('.streams').click(function(){
+        if(session)
+            session.disconnect();
+        $('#current-stream').empty();
+        showStream($(this).attr('id'), $(this).data('sub_token'));
+    });
 });

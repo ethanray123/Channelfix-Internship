@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} My Stream {% endblock title %}
+{% block content %}
+<style type="text/css">
+#publisher {
+    width: 750px;
+    height: 422px;
+    z-index: 100;
+    border-radius: 3px;
+    background-color: #e1e1e1;
+    margin: auto;
+    background-image: url({{ object.image.url }});
+}
+.stream-actions{
+    padding: 10px;
+}
+body{
+    background-color: #e1e1e1;
+}
+#stream-container, #lobby-container{
+    text-align: center;
+}
+#stream-container form{
+    display: inline;
+}
+</style>
+<div id="lobby-container">
+    <h1>
+        <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a>
+    </h1>
+</div>
+<div id="stream-container">
+    {% csrf_token %}
+    <input type="hidden" id="pk" data-value="{{ object.id }}">
+    <h3>{{ object.title }}</h3>
+    <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}"></div>
+    <div class="stream-actions">
+        <button class="ui labeled icon button disabled" id="goliveBtn">
+            <i class="play icon"></i>
+            Live
+        </button>
+        <button class="ui labeled icon button disabled" id="offlineBtn">
+            <i class="pause icon"></i>
+            Pause
+        </button>
+        <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui button" target="_blank">
+            <i class="edit icon"></i>
+            Update
+        </a>
+        {% comment %}
+        <a href="{% url 'stream:stream_removeview' stream.id %}" class="ui red labeled icon button" id="offlineBtn">
+            <i class="stop icon"></i>
+            Offline
+        </a>
+        {% endcomment %}
+        <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
+            {% csrf_token %}
+            <button class="ui labeled icon button confirmation" id="offlineBtn">
+                <i class="stop icon"></i>
+                Offline
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block additionalJS %}
+<script src="{% static 'stream/js/publisher.js' %}"></script>
+<script src="{% static 'stream/js/confirmation.js' %}"></script>
+{% endblock additionalJS %}
