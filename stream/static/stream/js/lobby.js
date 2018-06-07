@@ -150,9 +150,9 @@ $(function(){
 
     function showStream(session_id, sub_token){
         session = OT.initSession(apiKey, session_id);
-        $('#lll').append('<div id="streamlll"></div>');
+        $('#current-stream').append('<div id="current-stream-opentok"></div>');
         session.on('streamCreated', function(event) {
-            session.subscribe(event.stream, 'streamlll', {
+            session.subscribe(event.stream, 'current-stream-opentok', {
                 insertMode: 'replace',
                 width: '100%',
                 height: '100%'
@@ -170,7 +170,7 @@ $(function(){
     $('.streams').click(function(){
         if(session)
             session.disconnect();
-        $('#lll').empty();
+        $('#current-stream').empty();
         showStream($(this).attr('id'), $(this).data('sub_token'));
     });
 });
