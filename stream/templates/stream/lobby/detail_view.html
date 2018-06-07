@@ -25,9 +25,12 @@
     z-index: 10;
     background-color: #e1e1e1;
 }
+.ui.star.rating .icon{
+    color: grey;
+    font-size: 20px;
+}
 </style>
   <input type="hidden" id="lobby" data-lobby_id="{{ object.pk }}">
-  <h1>{{ object.name }}</h1>
   <h1>
     {% csrf_token %}
     {% if object.owner.id == request.user.id or is_moderator == True %}
@@ -50,6 +53,7 @@
         JOIN
       </button>
     {% endif %}
+    <div class="ui star rating" data-rating="0" data-max-rating="1"></div>
     <span>{{ object.name }}</span>
   </h1>
   <div>
@@ -146,6 +150,9 @@
 <!-- end of modals -->
 {% endblock content %}
 {% block additionalJS %}
+<script type="text/javascript">
+  $('.ui.rating').rating();
+</script>
 <script src="{% static 'stream/js/lobby.js' %}"></script>
 <script src="{% static 'stream/js/subscription.js' %}"></script>
 {% endblock additionalJS %}
