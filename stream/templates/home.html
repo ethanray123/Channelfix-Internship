@@ -2,6 +2,11 @@
 
 {% block title %}Home{% endblock %}
 
+{% block left_content %}
+  <div class="content-container">Records</div>
+  <div class="content-container">Favorite Lobbies</div>
+{% endblock left_content %}
+
 {% block content %}
   {% if user.is_authenticated %}
     <div class="ui items">
@@ -23,7 +28,17 @@
       </div>
     {% endfor %}
     </div>
-    <div class="ui items">
+  {% else %}
+    <br><br>
+    <h1>You are not logged in...</h1>
+  {% endif %}
+
+{% endblock content %}
+
+{% block right_content %}
+<div class="content-container">Online Users</div>
+<div class="content-container">
+  <div class="ui items">
     <h1>Notifications</h1>
     {% for notif in notifications %}
       <div class="item">
@@ -32,11 +47,5 @@
         </div>
       </div>
     {% endfor %}
-    </div>
-  {% else %}
-    <br><br>
-    <h1>You are not logged in...</h1>
-  {% endif %}
-
-{% endblock content %}
-
+    </div></div>
+{% endblock right_content %}
