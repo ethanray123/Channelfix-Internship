@@ -28,6 +28,8 @@ class DetailView(generic.DetailView):
         if(not self.object.owner == self.request.user):
             context['has_stream'] = self.object.streams.filter(
                 owner=self.request.user, removed=False).exists()
+        context['is_favorite'] = self.object.favorites.filter(
+            owner=self.request.user).exists()
         return context
 
     def get_streams(self):
@@ -121,3 +123,14 @@ class RequestMembershipView(generic.View):
             member=request.user.profile, lobby=lobby,
             status=models.LobbyMembership.PENDING)
         return HttpResponse("Success!")
+
+
+class FavoriteView(generic.View):
+    def post(self, request, *args, **kwargs):
+        lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
+        if(request.POST['type'] == 'favorite'):
+            models.Favorite.objects.create(owner=request.user, lobby=lobby)
+        elif(request.POST['type'] == 'unfavorite'):
+            models.Favorite.objects.filter(
+                owner=request.user, lobby=lobby).delete()
+        return HttpResponse("success")

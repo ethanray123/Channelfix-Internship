@@ -166,7 +166,6 @@ $(function(){
         session.connect(sub_token);
     }
 
-// var place = "";
     $('.streams').click(function(){
         if(session)
             session.disconnect();

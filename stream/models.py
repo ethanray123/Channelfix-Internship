@@ -381,3 +381,11 @@ class Subscription(models.Model):
     def __str__(self):
         return ("{} is subscribed to {}").format(
             self.subscriber, self.publisher)
+
+
+class Favorite(models.Model):
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="favorites")
+    lobby = models.ForeignKey(
+        Lobby, on_delete=models.CASCADE, related_name="favorites")
+    when = models.DateTimeField(auto_now_add=True, null=True)
