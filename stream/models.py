@@ -389,3 +389,7 @@ class Favorite(models.Model):
     lobby = models.ForeignKey(
         Lobby, on_delete=models.CASCADE, related_name="favorites")
     when = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return ("{} has favored lobby {}").format(
+            self.owner, self.lobby)

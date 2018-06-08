@@ -68,8 +68,8 @@
               <img src="{{ stream.image.url }}">
             </div>
             {% else %}
-            <div class="noimagebox">
-              Currently No Image
+            <div class="image">
+              <img width="20%" height="50%" src="{% static 'images/default_thumbnail.jpg' %}">
             </div>
             {% endif %}
             <div class="content">
@@ -98,8 +98,8 @@
               <img src="{{ lobby.image.url }}">
             </div>
             {% else %}
-            <div class="noimagebox">
-              Currently No Image
+            <div class="image">
+              <img width="20%" height="50%" src="{% static 'stream/images/default_thumbnail.png' %}">
             </div>
             {% endif %}
             <div class="content">
