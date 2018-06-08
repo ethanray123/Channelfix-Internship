@@ -58,10 +58,12 @@ class DetailView(generic.DetailView):
 
 
 class CommentView(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
+            raise Http404
+        return super(CommentView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         if request.POST['type'] == "create":
             comment = models.Comment.objects.create(
@@ -86,8 +88,6 @@ class CommentView(generic.View):
         return JsonResponse(data, content_type="application/json", safe=False)
 
     def get(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         comments = lobby.comments.filter(removed=False).order_by('-when')
         comment_list = []
@@ -108,10 +108,13 @@ class CommentView(generic.View):
 
 
 class RequestMembershipView(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
+            raise Http404
+        return super(RequestMembershipView, self).dispatch(
+            request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
 
         if request.user.profile.memberships.filter(
@@ -126,6 +129,11 @@ class RequestMembershipView(generic.View):
 
 
 class FavoriteView(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404
+        return super(FavoriteView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         if(request.POST['type'] == 'favorite'):

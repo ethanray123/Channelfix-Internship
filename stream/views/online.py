@@ -6,13 +6,12 @@ from django.utils import timezone
 
 class OnlineView(generic.View):
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
+            raise Http404
+        return super(OnlineView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
-
-        if not request.user.is_authenticated:
-            raise Http404
-
         profile = Profile.objects.get(pk=request.user.profile.id)
         profile.last_seen = timezone.now()
         profile.save()

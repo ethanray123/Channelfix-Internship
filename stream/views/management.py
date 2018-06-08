@@ -34,6 +34,11 @@ class LobbyFormView(generic.UpdateView):
 
 
 class ModeratorView(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404
+        return super(ModeratorView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         cond = models.Moderator.objects.filter(
             owner__username=request.POST['user']).exists()
@@ -57,9 +62,12 @@ class ModeratorView(generic.View):
 
 
 class RemoveView(generic.View):
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
             raise Http404
+        return super(RemoveView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         value = False
         if request.POST['model'] == "stream":
             stream = models.Stream.objects.get(pk=request.POST['pk'])
@@ -89,9 +97,12 @@ class RemoveView(generic.View):
 
 
 class TagsView(generic.View):
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
             raise Http404
+        return super(TagsView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         data = ""
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         if lobby.has_main() and request.POST['tag'] == '3':
@@ -106,8 +117,6 @@ class TagsView(generic.View):
             data, content_type="application/json", safe=False)
 
     def get(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
         lobby = models.Lobby.objects.get(pk=kwargs.get('pk'))
         streams = lobby.streams.order_by('-tag')
         stream_list = []
@@ -132,9 +141,12 @@ class TagsView(generic.View):
 
 
 class StatusView(generic.View):
-    def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
             raise Http404
+        return super(StatusView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         member = models.LobbyMembership.objects.get(
             pk=request.POST['request_id'])
         member.status = request.POST['status']
