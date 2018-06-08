@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'stream',
     'social_django',
     'sslserver',
+    'celery',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
+
+CELERY_BROKER_URL = 'amqp://localhost'
 
 from .local_settings import *

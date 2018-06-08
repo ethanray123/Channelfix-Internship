@@ -28,6 +28,7 @@
           </div>
 
           {% if user.is_authenticated %}
+          <input id="online" type="hidden" value="{{ request.user.profile.id }}">
           <a class="item" href="{% url 'stream:profile' user.profile.id %}">
             <img id="profilepic" class="ui avatar image" src="{{user.profile.avatar.url}}">
           </a>
