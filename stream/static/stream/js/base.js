@@ -13,7 +13,6 @@ $(function(){
                 url: onlineURL,
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
-                    'pk': $("input#online").val()
                 },
                 success: function(data){
                     ajax_get();

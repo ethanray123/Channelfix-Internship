@@ -1,7 +1,6 @@
 from django.views import generic
 from stream.models import Profile
 from django.http import Http404, JsonResponse
-
 from django.utils import timezone
 
 
@@ -11,9 +10,10 @@ class OnlineView(generic.View):
         if not request.is_ajax():
             raise Http404
 
-        profile = Profile.objects.get(pk=request.POST['pk'])
-        print(request.POST['pk'])
-        print(profile.owner.username)
+        if not request.user.is_authenticated:
+            raise Http404
+
+        profile = Profile.objects.get(pk=request.user.profile.id)
         profile.last_seen = timezone.now()
         profile.save()
         return JsonResponse(
