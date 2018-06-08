@@ -53,6 +53,7 @@ class HomeView(generic.TemplateView):
             temp['description'] = obj.description
             temp['streams'] = obj.streams.all().count()
             temp['views'] = obj.views.all().count()
+            temp['category'] = obj.category
             temp['when'] = obj.when
             results.append(temp)
         return results

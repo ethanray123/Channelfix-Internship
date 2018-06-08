@@ -7,7 +7,7 @@
 {% endblock additionalCss %}
 
 {% block left_content %}
-  <div class="content-container inverted">
+  <div class="content-container">
     <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
@@ -17,9 +17,12 @@
           Active Streams
         </div>
       </div>
-      
+    </div>
+  </div>
+  <div class="content-container">
+    <div class="ui statistics one">
       <div class="statistic">
-        <div class="value"> 
+        <div class="value" style="font-size:30px !important;"> 
           {{ stats.popular_game }}
         </div>
         <div class="label">
@@ -39,7 +42,7 @@
             <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
             <div class="content">
               <a href="{% url 'stream:profile' lobby.owner.id %}">
-                <div class="header">{{ lobby.owner.username }}</div>
+                {{ lobby.owner.username }}
               </a>
             </div>
           </div>
@@ -65,6 +68,7 @@
 
         <div class="content">
           <div class="header title">
+            {{ lobby.category }}
             <a href="{% url 'stream:lobby_detailview' lobby.id %}">
               {{ lobby.name|truncatechars:50 }}
             </a>
@@ -119,23 +123,27 @@
 {% block right_content %}
 <div class="content-container">
   <div class="ui statistics one">
-    <div class="statistic">
+    <div class="ui statistic">
         <div class="value">
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_followed.profile.avatar.url }}">
-          <a href="{% url 'stream:profile' stats.most_followed.profile.id %}">
+          <a href="{% url 'stream:profile' stats.most_followed.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_followed }}
           </a>
         </div>
         <div class="label">
           Most Followed
         </div>
-      </div>
+    </div>
+  </div>
+</div>
+<div class="content-container">
+  <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_streams.profile.avatar.url }}">
-          <a href="{% url 'stream:profile' stats.most_streams.profile.id %}">
+          <a href="{% url 'stream:profile' stats.most_streams.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_streams }}
           </a>
         </div>
@@ -143,11 +151,15 @@
           Most Streams
         </div>
       </div>
+  </div>
+</div>
+<div class="content-container">
+  <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_lobbies.profile.avatar.url }}">
-          <a href="{% url 'stream:profile' stats.most_lobbies.profile.id %}">
+          <a href="{% url 'stream:profile' stats.most_lobbies.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_lobbies }}
           </a>
         </div>
