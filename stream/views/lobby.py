@@ -30,6 +30,11 @@ class DetailView(generic.DetailView):
                 owner=self.request.user, removed=False).exists()
         context['is_favorite'] = self.object.favorites.filter(
             owner=self.request.user).exists()
+        try:
+            context['my_stream'] = self.object.streams.get(
+                owner=self.request.user)
+        except models.Stream.DoesNotExists:
+            pass
         return context
 
     def get_streams(self):

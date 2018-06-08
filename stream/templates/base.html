@@ -58,17 +58,18 @@
     </div>
 
   </div><br><br>
-  <div class="content">
-    <div class="ui grid container">
-      <div class="ui sixteen wide column segment">
+  <div class="">
+    <div class="ui grid" id="main-grid">
+      <div class="ui four wide column">
+        {% block left_content %}{% endblock left_content %}
+      </div>
+      <div class="ui eight wide column">
         {% block content %}{% endblock content %}
       </div>
+      <div class="ui four wide column">
+        {% block right_content %}{% endblock right_content %}
+      </div>
     </div>
-
-    <div class="left pane"></div>
-    <div class="middle pane"></div>
-    <div class="right pane"></div>
-
     <div id="confirmationModal" class="ui basic modal">
       <div class="ui icon header">
         <i class="exclamation circle icon"></i>

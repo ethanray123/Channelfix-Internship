@@ -1,0 +1,35 @@
+.streams {
+    left: 0;
+    top: 0;
+    width: 360px;
+    height: 240px;
+    bottom: 10px;
+    z-index: 10;
+    margin: auto;
+}
+#current-stream {
+    width: 750px;
+    height: 422px;
+    bottom: 10px;
+    z-index: 10;
+    border-radius: 3px;
+    background-color: #e1e1e1;
+    margin: auto;
+}
+.ui.star.rating .icon{
+    color: grey;
+    font-size: 30px;
+}
+#lobby-title, #join-manage {
+    text-align: center;
+}
+.avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: .25rem;
+}
+.streams.my_stream {
+    background-size: cover;
+    background-color: #e1e1e1;
+    background-repeat: no-repeat;
+}

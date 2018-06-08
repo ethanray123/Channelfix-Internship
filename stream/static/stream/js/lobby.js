@@ -147,16 +147,37 @@ $(function(){
     })();
 
     var session = null;
+    var my_div = $('div#my_stream');
+    if(my_div){
+        sub_token = my_div.find('div.streams').data('sub_token');
+        session_id = my_div.find('div.streams').attr('id');
+        my_div.find('div.my_stream').append('<div id="my-stream-opentok"></div>');
+        session = OT.initSession(apiKey, session_id);
+        session.on('streamCreated', function(event) {
+            session.subscribe(event.stream, 'my-stream-opentok', {
+                insertMode: 'replace',
+                width: '100%',
+                height: '100%'
+            }, handleError);
+        });
+
+        session.on("streamDestroyed", function(event) {
+            event.preventDefault();
+            session.unsubsribe(event.stream);
+        });
+        session.connect(sub_token);
+    }
 
     function showStream(session_id, sub_token){
         session = OT.initSession(apiKey, session_id);
         $('#current-stream').append('<div id="current-stream-opentok"></div>');
         session.on('streamCreated', function(event) {
-            session.subscribe(event.stream, 'current-stream-opentok', {
+            subscriber = session.subscribe(event.stream, 'current-stream-opentok', {
                 insertMode: 'replace',
                 width: '100%',
                 height: '100%'
             }, handleError);
+            subscriber.subscribeToAudio(false);
         });
 
         session.on("streamDestroyed", function(event) {

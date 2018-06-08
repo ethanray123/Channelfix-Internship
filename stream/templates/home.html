@@ -2,6 +2,11 @@
 
 {% block title %}Home{% endblock %}
 
+{% block left_content %}
+  <div class="content-container">Records</div>
+  <div class="content-container">Favorite Lobbies</div>
+{% endblock left_content %}
+
 {% block content %}
   {% if user.is_authenticated %}
     <div class="ui items">
