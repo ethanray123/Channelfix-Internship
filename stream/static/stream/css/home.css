@@ -1,0 +1,15 @@
+.lobby-image{
+  width: 375px !important;
+}
+.statistics.statistic.value{
+  font-size: 2rem !important;
+}
+.lobby .content .header.title{
+  padding-top: 5px;
+  padding-bottom: 10px;
+  font-size: 20px !important;
+}
+.image.record-image{
+  height: 45px !important;
+  width: 45px !important;
+}

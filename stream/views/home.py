@@ -35,7 +35,7 @@ class HomeView(generic.TemplateView):
         return results
 
     def get_lobbies(self):
-        queryset = models.Lobby.objects.all()
+        queryset = models.Lobby.objects.all().order_by("-when")
         results = []
         for obj in queryset:
             temp = {}
@@ -81,12 +81,14 @@ class HomeView(generic.TemplateView):
         temp = {}
         user = models.User.objects.all().annotate(
             sub_count=Count('publishers')).order_by('-sub_count').first()
-        temp['most_followed'] = user.username
+        temp['most_followed'] = user
         user = models.User.objects.all().annotate(
             stream_count=Count('streams')).order_by('-stream_count').first()
-        temp['most_streams'] = user.username
+        temp['most_streams'] = user
         user = models.User.objects.all().annotate(
             lobby_count=Count('lobbies')).order_by('-lobby_count').first()
-        temp['most_lobbies'] = user.username
-
+        temp['most_lobbies'] = user
+        game = models.Category.objects.all().annotate(
+            lobby_count=Count('lobby')).order_by('-lobby_count').first()
+        temp['popular_game'] = game.name
         return temp
