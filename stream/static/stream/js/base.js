@@ -10,7 +10,7 @@ $(function(){
         setTimeout(function(){
             $.ajax({
                 type: 'POST',
-                url: window.location.pathname +'/online',
+                url: onlineURL,
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken').val(),
                     'pk': $("input#online").val()
