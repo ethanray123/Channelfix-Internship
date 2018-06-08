@@ -7,6 +7,7 @@
     <div class="ui statistics ui centered grid">
       <div class="statistic">
         <div class="value">
+          <i class="bolt icon"></i>
           14,000
         </div>
         <div class="label">
@@ -15,7 +16,7 @@
       </div>
       <div class="statistic">
         <div class="value">
-          Mastah
+          <i class="user icon"></i> {{ stats.most_followed }}
         </div>
         <div class="label">
           Most Followed User
@@ -23,7 +24,7 @@
       </div>
       <div class="statistic">
         <div class="value">
-          Thraxx
+          <i class="video icon"></i> {{ stats.most_streams }}
         </div>
         <div class="label">
           User with Most Streams Created
@@ -31,7 +32,7 @@
       </div>
       <div class="statistic">
         <div class="value">
-          Meg
+          <i class="plus icon"></i> {{ stats.most_lobbies }}
         </div>
         <div class="label">
           User with Most Lobbies Created
@@ -39,7 +40,7 @@
       </div>
       <div class="statistic">
         <div class="value">
-          DOTA
+          <i class="gamepad icon"></i> Dota 2
         </div>
         <div class="label">
           Game with Most Lobbies Created
@@ -49,28 +50,42 @@
   </div>
 
   <div class="content-container"><h3>Favorite Lobbies</h3>
-    <div class="ui segment">
-    <div class="ui relaxed divided list">
-      <div class="item">
-        <div class="content">
-          <div class="header">Snickerdoodle</div>
-          An excellent companion
+    <div class="ui items">
+        {% for lobby in fav_lobbies %}
+        <div class="item">
+          {% if not lobby.image %}
+            <div class="image">
+              <img width="20%" height="50%" src="{% static 'images/default_thumbnail.jpg' %}">
+            </div>
+          {% else %}
+            <div class="image">
+              <img width="20%" height="50%" src="{{ lobby.image.url }}">
+            </div>
+          {% endif%}
+          <div class="content">
+            <a class="header" href="{% url 'stream:lobby_detailview' lobby.id %}">{{ lobby.name }}</a>
+            <div class="meta">
+              <span>Description</span>
+            </div>
+            <div class="description">
+              <p>{{ lobby.description }}</p>
+            </div>
+            <div class="meta">
+              <i class="eye icon"></i><span>No. of Streams: {{ lobby.streams }}</span>
+            </div>
+            <div class="ui horizontal list">
+            <div class="item">
+              <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
+              <div class="content">
+                <div class="header">{{ lobby.owner.username }}</div>
+                Lobby Owner
+              </div>
+            </div>
+          </div>
+          </div>
         </div>
-      </div>
-      <div class="item">
-        <div class="content">
-          <div class="header">Poodle</div>
-          A poodle, its pretty basic
-        </div>
-      </div>
-      <div class="item">
-        <div class="content">
-          <div class="header">Paulo</div>
-          He's also a dog
-        </div>
-      </div>
+        {% endfor %}
     </div>
-  </div>
   </div>
 {% endblock left_content %}
 
@@ -81,9 +96,15 @@
     <h1>Lobbies</h1>
     {% for lobby in lobbies %}
       <div class="item">
-        <div class="image">
-          <img width="20%" height="50%" src="{{ lobby.image.url }}">
-        </div>
+        {% if not lobby.image %}
+          <div class="image">
+              <img width="20%" height="50%" src="{% static 'images/default_thumbnail.jpg' %}">
+            </div>
+        {% else %}
+          <div class="image">
+            <img width="20%" height="50%" src="{{ lobby.image.url }}">
+          </div>
+        {% endif%}
         <div class="content">
           <a class="header" href="{% url 'stream:lobby_detailview' lobby.id %}">{{ lobby.name }}</a>
           <div class="meta">
@@ -91,6 +112,24 @@
           </div>
           <div class="description">
             <p>{{ lobby.description }}</p>
+          </div>
+          <div class="meta">
+              <i class="user icon"></i><span>No. of Views: {{ lobby.views }}</span>
+          </div>
+          <div class="meta">
+              <i class="eye icon"></i><span>No. of Streams: {{ lobby.streams }}</span>
+          </div>
+          <div class="meta">
+              Created on: {{ lobby.when }}</span>
+          </div>
+          <div class="ui horizontal list">
+            <div class="item">
+              <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
+              <div class="content">
+                <div class="header">{{ lobby.owner.username }}</div>
+                Lobby Owner
+              </div>
+            </div>
           </div>
         </div>
       </div>
