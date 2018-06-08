@@ -7,10 +7,11 @@ import datetime
 @app.task
 def check_online():
 
-    profiles = Profile.objects.all()
+    exclude_mark = timezone.now() - datetime.timedelta(minutes=10)
+    profiles = Profile.objects.filter(last_seen__gt=exclude_mark)
+    offline_mark = timezone.now() - datetime.timedelta(minutes=1)
 
     for profile in profiles:
-        offline_mark = timezone.now() - datetime.timedelta(seconds=1)
         if(profile.last_seen < offline_mark):
             profile.online_status = False
         else:

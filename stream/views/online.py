@@ -11,11 +11,10 @@ class OnlineView(generic.View):
         if not request.is_ajax():
             raise Http404
 
-        now = timezone.now()
         profile = Profile.objects.get(pk=request.POST['pk'])
         print(request.POST['pk'])
         print(profile.owner.username)
-        profile.last_seen = now
+        profile.last_seen = timezone.now()
         profile.save()
         return JsonResponse(
             "data",
