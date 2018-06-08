@@ -13,6 +13,7 @@ class HomeView(generic.TemplateView):
         if(self.request.user.is_authenticated):
             context['notifications'] = self.get_notifications()[:5]
             context['fav_lobbies'] = self.get_favorites()[:10]
+        context['categories'] = models.Category.objects.all()
         return context
 
     def get_favorites(self):
@@ -35,7 +36,12 @@ class HomeView(generic.TemplateView):
         return results
 
     def get_lobbies(self):
-        queryset = models.Lobby.objects.all().order_by("-when")
+        if self.request.GET.get("category_pk", '') != "":
+            queryset = models.Lobby.objects.all().filter(
+                category=int(
+                    self.request.GET.get("category_pk", ''))).order_by("-when")
+        else:
+            queryset = models.Lobby.objects.all().order_by("-when")
         results = []
         for obj in queryset:
             temp = {}
@@ -45,8 +51,6 @@ class HomeView(generic.TemplateView):
             temp['owner'] = {
                 'id': obj.owner.id,
                 'username': obj.owner.username,
-                'is_subscribed': obj.owner.profile.is_subscribed(
-                    self.request.user),
                 'avatar': obj.owner.profile.avatar,
                 'profile_id': obj.owner.profile.id
             }

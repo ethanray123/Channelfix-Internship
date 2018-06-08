@@ -54,7 +54,17 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-  <div class="content-container">
+  <div class="content-container" id="lobby-list">
+    <div class="ui selection dropdown" style="float: right;width: 300px !important;"> 
+      <input id="filterCategory" type="hidden" name="category">
+      <i class="dropdown icon"></i>
+      <div class="default text">Category</div>
+      <div class="menu">
+        {% for category in categories %}
+          <div class="item" data-value="{{ category.pk }}">{{ category.name }}</div>
+        {% endfor %}
+      </div>
+    </div><br><br>
     <div class="ui items">
     {% for lobby in lobbies %}
       <div class="item lobby">
@@ -68,7 +78,7 @@
 
         <div class="content">
           <div class="header title">
-            {{ lobby.category }}
+            {{ lobby.category }}:
             <a href="{% url 'stream:lobby_detailview' lobby.id %}">
               {{ lobby.name|truncatechars:50 }}
             </a>
@@ -239,3 +249,7 @@
 </div>
 
 {% endblock right_content %}
+
+{% block additionalJS %}
+  <script src="{% static 'stream/js/home.js' %}"></script>
+{% endblock additionalJS %}
