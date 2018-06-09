@@ -53,11 +53,12 @@
 }
 .stream-list{
     overflow: auto;
-    height: 1000px;
+    max-height: 1000px;
 }
 #ulComment{
+    list-style-type: none;
     overflow: auto;
-    height: 1000px;
+    max-height: 1000px;
 }
 #stream-owner, #lobby-owner{
     padding: 10px;
