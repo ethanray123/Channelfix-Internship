@@ -148,24 +148,26 @@ $(function(){
 
     var session = null;
     var my_div = $('div#my_stream');
+
     if(my_div){
-        sub_token = my_div.find('div.streams').data('sub_token');
-        session_id = my_div.find('div.streams').attr('id');
+        sub_token = my_div.find('div.my_stream').data('sub_token');
+        session_id = my_div.find('div.my_stream').attr('id');
+        var my_session = OT.initSession(apiKey, session_id);
+        my_session.on('streamCreated', function(event) {
         my_div.find('div.my_stream').append('<div id="my-stream-opentok"></div>');
-        session = OT.initSession(apiKey, session_id);
-        session.on('streamCreated', function(event) {
-            session.subscribe(event.stream, 'my-stream-opentok', {
+            subscriber = my_session.subscribe(event.stream, 'my-stream-opentok', {
                 insertMode: 'replace',
                 width: '100%',
                 height: '100%'
             }, handleError);
+            subscriber.subscribeToAudio(false);
         });
 
-        session.on("streamDestroyed", function(event) {
+        my_session.on("streamDestroyed", function(event) {
             event.preventDefault();
-            session.unsubsribe(event.stream);
+            my_session.unsubsribe(event.stream);
         });
-        session.connect(sub_token);
+        my_session.connect(sub_token);
     }
 
     function showStream(session_id, sub_token){
@@ -177,7 +179,6 @@ $(function(){
                 width: '100%',
                 height: '100%'
             }, handleError);
-            subscriber.subscribeToAudio(false);
         });
 
         session.on("streamDestroyed", function(event) {
@@ -186,11 +187,36 @@ $(function(){
         });
         session.connect(sub_token);
     }
+    var stream_details = $('.content-container.stream');
 
     $('.streams').click(function(){
         if(session)
             session.disconnect();
         $('#current-stream').empty();
         showStream($(this).attr('id'), $(this).data('sub_token'));
+        $.ajax({
+            type: 'GET',
+            url: '/stream/get_stream',
+            data: {
+                'session_id': $(this).attr('id'),
+            },
+            success: function(response){
+                console.log(response);
+                console.log(response.description);
+                stream_details.removeAttr('hidden');
+                stream_details.find('#stream-title').html(response.title);
+                stream_details.find('#stream-tag').html(response.tag);
+                stream_details.find('.owner-avatar').attr('src', response.owner.avatar);
+                stream_details.find('#stream-owner-username').html(response.owner.username);
+                stream_details.find('#stream-owner-username').attr('href', response.owner.url);
+                stream_details.find('#stream-description').html(response.description);
+                stream_details.find('#subscribe').attr('name', response.owner.id);
+                console.log(response.is_subscribed);
+                if(response.is_subscribed)
+                    stream_details.find('#subscribe').text("Unfollow")
+                else
+                    stream_details.find('#subscribe').text("Follow")
+            }
+        });
     });
 });
