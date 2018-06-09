@@ -8,16 +8,18 @@ class HomeView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['lobbies'] = self.get_lobbies()[:20]
+        context['lobbies'] = self.get_lobbies()
+        context['online_users'] = self.get_users()
         context['stats'] = self.get_stats()
         if(self.request.user.is_authenticated):
-            context['notifications'] = self.get_notifications()[:5]
-            context['fav_lobbies'] = self.get_favorites()[:10]
+            context['notifications'] = self.get_notifications()
+            context['fav_lobbies'] = self.get_favorites()
         context['categories'] = models.Category.objects.all()
         return context
 
     def get_favorites(self):
-        queryset = self.request.user.favorites.all().order_by("lobby__name")
+        queryset = self.request.user.favorites.all().order_by(
+            "lobby__name")[:10]
         results = []
         for obj in queryset:
             temp = {}
@@ -39,9 +41,10 @@ class HomeView(generic.TemplateView):
         if self.request.GET.get("category_pk", '') != "":
             queryset = models.Lobby.objects.all().filter(
                 category=int(
-                    self.request.GET.get("category_pk", ''))).order_by("-when")
+                    self.request.GET.get(
+                        "category_pk", ''))).order_by("-when")[:10]
         else:
-            queryset = models.Lobby.objects.all().order_by("-when")
+            queryset = models.Lobby.objects.all().order_by("-when")[:10]
         results = []
         for obj in queryset:
             temp = {}
@@ -62,8 +65,19 @@ class HomeView(generic.TemplateView):
             results.append(temp)
         return results
 
+    def get_users(self):
+        queryset = models.User.objects.all()[:10]
+        results = []
+        for obj in queryset:
+            temp = {}
+            temp['username'] = obj.username
+            temp['profile_id'] = obj.profile.id
+            temp['avatar'] = str(obj.profile.avatar.url)
+            results.append(temp)
+        return results
+
     def get_notifications(self):
-        queryset = self.request.user.notifications.all().order_by("-when")
+        queryset = self.request.user.notifications.all().order_by("-when")[:5]
         results = []
         for obj in queryset:
             temp = {}
