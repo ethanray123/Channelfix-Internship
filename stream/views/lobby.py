@@ -30,11 +30,14 @@ class DetailView(generic.DetailView):
                 owner=self.request.user, removed=False).exists()
         context['is_favorite'] = self.object.favorites.filter(
             owner=self.request.user).exists()
+        context['is_subscribed'] = self.object.owner.profile.is_subscribed(
+            self.request.user)
         try:
             context['my_stream'] = self.object.streams.get(
-                owner=self.request.user)
-        except models.Stream.DoesNotExists:
+                owner=self.request.user, removed=False)
+        except models.Stream.DoesNotExist:
             pass
+        context['statistics'] = self.getStats()
         return context
 
     def get_streams(self):
@@ -60,6 +63,15 @@ class DetailView(generic.DetailView):
             temp['image'] = obj.image
             results.append(temp)
         return results
+
+    def getStats(self):
+        stats = {
+            'views': self.object.views.count(),
+            'faves': self.object.favorites.count(),
+            'members': self.object.memberships.filter(
+                status=models.LobbyMembership.ACCEPTED).count()
+        }
+        return stats
 
 
 class CommentView(generic.View):
