@@ -72,7 +72,7 @@ class LoadMoreView(generic.View):
                 temp['streams'] = obj.streams.all().count()
                 temp['views'] = obj.views.all().count()
                 temp['category'] = str(obj.category)
-                temp['when'] = obj.when
+                temp['when'] = obj.when.strftime("%b %d, %Y, %I:%M %p")
                 results.append(temp)
         # elif loadtype == "favorites":
         #     queryset = self.request.user.favorites.all()[offset:5]
