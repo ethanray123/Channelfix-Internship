@@ -1,4 +1,4 @@
-
+{% load static %}
 {% for field in form %}
 	<div class="twelve wide column">
 		<div class="ui error message">
@@ -8,12 +8,14 @@
 		<label>{{ field.label_tag }}</label><br>
 		{% if field.label == "Image" %}
 			{% if not object.image %}
-				<div class="noimagebox">Currently No Image</div>
+				<div class="image">
+	              <img width="20%" height="50%" src="{% static 'images/default_thumbnail.jpg' %}">
+	            </div>
 			{% else %}
-				<img class="ui small circular image display-image" src="{{ object.image.url }}">
+				<img class="ui small image display-image" src="{{ object.image.url }}">
 			{% endif%}
 		{% elif field.label == "Avatar" %}
-			<img class="ui small circular image display-image" src="{{ object.avatar.url }}">
+			<img class="ui small image display-image" src="{{ object.avatar.url }}">
 		{% endif %}
 		
 		{% if field.label == "Description" %}
