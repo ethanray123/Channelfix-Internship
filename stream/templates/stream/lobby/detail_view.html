@@ -10,7 +10,6 @@
 {% block content %} <!-- start of content pane -->
   {% if user.is_authenticated %}
     <input type="hidden" id="lobby" data-lobby_id="{{ object.pk }}">
-    <div class="content-container middle">
       <div class="content-container">
         <div id="lobby-title">
           <h1>
@@ -87,7 +86,6 @@
           </div>
         </div>
       </div>
-    </div>
   {% else %}
     <h3>You are not logged in...</h3>
     <a href="{% url 'login' %}" class="btn">login</a>
