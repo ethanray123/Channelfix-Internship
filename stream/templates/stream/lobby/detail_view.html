@@ -10,20 +10,83 @@
 {% block content %} <!-- start of content pane -->
   {% if user.is_authenticated %}
     <input type="hidden" id="lobby" data-lobby_id="{{ object.pk }}">
-    <div class="content-container">
-      <div id="lobby-title">
-        <h1>
-           <div id="favorite" class="ui star rating" data-rating="{% if is_favorite %}1{% else %}0{% endif %}" data-max-rating="1"></div>
-          <span>{{ object.name }}</span>
-        </h1>
+    <div class="content-container middle">
+      <div class="content-container">
+        <div id="lobby-title">
+          <h1>
+             <div id="favorite" class="ui star rating" data-rating="{% if is_favorite %}1{% else %}0{% endif %}" data-max-rating="1"></div>
+            <span>{{ object.name }}</span>
+          </h1>
+        </div>
+        <div>
+          <a class="ui red tag label">{{ object.category.name }}</a>
+          <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+        </div>
       </div>
-      <div>
-        <a class="ui red tag label">{{ object.category.name }}</a>
-        <a class="ui teal tag label">{{ object.get_lobby_type_display }}</a>
+      <div class="content-container">
+        <div id="current-stream"></div>
       </div>
-    </div>
-    <div class="content-container">
-      <div id="current-stream"></div>
+      <div class="content-container stream" hidden>
+        <div id="stream-details">
+          <h3>Stream details</h3>
+          <h4 id="stream-title"></h4>
+          <span>Owner</span>
+          <div>
+            <img class="owner-avatar" src="">
+            <div id="stream-owner">
+              <a href="" id="stream-owner-username"></a><br>
+              <button id="subscribe" class="ui button"></button>
+            </div>
+          </div>
+          <span>Description</span>
+          <div class="description-container">
+            <p id="stream-description"></p>
+          </div>
+        </div>
+      </div>
+      <div class="content-container">
+        <div class="lobby-details">
+          <h3>Lobby details</h3>
+          <span>Owner</span>
+          <div>
+            <img class="owner-avatar" src="{{ object.owner.profile.avatar.url }}">
+            <div id="lobby-owner">
+              <a href="{% url 'stream:profile' object.owner.profile.id %}">{{ object.owner.username }}</a><br>
+              {% if object.owner.id != request.user.id %}
+                {% if is_subscribed %}
+                  <button id="subscribe" name="{{ object.owner.id }}" class="ui button">
+                    Unfollow
+                  </button>
+                {% else %}
+                  <button id="subscribe" name="{{ object.owner.id }}" class="ui button">
+                    Follow
+                  </button>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          <span>Type : {{ object.get_lobby_type_display }}</span><br>
+          <span>Created : {{ object.when }}</span><br>
+          <span>Description</span>
+          <div class="description-container">
+            <p>{{ object.description }}</p>
+          </div>
+          <div class="ui statistics">
+            <div class="statistic">
+              <div class="value">{{ statistics.faves }}</div>
+              <div class="label">Faves</div>
+            </div>
+            <div class="statistic">
+              <div class="value">{{ statistics.views }}</div>
+              <div class="label">Views</div>
+            </div>
+            <div class="statistic">
+              <div class="value">{{ statistics.members }}</div>
+              <div class="label">Members</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   {% else %}
     <h3>You are not logged in...</h3>
@@ -44,55 +107,46 @@
 {% endblock content %}<!-- end of content pane -->
 
   {% block left_content %}<!-- start of left_content pane -->
-    <div class="content-container">
-      <p>My Stream</p>
-      {% if my_stream %}
+    {% if my_stream %}
+      <div class="content-container">
+        <p>My Stream</p>
         <div class="content-container" id="my_stream">
-          <h3>{{ my_stream.title }}</h3>
+          <h3>
+            {{ my_stream.title }} -
+            <span class="tags">{{ my_stream.get_tag_display }}</span>
+          </h3>
           <p>
             <a href="{% url 'stream:profile' my_stream.owner.id %}">{{ stream.owner.username }}</a>
             <a href="{% url 'stream:publisher_view' lobby.id my_stream.id%}" class="ui blue button">
               Creator Studio
             </a>
           </p>
-          <div class="streams my_stream" id="{{ my_stream.session_id }}" style="background-image: url({{ my_stream.image.url }})" data-sub_token="{{ my_stream.sub_token }}">
+          <div class="my_stream" id="{{ my_stream.session_id }}" style="background-image: url({{ my_stream.image.url }})" data-sub_token="{{ my_stream.sub_token }}">
           </div>
-          <h5>{{ my_stream.get_tag_display }}</h5>
         </div>
-      {% endif %}
-    </div>
-    <div class="content-container">
-      <p>Sub Streams</p>
-      <div>
-        <input id="user" type="hidden" value="{{ request.user.username }}">
-        <ul>
-          {% for stream in streams %}
-            {% if stream.title and stream.session_id and stream.owner.id != request.user.id %}
-            <li>
-              <div>
-                  <h3>{{ stream.title }}</h3>
-                  <p><a href="{% url 'stream:profile' stream.owner.profile_id %}">{{ stream.owner.username }}</a>
-                    {% if stream.owner.is_subscribed %}
-                      <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
-                        Unfollow
-                      </button>
-                    {% else %}
-                      <button id="subscribe" name="{{ stream.owner.id }}" class="ui button">
-                        Follow
-                      </button>
-                    {% endif %}
-                  </p>
-                  <div class="streams" id="{{ stream.session_id }}" data-sub_token="{{ stream.sub_token }}">
-                    <img id="img{{ stream.session_id }}" width="100%" height="100%" src="{{ stream.image.url }}">
-                    <img src="" id="specific">
-                  </div>
-                  <h5>{{ stream.tag }}</h5>
-              </div><br>
-            </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
       </div>
+    {% endif %}
+    <div class="content-container">
+        <p>Sub Streams</p>
+        <input id="user" type="hidden" value="{{ request.user.username }}">
+        <ul class="stream-container">
+          <div class="stream-list">
+            {% for stream in streams %}
+              {% if stream.title and stream.session_id and stream.owner.id != request.user.id %}
+              <li>
+                <h3>
+                  {{ stream.title }} -
+                  <span class="tags">{{ stream.tag }}</span>
+                </h3>
+                <div class="streams" id="{{ stream.session_id }}" data-sub_token="{{ stream.sub_token }}">
+                  <img id="img{{ stream.session_id }}" width="100%" height="100%" src="{{ stream.image.url }}">
+                </div>
+                <br>
+              </li>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </ul>
     </div>
   {% endblock left_content %}<!-- end of left_content pane -->
 
