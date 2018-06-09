@@ -41,7 +41,7 @@
           <div class="item">
             <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
             <div class="content">
-              <a href="{% url 'stream:profile' lobby.owner.id %}">
+              <a href="{% url 'stream:profile' lobby.owner.profile_id %}">
                 {{ lobby.owner.username }}
               </a>
             </div>
@@ -90,7 +90,7 @@
               <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
               <div class="content">
                 <div class="header">
-                  <a href="{% url 'stream:profile' lobby.owner.id %}">
+                  <a href="{% url 'stream:profile' lobby.owner.profile_id %}">
                     {{ lobby.owner.username }}
                   </a>
                 </div>
