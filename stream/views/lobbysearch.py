@@ -4,10 +4,6 @@ from django.http import Http404, JsonResponse
 
 
 class LobbySearchView(generic.View):
-    """
-    Used to subscribe or unsubscribe a user
-    to an owner of a stream.
-    """
 
     def get(self, request, *args, **kwargs):
         if not request.is_ajax():
