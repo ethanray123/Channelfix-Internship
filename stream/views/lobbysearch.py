@@ -11,6 +11,5 @@ class LobbySearchView(generic.View):
 
         querylength = Lobby.objects.filter(
             category=self.request.GET.get("category_pk", '')).count()
-        print(querylength)
         return JsonResponse(
             querylength, content_type="application/json", safe=False)

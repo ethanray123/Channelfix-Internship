@@ -49,7 +49,6 @@ class LoadMoreView(generic.View):
 
         elif loadtype == "lobbies":
             queryset = Lobby.objects.all().order_by("-when")[offset:offset + 5]
-            print(offset)
             for obj in queryset:
                 temp = {}
                 temp['id'] = obj.id
