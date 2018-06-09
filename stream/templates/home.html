@@ -31,7 +31,7 @@
       </div>
     </div>
   </div>
-
+  {% if user.is_authenticated %}
   <div class="content-container"><h3>Favorite Lobbies</h3>
     {% for lobby in fav_lobbies %}
         <a class="header" href="{% url 'stream:lobby_detailview' lobby.id %}">
@@ -50,10 +50,13 @@
         <br>
     {% endfor %}
   </div>
+  <div class="ui horizontal divider">
+    <a id="loadmoreFavorites" href="#">Load More Favorites</a>
+  </div>
+  {% endif %}
 {% endblock left_content %}
 
 {% block content %}
-  {% if user.is_authenticated %}
   <div class="content-container" id="lobby-list">
     <div class="ui selection dropdown" style="float: right;width: 300px !important;"> 
       <input id="filterCategory" type="hidden" name="category">
@@ -123,10 +126,9 @@
       </div>
     {% endfor %}
     </div>
-  {% else %}
-    <br><br>
-    <h1>You are not logged in...</h1>
-  {% endif %}
+  </div>
+  <div class="ui horizontal divider">
+    <a id="loadmoreLobbies" href="#">Load More Lobbies</a>
   </div>
 {% endblock content %}
 
@@ -179,7 +181,7 @@
       </div>
   </div>
 </div>
-
+{% if user.is_authenticated %}
 <div class="content-container">
   <div class="ui relaxed list">
     <h3>Notifications</h3>
@@ -188,32 +190,32 @@
         <i class="bell icon"></i>
         <div class="content">
         {% if notif.target_type == "profile" %}
-          <a class="header" href="{% url 'stream:profile' notif.target_id   %}">
+          <a class="header" href="{% url 'stream:profile' notif.target_id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "stream" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "report" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby membership" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "comment" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% else %}
@@ -224,6 +226,10 @@
     {% endfor %}
     </div>
   </div>
+  <div class="ui horizontal divider">
+    <a id="loadmoreNotifications" href="#">Load More Notifications</a>
+  </div>
+  {% endif %}
 
 <div class="content-container"><h3>Online Users</h3>
   <div class="ui middle aligned divided list">
