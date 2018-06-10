@@ -2,7 +2,6 @@
 {% load static %}
 <html lang="en">
 <head>
-  {% load static %}
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock title %}</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
@@ -31,7 +30,11 @@
           {% csrf_token %}
           <input id="online" type="hidden" value="{{ request.user.profile.id }}">
           <a class="item" href="{% url 'stream:profile' user.profile.id %}">
+            {% if user.profile.avatar %}
             <img id="profilepic" class="ui avatar image" src="{{user.profile.avatar.url}}">
+            {% else %}
+            <img id="profilepic" class="ui avatar image" src="/media/stream/static/images/default_avatar.png">
+            {% endif %}
           </a>
           <div class="ui pointing dropdown link item">
             <span id="name" class="text">{{ user.username }}</span>
@@ -60,16 +63,19 @@
     </div>
 
   </div><br><br>
-  <div class="content">
-    <div class="ui grid container">
-      <div class="ui sixteen wide column segment">
-        {% block content %}{% endblock content %}
+  <div>
+    {% block main %}{% endblock main %}
+    <div class="ui grid" id="main-grid">
+      <div class="ui four wide column">
+          {% block left_content %}{% endblock left_content %}
+      </div>
+      <div class="ui eight wide column">
+          {% block content %}{% endblock content %}
+      </div>
+      <div class="ui four wide column">
+          {% block right_content %}{% endblock right_content %}
       </div>
     </div>
-
-    <div class="left pane"></div>
-    <div class="middle pane"></div>
-    <div class="right pane"></div>
 
     <div id="confirmationModal" class="ui basic modal">
       <div class="ui icon header">
