@@ -44,7 +44,10 @@ class LoadMoreView(generic.View):
                 temp = {}
                 temp['username'] = obj.username
                 temp['profile_id'] = obj.profile.id
-                temp['avatar'] = str(obj.profile.avatar.url)
+                if obj.profile.avatar:
+                    temp['image'] = str(obj.profile.avatar.url)
+                else:
+                    temp['image'] = "static/images/default_avatar.png"
                 results.append(temp)
 
         elif loadtype == "lobbies":

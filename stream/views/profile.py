@@ -2,11 +2,18 @@ from django.views import generic
 from stream.models import Profile
 from stream import forms
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 
 class DetailView(generic.DetailView):
     model = Profile
     template_name = 'stream/profile/detail_view.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(
+                reverse('login'))
+        return super(DetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
