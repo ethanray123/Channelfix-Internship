@@ -31,8 +31,9 @@
       </div>
     </div>
   </div>
-
-  <div class="content-container"><h3>Favorite Lobbies</h3>
+  {% if user.is_authenticated %}
+  <div class="content-container" id="favorite-list"><h3>Favorite Lobbies</h3>
+    <div class="favorites">
     {% for lobby in fav_lobbies %}
         <a class="header" href="{% url 'stream:lobby_detailview' lobby.id %}">
           {{ lobby.name }}
@@ -41,7 +42,7 @@
           <div class="item">
             <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
             <div class="content">
-              <a href="{% url 'stream:profile' lobby.owner.id %}">
+              <a href="{% url 'stream:profile' lobby.owner.profile_id %}">
                 {{ lobby.owner.username }}
               </a>
             </div>
@@ -49,11 +50,12 @@
         </div>
         <br>
     {% endfor %}
+    </div>
   </div>
+  {% endif %}
 {% endblock left_content %}
 
 {% block content %}
-  {% if user.is_authenticated %}
   <div class="content-container" id="lobby-list">
     <div class="ui selection dropdown" style="float: right;width: 300px !important;"> 
       <input id="filterCategory" type="hidden" name="category">
@@ -90,7 +92,7 @@
               <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
               <div class="content">
                 <div class="header">
-                  <a href="{% url 'stream:profile' lobby.owner.id %}">
+                  <a href="{% url 'stream:profile' lobby.owner.profile_id %}">
                     {{ lobby.owner.username }}
                   </a>
                 </div>
@@ -123,10 +125,9 @@
       </div>
     {% endfor %}
     </div>
-  {% else %}
-    <br><br>
-    <h1>You are not logged in...</h1>
-  {% endif %}
+  </div>
+  <div class="ui horizontal divider">
+    <a id="loadmoreLobbies" href="#">Load More Lobbies</a>
   </div>
 {% endblock content %}
 
@@ -179,41 +180,41 @@
       </div>
   </div>
 </div>
-
-<div class="content-container">
-  <div class="ui relaxed list">
+{% if user.is_authenticated %}
+<div class="content-container" id="notification-list">
+  <div class="ui relaxed list notifications">
     <h3>Notifications</h3>
     {% for notif in notifications %}
       <div class="item">
         <i class="bell icon"></i>
         <div class="content">
         {% if notif.target_type == "profile" %}
-          <a class="header" href="{% url 'stream:profile' notif.target_id   %}">
+          <a class="header" href="{% url 'stream:profile' notif.target_id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "stream" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "report" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby membership" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "comment" %}
           <a class="header" 
-            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id   %}">
+            href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% else %}
@@ -224,28 +225,32 @@
     {% endfor %}
     </div>
   </div>
+  <div class="ui horizontal divider">
+    <a id="loadmoreNotifications" href="#">Load More Notifications</a>
+  </div>
+  {% endif %}
 
-<div class="content-container"><h3>Online Users</h3>
-  <div class="ui middle aligned divided list">
-  <div class="item">
-    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
-    <div class="content">
-      <a class="header">Daniel Louise</a>
+<div class="content-container" id="user-list"><h3>Online Users</h3>
+  <div class="ui middle aligned divided list users">
+  {% for user in online_users %}
+    <div class="item">
+      {% if user.avatar %}
+        <img class="ui avatar image" src="{{ user.avatar }}">
+      {% else %}
+        <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
+      {% endif %}
+      <div class="content">
+        <a class="header" 
+          href="{% url 'stream:profile' user.profile_id %}">
+          {{ user.username }}
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="item">
-    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
-    <div class="content">
-      <a class="header">Stevie Feliciano</a>
-    </div>
-  </div>
-  <div class="item">
-    <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
-    <div class="content">
-      <a class="header">Elliot Fu</a>
-    </div>
+  {% endfor %}
   </div>
 </div>
+<div class="ui horizontal divider">
+  <a id="loadmoreUsers" href="#">Load More Users</a>
 </div>
 
 {% endblock right_content %}
