@@ -39,18 +39,18 @@ $("#loadmoreLobbies").click(function(){
       }else{
         for (var i = 0; i < response.length; i++) {
           var lobbies = '<div class="item lobby">';
-          lobbies = lobbies+'<a class="image lobby-image" href="lobby/'+response[i].id+'">';
+          lobbies = lobbies+'<a class="image lobby-image" href="stream/lobby/'+response[i].id+'">';
           lobbies = lobbies+'<img src="'+response[i].image+'"></a>';
           lobbies = lobbies+'<div class="content">';
           lobbies = lobbies+'<div class="header title">'+response[i].category+': ';
-          lobbies = lobbies+'<a href="lobby/'+response[i].id+'">';
+          lobbies = lobbies+'<a href="stream/lobby/'+response[i].id+'">';
           lobbies = lobbies+response[i].name+'</a></div><br>'; // header title end
           lobbies = lobbies+'<div class="ui horizontal list">';
           lobbies = lobbies+'<div class="item">';
           lobbies = lobbies+'<img class="ui avatar image" src="'+response[i].owner.avatar+'">';
           lobbies = lobbies+'<div class="content">';
           lobbies = lobbies+'<div class="header">';
-          lobbies = lobbies+'<a href="profile/'+response[i].owner.profile_id+'">';
+          lobbies = lobbies+'<a href="stream/profile/'+response[i].owner.profile_id+'">';
           lobbies = lobbies+response[i].owner.username+'</a></div>'; //header end
           lobbies = lobbies+'</div>'; //content end 
           lobbies = lobbies+'</div>'; //item end
@@ -100,7 +100,7 @@ $("#loadmoreNotifications").click(function(){
         for (var i = 0; i < response.length; i++) {
           var notifications = '<div class="item"><i class="bell icon"></i>';
           notifications = notifications+'<div class="content">';
-          notifications = notifications+'<a class="header" href="'+response[i].redirect_to+response[i].redirect_id+'">';
+          notifications = notifications+'<a class="header" href="stream/'+response[i].redirect_to+response[i].redirect_id+'">';
           notifications = notifications+response[i].details+'</a></div>';
 
           $("#notification-list").children(".notifications").append(notifications);
@@ -137,7 +137,7 @@ $("#loadmoreUsers").click(function(){
             users = users+'<img class="ui avatar image" src="static/images/default_avatar.png">';
           }
           users = users+'<div class="content">';
-          users = users+'<a class="header" href="profile'+response[i].profile_id+'">';
+          users = users+'<a class="header" href="stream/profile/'+response[i].profile_id+'">';
           users = users+response[i].username+'</a></div>';
           users = users+'</div>';
           $("#user-list").children(".users").append(users);
