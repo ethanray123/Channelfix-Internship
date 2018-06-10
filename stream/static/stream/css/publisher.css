@@ -5,7 +5,7 @@
     border-radius: 3px;
     background-color: #e1e1e1;
     margin: auto;
-    background-size: inherit;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 .stream-actions{
