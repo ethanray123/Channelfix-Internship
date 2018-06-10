@@ -50,6 +50,8 @@ urlpatterns = [
     path('get_image', views.stream.GetImage.as_view(), name='get_image'),
     path('lobby/<int:pk>/favorite',
          views.lobby.FavoriteView.as_view(), name='favorite_view'),
+    path('get_stream',
+         views.stream.GetStream.as_view(), name='get_stream'),
     # apis
     path('api/stream',
          api.stream.StreamAPI.as_view(), name='api_stream'),

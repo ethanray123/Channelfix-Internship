@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import (HttpResponseRedirect, Http404,
+                         HttpResponse, JsonResponse)
 from django.views import generic
 from django.urls import reverse
 from stream import models
@@ -6,8 +7,8 @@ from stream import forms
 from opentok import OpenTok, Roles
 import base64
 
-api_key = "46119842"
-api_secret = "a061d4a5aa1e22cf68b449dcbdd05ce3e403b0f4"
+api_key = "46135682"
+api_secret = "8435ef291938d1e0ee14d715b1e1d3bbb93969f0"
 
 opentok = OpenTok(api_key, api_secret)
 
@@ -120,3 +121,26 @@ class RemoveView(generic.View):
         stream.save()
         return HttpResponseRedirect(
             reverse('stream:lobby_detailview', args=[stream.lobby.pk]))
+
+
+class GetStream(generic.View):
+    def get(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404
+        obj = models.Stream.objects.get(
+            session_id=request.GET['session_id'])
+        data = {}
+        data['owner'] = {
+            'username': obj.owner.username,
+            'avatar': obj.owner.profile.avatar.url,
+            'id': obj.owner.id,
+            'url': reverse(
+                'stream:profile', args=[obj.owner.profile.pk])
+        }
+        data['title'] = obj.title
+        data['description'] = obj.description
+        data['tag'] = obj.get_tag_display()
+        data['is_subscribed'] = obj.owner.profile.is_subscribed(request.user)
+        data['when'] = obj.when.strftime("%b %d, %Y at %I:%M:%S %p")
+        return JsonResponse(
+            data, content_type="application/json", safe=False)

@@ -22,7 +22,7 @@
   <div class="content-container">
     <div class="ui statistics one">
       <div class="statistic">
-        <div class="value" style="font-size:30px !important;"> 
+        <div class="value" style="font-size:30px !important;">
           {{ stats.popular_game }}
         </div>
         <div class="label">
@@ -37,7 +37,7 @@
     {% for lobby in fav_lobbies %}
         <a class="header" href="{% url 'stream:lobby_detailview' lobby.id %}">
           {{ lobby.name }}
-        </a> by 
+        </a> by
         <div class="ui horizontal list">
           <div class="item">
             {% if lobby.owner.avatar %}
@@ -61,7 +61,7 @@
 
 {% block content %}
   <div class="content-container" id="lobby-list">
-    <div class="ui selection dropdown" style="float: right;width: 300px !important;"> 
+    <div class="ui selection dropdown" style="float: right;width: 300px !important;">
       <input id="filterCategory" type="hidden" name="category">
       <i class="dropdown icon"></i>
       <div class="default text">Category</div>
@@ -90,7 +90,7 @@
             </a>
           </div>
           <br>
-          
+
           <div class="ui horizontal list">
             <div class="item">
               {% if lobby.owner.avatar %}
@@ -145,10 +145,10 @@
     <div class="ui statistic">
         <div class="value">
           {% if stats.most_followed.profile.avatar %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{{ stats.most_followed.profile.avatar.url }}">
           {% else %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{% static 'images/default_avatar.png' %}">
           {% endif %}
           <a href="{% url 'stream:profile' stats.most_followed.profile.id %}" style="font-size:30px !important;">
@@ -166,10 +166,10 @@
       <div class="statistic">
         <div class="value">
           {% if stats.most_streams.profile.avatar %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{{ stats.most_streams.profile.avatar.url }}">
           {% else %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{% static 'images/default_avatar.png' %}">
           {% endif %}
           <a href="{% url 'stream:profile' stats.most_streams.profile.id %}" style="font-size:30px !important;">
@@ -187,10 +187,10 @@
       <div class="statistic">
         <div class="value">
           {% if stats.most_lobbies.profile.avatar %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{{ stats.most_lobbies.profile.avatar.url }}">
           {% else %}
-          <img class="ui avatar tiny image record-image" 
+          <img class="ui avatar tiny image record-image"
             src="{% static 'images/default_avatar.png' %}">
           {% endif %}
           <a href="{% url 'stream:profile' stats.most_lobbies.profile.id %}" style="font-size:30px !important;">
@@ -216,27 +216,27 @@
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "stream" %}
-          <a class="header" 
+          <a class="header"
             href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "report" %}
-          <a class="header" 
+          <a class="header"
             href="{% url 'stream:lobby_detailview' notif.target_object.content_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby" %}
-          <a class="header" 
+          <a class="header"
             href="{% url 'stream:lobby_detailview' notif.target_id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "lobby membership" %}
-          <a class="header" 
+          <a class="header"
             href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
         {% elif notif.target_type == "comment" %}
-          <a class="header" 
+          <a class="header"
             href="{% url 'stream:lobby_detailview' notif.target_object.lobby.id %}">
             {{ notif.details }}
           </a>
@@ -263,7 +263,7 @@
         <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
       {% endif %}
       <div class="content">
-        <a class="header" 
+        <a class="header"
           href="{% url 'stream:profile' user.profile_id %}">
           {{ user.username }}
         </a>

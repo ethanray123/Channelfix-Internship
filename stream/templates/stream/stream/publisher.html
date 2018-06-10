@@ -3,30 +3,10 @@
 
 
 {% block title %} My Stream {% endblock title %}
+{% block additionalCss %}
+    <link rel="stylesheet" type="text/css" href="{% static 'stream/css/publisher.css' %}">
+{% endblock additionalCss %}
 {% block content %}
-<style type="text/css">
-#publisher {
-    width: 750px;
-    height: 422px;
-    z-index: 100;
-    border-radius: 3px;
-    background-color: #e1e1e1;
-    margin: auto;
-    background-image: url({{ object.image.url }});
-}
-.stream-actions{
-    padding: 10px;
-}
-body{
-    background-color: #e1e1e1;
-}
-#stream-container, #lobby-container{
-    text-align: center;
-}
-#stream-container form{
-    display: inline;
-}
-</style>
 <div id="lobby-container">
     <h1>
         <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a>
@@ -36,7 +16,8 @@ body{
     {% csrf_token %}
     <input type="hidden" id="pk" data-value="{{ object.id }}">
     <h3>{{ object.title }}</h3>
-    <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}"></div>
+    <div id="publisher" data-session_id="{{ object.session_id }}" data-pub_token="{{ object.pub_token }}" style="
+    background-image: url({{ object.image.url }});"></div>
     <div class="stream-actions">
         <button class="ui labeled icon button disabled" id="goliveBtn">
             <i class="play icon"></i>
@@ -46,7 +27,7 @@ body{
             <i class="pause icon"></i>
             Pause
         </button>
-        <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui button" target="_blank">
+        <a href="{% url 'stream:stream_updateview' stream.id %}" class="ui button">
             <i class="edit icon"></i>
             Update
         </a>
@@ -58,7 +39,7 @@ body{
         {% endcomment %}
         <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
             {% csrf_token %}
-            <button class="ui labeled icon button confirmation" id="offlineBtn">
+            <button class="ui labeled icon button confirmation" id="delete">
                 <i class="stop icon"></i>
                 Offline
             </button>

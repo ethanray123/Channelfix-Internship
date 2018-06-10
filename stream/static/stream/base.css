@@ -1,5 +1,5 @@
 body{
-	background-color: #E1E1E1 !important; 
+	background-color: #E1E1E1 !important;
 }
 #logo{
 	height: 3rem;
@@ -48,6 +48,7 @@ body{
 	background-color: #A0A0A0;
 	text-align: center;
 	padding-top: 45px;
+	margin-right: 50px;
 }
 
 .content-container{

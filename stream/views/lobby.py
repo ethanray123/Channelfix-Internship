@@ -37,6 +37,14 @@ class DetailView(generic.DetailView):
                 owner=self.request.user, removed=False).exists()
         context['is_favorite'] = self.object.favorites.filter(
             owner=self.request.user).exists()
+        context['is_subscribed'] = self.object.owner.profile.is_subscribed(
+            self.request.user)
+        try:
+            context['my_stream'] = self.object.streams.get(
+                owner=self.request.user, removed=False)
+        except models.Stream.DoesNotExist:
+            pass
+        context['statistics'] = self.getStats()
         return context
 
     def get_streams(self):
@@ -62,6 +70,21 @@ class DetailView(generic.DetailView):
             temp['image'] = obj.image
             results.append(temp)
         return results
+
+    def getStats(self):
+        stats = {
+            'views': self.object.views.count(),
+            'faves': self.object.favorites.count(),
+            'members': self.object.memberships.filter(
+                status=models.LobbyMembership.ACCEPTED).count(),
+            'comments': self.object.comments.filter(removed=False).count(),
+            'streams': self.object.streams.filter(removed=False).count(),
+            'sponsors': self.object.streams.filter(
+                tag=1, removed=False).count(),
+            'players': self.object.streams.filter(
+                tag=2, removed=False).count()
+        }
+        return stats
 
 
 class CommentView(generic.View):
@@ -105,7 +128,7 @@ class CommentView(generic.View):
             temp['isreported'] = comment.is_reported(request.user)
             temp['owner__profile__avatar'] = str(comment.owner.profile.avatar)
             temp['owner__username'] = comment.owner.username
-            temp['when'] = comment.when
+            temp['when'] = comment.when.strftime("%b %d, %Y at %I:%M:%S %p")
             comment_list.append(temp)
         data = {'comments': comment_list}
         return JsonResponse(

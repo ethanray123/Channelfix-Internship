@@ -2,7 +2,7 @@ $(function(){
     window.onbeforeunload = function() {
         return 'Your stream will be terminated';
     }
-    var apiKey = "46119842";
+    var apiKey = "46135682";
     var session_id = $("#publisher").data("session_id");
     var pub_token = $("#publisher").data("pub_token");
 
