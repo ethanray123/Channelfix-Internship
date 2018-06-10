@@ -21,7 +21,7 @@ body{
 	background-color: #000000;
 }
 
-.navbar span{
+.navbar span, #create-lobby{
 	color: white;
 	font-size: 20px;
 	font-weight: bold;

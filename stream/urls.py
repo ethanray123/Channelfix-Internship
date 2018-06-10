@@ -9,6 +9,8 @@ urlpatterns = [
          views.lobbysearch.LobbySearchView.as_view(), name='lobby_search'),
     path('loadmore/',
          views.loadmore.LoadMoreView.as_view(), name='load_more_content'),
+    path('create_lobby',
+         views.lobby.CreateView.as_view(), name='lobby_createview'),
     path('lobby/<int:pk>',
          views.lobby.DetailView.as_view(), name='lobby_detailview'),
     path('managelobby/<int:pk>',

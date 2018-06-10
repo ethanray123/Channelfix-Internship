@@ -6,7 +6,7 @@ from stream import models
 class LobbyForm(forms.ModelForm):
     class Meta:
         model = Lobby
-        fields = ['name', 'category', 'description']
+        fields = ['name', 'category', 'description', 'image', 'lobby_type']
 
     def __init__(self, *args, **kwargs):
         super(LobbyForm, self).__init__(*args, **kwargs)
