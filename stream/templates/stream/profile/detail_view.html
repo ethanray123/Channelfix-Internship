@@ -16,8 +16,15 @@
         <img class="ui small circular image profile-image" src="{% static 'images/default_avatar.png' %}">
       {% endif %}
     </div>
+    {% csrf_token %}
     <div id="profile-owner-name" class="eleven wide column">
-      <h1 class="ui header">{{ object.owner.username }}</h1>
+      <h1 class="ui header">{{ object.owner.username }} -
+      {% if object.online_status %}
+        Online
+      {% else %}
+        Offline
+      {% endif %}
+      </h1>
     </div>
     {% if user.is_authenticated and object.owner != user %}
     <div id="profile-sub-btn" class="two wide column">
