@@ -124,26 +124,17 @@
 
   {% block left_content %}<!-- start of left_content pane -->
     {% if my_stream %}
-      <div class="content-container">
-        <p>My Stream</p>
-        <div class="content-container" id="my_stream">
-          <h3>
-            {{ my_stream.title }} -
-            <span class="tags">{{ my_stream.get_tag_display }}</span>
-          </h3>
-          <p>
-            <a href="{% url 'stream:profile' my_stream.owner.id %}">{{ stream.owner.username }}</a>
-            <a href="{% url 'stream:publisher_view' lobby.id my_stream.id%}" class="ui blue button">
-              Creator Studio
-            </a>
-          </p>
-          <div class="my_stream" id="{{ my_stream.session_id }}" style="background-image: url({{ my_stream.image.url }})" data-sub_token="{{ my_stream.sub_token }}">
-          </div>
+      <div class="content-container" id="my_stream">
+        <div class="my_stream" id="{{ my_stream.session_id }}" style="background-image: url({{ my_stream.image.url }})" data-sub_token="{{ my_stream.sub_token }}">
+        </div><br>
+        <div class="text-center">
+          <a href="{% url 'stream:publisher_view' lobby.id my_stream.id%}" class="ui blue button">
+            Creator Studio
+          </a>
         </div>
       </div>
     {% endif %}
     <div class="content-container">
-        <p>Sub Streams</p>
         <input id="user" type="hidden" value="{{ request.user.username }}">
         <ul class="stream-container">
           <div class="stream-list">
