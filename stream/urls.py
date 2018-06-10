@@ -37,6 +37,8 @@ urlpatterns = [
          views.subscription.SubscribeView.as_view(), name='subscribe'),
     path('profile/<int:pk>',
          views.profile.DetailView.as_view(), name='profile'),
+    path('online',
+         views.online.OnlineView.as_view(), name='online'),
     path('profile/subscribe/',
          csrf_exempt(views.subscription.SubscribeView.as_view()),
          name='subscribe'),

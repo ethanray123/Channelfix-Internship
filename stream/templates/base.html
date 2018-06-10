@@ -27,8 +27,14 @@
           </div>
 
           {% if user.is_authenticated %}
+          {% csrf_token %}
+          <input id="online" type="hidden" value="{{ request.user.profile.id }}">
           <a class="item" href="{% url 'stream:profile' user.profile.id %}">
+            {% if user.profile.avatar %}
             <img id="profilepic" class="ui avatar image" src="{{user.profile.avatar.url}}">
+            {% else %}
+            <img id="profilepic" class="ui avatar image" src="/media/stream/static/images/default_avatar.png">
+            {% endif %}
           </a>
           <div class="ui pointing dropdown link item">
             <span id="name" class="text">{{ user.username }}</span>
@@ -112,4 +118,7 @@
 <script src="{% static 'semantic/dist/semantic.min.js' %}"></script>
 <script src="{% static 'stream/js/search.js' %}"></script>
 <script src="{% static 'stream/js/base.js' %}"></script>
+<script type="text/javascript">
+  var onlineURL = "{% url 'stream:online' %}";
+</script>
 {% block additionalJS %}{% endblock additionalJS %}

@@ -14,7 +14,11 @@
 			<img class="ui small image display-image" src="{{ object.image.url }}">
 		{% endif%}
 	{% elif field.label == "Avatar" %}
-		<img class="ui small image display-image" src="{{ object.avatar.url }}">
+		{% if object.avatar %}
+			<img class="ui small image display-image" src="{{ object.avatar.url }}">
+		{% else %}
+			<img class="ui small image display-image" src="{% static 'images/default_thumbnail.jpg' %}">
+		{% endif%}
 	{% endif %}
 
 	{% if field.label == "Description" %}

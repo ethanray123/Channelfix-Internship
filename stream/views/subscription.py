@@ -6,15 +6,12 @@ from django.http import Http404, JsonResponse
 
 
 class SubscribeView(generic.View):
-    """
-    Used to subscribe or unsubscribe a user
-    to an owner of a stream.
-    """
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.is_ajax():
+            raise Http404
+        return super(SubscribeView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
-            raise Http404
-
         info = {
             'subscriber': request.user,
             'publisher': get_object_or_404(

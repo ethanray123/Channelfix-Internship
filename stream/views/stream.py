@@ -91,6 +91,10 @@ class PublisherView(generic.DetailView):
 
 
 class GetImage(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404
+        return super(GetImage, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         image_data = base64.b64decode(request.POST['image'])
@@ -106,6 +110,10 @@ class GetImage(generic.View):
 
 
 class RemoveView(generic.View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404
+        return super(RemoveView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         stream = models.Stream.objects.get(pk=kwargs.get('pk'))
