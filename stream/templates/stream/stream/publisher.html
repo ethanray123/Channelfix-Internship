@@ -39,7 +39,7 @@
         {% endcomment %}
         <form action="{% url 'stream:stream_removeview' stream.id %}" method="post">
             {% csrf_token %}
-            <button class="ui labeled icon button confirmation" id="offlineBtn">
+            <button class="ui labeled icon button confirmation" id="delete">
                 <i class="stop icon"></i>
                 Offline
             </button>

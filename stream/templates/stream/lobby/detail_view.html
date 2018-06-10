@@ -23,7 +23,9 @@
         </div>
       </div>
       <div class="content-container">
-        <div id="current-stream"></div>
+        <p>Click a Stream to View</p>
+        <div id="current-stream" style="background-image: url({{ object.image.url }})">
+        </div>
       </div>
       <div class="content-container stream" hidden>
         <div id="stream-details">
@@ -70,18 +72,34 @@
           <div class="description-container">
             <p>{{ object.description }}</p>
           </div>
-          <div class="ui statistics">
+          <div class="ui statistics lobby">
             <div class="statistic">
-              <div class="value">{{ statistics.faves }}</div>
+              <div class="statistics-lobby">{{ statistics.faves }}</div>
               <div class="label">Faves</div>
             </div>
             <div class="statistic">
-              <div class="value">{{ statistics.views }}</div>
+              <div class="statistics-lobby">{{ statistics.views }}</div>
               <div class="label">Views</div>
             </div>
             <div class="statistic">
-              <div class="value">{{ statistics.members }}</div>
+              <div class="statistics-lobby">{{ statistics.members }}</div>
               <div class="label">Members</div>
+            </div>
+            <div class="statistic">
+              <div class="statistics-lobby">{{ statistics.streams }}</div>
+              <div class="label">Streams</div>
+            </div>
+            <div class="statistic">
+              <div class="statistics-lobby">{{ statistics.sponsors }}</div>
+              <div class="label">Sponsors</div>
+            </div>
+            <div class="statistic">
+              <div class="statistics-lobby">{{ statistics.players }}</div>
+              <div class="label">Players</div>
+            </div>
+            <div class="statistic">
+              <div class="statistics-lobby">{{ statistics.comments }}</div>
+              <div class="label">Comments</div>
             </div>
           </div>
         </div>

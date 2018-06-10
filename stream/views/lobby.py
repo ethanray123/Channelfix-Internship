@@ -69,7 +69,13 @@ class DetailView(generic.DetailView):
             'views': self.object.views.count(),
             'faves': self.object.favorites.count(),
             'members': self.object.memberships.filter(
-                status=models.LobbyMembership.ACCEPTED).count()
+                status=models.LobbyMembership.ACCEPTED).count(),
+            'comments': self.object.comments.filter(removed=False).count(),
+            'streams': self.object.streams.filter(removed=False).count(),
+            'sponsors': self.object.streams.filter(
+                tag=1, removed=False).count(),
+            'players': self.object.streams.filter(
+                tag=2, removed=False).count()
         }
         return stats
 
@@ -115,7 +121,7 @@ class CommentView(generic.View):
             temp['isreported'] = comment.is_reported(request.user)
             temp['owner__profile__avatar'] = str(comment.owner.profile.avatar)
             temp['owner__username'] = comment.owner.username
-            temp['when'] = comment.when
+            temp['when'] = comment.when.strftime("%b %d, %Y at %I:%M:%S %p")
             comment_list.append(temp)
         data = {'comments': comment_list}
         return JsonResponse(
