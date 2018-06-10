@@ -17,7 +17,10 @@ class SearchAPI(generic.View):
         for obj in users:
             user = {}
             user['title'] = obj.owner.username,
-            user['image'] = obj.avatar.url,
+            if obj.avatar:
+                user['image'] = obj.avatar.url,
+            else:
+                user['image'] = "static/images/default_avatar.png"
             user['description'] = obj.nickname,
             user['url'] = reverse(
                 'stream:profile', args=[obj.pk])
@@ -28,7 +31,10 @@ class SearchAPI(generic.View):
         for obj in streams:
             stream = {}
             stream['title'] = obj.title,
-            stream['image'] = obj.image.url,
+            if obj.image:
+                stream['image'] = obj.image.url,
+            else:
+                stream['image'] = "static/images/default_thumbnail.jpg"
             stream['description'] = obj.get_tag_display(),
             stream['url'] = reverse(
                 'stream:lobby_detailview', args=[obj.lobby.pk])
@@ -40,7 +46,10 @@ class SearchAPI(generic.View):
         for obj in lobbies:
             lobby = {}
             lobby['title'] = obj.name,
-            lobby['image'] = obj.image.url,
+            if obj.image:
+                lobby['image'] = obj.image.url,
+            else:
+                lobby['image'] = "static/images/default_thumbnail.jpg",
             lobby['description'] = obj.get_lobby_type_display()
             lobby['url'] = reverse(
                 'stream:lobby_detailview', args=[obj.pk])
