@@ -3,7 +3,11 @@
 
 {% block title %}Joining Stream{% endblock title %}
 
-{% block content %}
+{% block additionalCss %}
+<link rel="stylesheet" type="text/css" href="{% static "stream/css/form.css" %}">
+{% endblock additionalCss%}
+
+{% block main %}
 <style type="text/css">
   body {
     background-image: url({{ lobby.image.url }});
@@ -11,31 +15,29 @@
     background-repeat: no-repeat;
     background-size: 100%;
   }
-  .formContainer{
-    width: 50%;
-    background-color: lightgrey;
-    margin: auto;
-    padding: 20px;
-    opacity: .90;
-  }
 </style>
-<div class="formContainer">
     {% if user.is_authenticated %}
-      <div>
-        <h1>You are joining lobby <a href="{% url 'stream:lobby_detailview' lobby.id %}">{{ lobby.name }}</a></h1>
+    <div class="formContainer ui form centered grid">
+      <div class="twelve wide column">
         <form method="post" enctype="multipart/form-data">
+          <div class="ui horizontal divider">
+            You are joining lobby 
+            <a href="{% url 'stream:lobby_detailview' lobby.id %}">
+              {{ lobby.name }}
+            </a>
+          </div>
             {% csrf_token %}
             {% include 'stream/form-template.html' %}
             <hr>
-            <div class="form-group">
+            <div class="field">
               <button type="submit" class="ui green button">Create</button>
               <a href="{% url 'stream:lobby_detailview' lobby.id %}" class="ui button">Cancel</a>
             </div>
         </form>
       </div>
+    </div>
     {% else %}
         <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
         <a href="{% url 'stream:lobby_detailview' lobby.id %}" class="ui button" class="ui red button">Go Back</a>
     {% endif %}
-</div>
-{% endblock content %}
+{% endblock main %}
