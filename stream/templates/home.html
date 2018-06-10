@@ -39,7 +39,11 @@
         </a> by 
         <div class="ui horizontal list">
           <div class="item">
+            {% if lobby.owner.avatar %}
             <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
+            {% else %}
+            <img class="ui avatar image" src="{% static 'images/default_thumbnail.jpg' %}">
+            {% endif %}
             <div class="content">
               <a href="{% url 'stream:profile' lobby.owner.id %}">
                 {{ lobby.owner.username }}
@@ -69,10 +73,10 @@
     {% for lobby in lobbies %}
       <div class="item lobby">
         <a class="image lobby-image" href="{% url 'stream:lobby_detailview' lobby.id %}">
-          {% if not lobby.image %}
-            <img src="{% static 'images/default_thumbnail.jpg' %}">
-          {% else %}
+          {% if lobby.image %}
             <img src="{{ lobby.image.url }}">
+          {% else %}
+            <img src="{% static 'images/default_thumbnail.jpg' %}">
           {% endif%}
         </a>
 
@@ -87,7 +91,11 @@
           
           <div class="ui horizontal list">
             <div class="item">
+              {% if lobby.owner.avatar %}
               <img class="ui avatar image" src="{{ lobby.owner.avatar.url }}">
+              {% else %}
+              <img class="ui avatar image" src="{% static 'images/default_avatar.png' %}">
+              {% endif %}
               <div class="content">
                 <div class="header">
                   <a href="{% url 'stream:profile' lobby.owner.id %}">
@@ -135,8 +143,13 @@
   <div class="ui statistics one">
     <div class="ui statistic">
         <div class="value">
+          {% if stats.most_followed.profile.avatar %}
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_followed.profile.avatar.url }}">
+          {% else %}
+          <img class="ui avatar tiny image record-image" 
+            src="{% static 'images/default_avatar.png' %}">
+          {% endif %}
           <a href="{% url 'stream:profile' stats.most_followed.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_followed }}
           </a>
@@ -151,8 +164,13 @@
   <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
+          {% if stats.most_streams.profile.avatar %}
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_streams.profile.avatar.url }}">
+          {% else %}
+          <img class="ui avatar tiny image record-image" 
+            src="{% static 'images/default_avatar.png' %}">
+          {% endif %}
           <a href="{% url 'stream:profile' stats.most_streams.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_streams }}
           </a>
@@ -167,8 +185,13 @@
   <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
+          {% if stats.most_lobbies.profile.avatar %}
           <img class="ui avatar tiny image record-image" 
             src="{{ stats.most_lobbies.profile.avatar.url }}">
+          {% else %}
+          <img class="ui avatar tiny image record-image" 
+            src="{% static 'images/default_avatar.png' %}">
+          {% endif %}
           <a href="{% url 'stream:profile' stats.most_lobbies.profile.id %}" style="font-size:30px !important;">
             {{ stats.most_lobbies }}
           </a>
