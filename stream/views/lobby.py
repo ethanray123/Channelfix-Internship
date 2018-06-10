@@ -1,13 +1,20 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from stream import models
 from django.http import Http404, JsonResponse
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 
 
 class DetailView(generic.DetailView):
     model = models.Lobby
     template_name = 'stream/lobby/detail_view.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(
+                reverse('login'))
+        return super(DetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
