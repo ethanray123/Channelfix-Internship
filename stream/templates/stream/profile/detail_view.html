@@ -10,7 +10,11 @@
 {% block content %}
   <div class="sixteen wide column ui grid">
     <div class="three wide column">
-      <img class="ui small circular image profile-image" src="{{ object.avatar.url }}">
+      {% if object.avatar %}
+        <img class="ui small circular image profile-image" src="{{ object.avatar.url }}">
+      {% else %}
+        <img class="ui small circular image profile-image" src="{% static 'images/default_avatar.png' %}">
+      {% endif %}
     </div>
     <div id="profile-owner-name" class="eleven wide column">
       <h1 class="ui header">{{ object.owner.username }}</h1>
