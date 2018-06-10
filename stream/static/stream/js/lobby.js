@@ -22,7 +22,7 @@ $(function(){
                             comment_holder.find("span.when").html(comment.when);
                             comment_holder.find("span.text").html(comment.text);
                             if($("input#user").val() == comment.owner__username){
-                                comment_holder.find("div#container").after("<span class='remove'> [remove] </span>");
+                                comment_holder.find("div#container").after("<span class='report ui button remove'> remove </span>");
                                 comment_holder.find("span.remove").attr("id", comment.pk);
                                 comment_holder.find("span.remove").click(function(event){remove_comment(event);});
                             }
@@ -32,7 +32,7 @@ $(function(){
                                     comment_holder.find("button.report").click(report_comment);
                                 }
                                 else{
-                                    comment_holder.find("div#container").after("<span> reported </span>");
+                                    comment_holder.find("div#container").after("<button class='report negative ui button disabled'> reported </button>");
                                 }
                             }
                             comment_holder.appendTo("ul#ulComment");
@@ -158,7 +158,7 @@ $(function(){
             subscriber = my_session.subscribe(event.stream, 'my-stream-opentok', {
                 insertMode: 'replace',
                 width: '100%',
-                height: '100%'
+                height: '100%',
             }, handleError);
             subscriber.subscribeToAudio(false);
         });

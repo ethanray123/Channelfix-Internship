@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Lobby{% endblock title %}
+
+{% block additionalCss %}
+<link rel="stylesheet" type="text/css" href="{% static "stream/css/form.css" %}">
+{% endblock additionalCss%}
+
+{% block main %}
+<br>
+  {% if user.is_authenticated %}
+    <div class="formContainer ui form centered grid">
+      <div class="twelve wide column">
+        <form method="post" enctype="multipart/form-data">
+            <div class="ui horizontal divider">
+             Create Lobby
+            </div>
+            {% csrf_token %}
+            {% include 'stream/form-template.html' %}
+            <hr>
+            <div class="field">
+              <button type="submit" class="ui blue button">Create</button>
+              <a href="{% url 'stream:home' %}" class="ui button">Cancel</a>
+            </div>
+        </form>
+      </div>
+    </div>
+  {% else %}
+        <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
+        <a href="{% url 'stream:home' %}" class="ui red button" class="ui button">Go Back</a>
+    {% endif %}
+{% endblock main %}

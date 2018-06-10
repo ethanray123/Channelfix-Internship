@@ -4,6 +4,7 @@ from stream import models
 from django.http import Http404, JsonResponse
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
+from stream import forms
 
 
 class DetailView(generic.DetailView):
@@ -60,7 +61,8 @@ class DetailView(generic.DetailView):
                 'username': obj.owner.username,
                 'is_subscribed': obj.owner.profile.is_subscribed(
                     self.request.user),
-                'profile_id': obj.owner.profile.id
+                'profile_id': obj.owner.profile.id,
+                'avatar': obj.owner.profile.avatar.url
             }
             temp['session_id'] = obj.session_id
             temp['pub_token'] = obj.pub_token
@@ -172,3 +174,21 @@ class FavoriteView(generic.View):
             models.Favorite.objects.filter(
                 owner=request.user, lobby=lobby).delete()
         return HttpResponse("success")
+
+
+class CreateView(generic.CreateView):
+    model = models.Lobby
+    form_class = forms.LobbyForm
+    template_name = 'stream/lobby/create_view.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404
+        return super(CreateView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        lobby = form.save(commit=False)
+        lobby.owner = self.request.user
+        lobby.save()
+        return HttpResponseRedirect(
+            reverse('stream:lobby_detailview', args=[lobby.id]))
