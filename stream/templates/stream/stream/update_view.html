@@ -3,26 +3,34 @@
 
 {% block title %}Update Stream{% endblock title %}
 
-{% block content %}
+{% block additionalCss %}
+<link rel="stylesheet" type="text/css" href="{% static "stream/css/form.css" %}">
+{% endblock additionalCss%}
+
+{% block main %}
 <br>
-<div class="formContainer ui form grid">
-    {% if user.is_authenticated and object.owner == user %}
-      <div class="six wide column">
+  {% if user.is_authenticated and object.owner == user %}
+    <div class="formContainer ui form centered grid">
+      <div class="twelve wide column">
         <form method="post" enctype="multipart/form-data">
-            <h1>You are in lobby <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">{{ object.lobby.name }}</a></h1>
-            <div class="ui horizontal divider">Details</div>
+            <div class="ui horizontal divider">
+              You are in lobby 
+              <a href="{% url 'stream:lobby_detailview' object.lobby.id %}">
+                {{ object.lobby.name }}
+              </a>
+            </div>
             {% csrf_token %}
             {% include 'stream/form-template.html' %}
             <hr>
-            <div class="fields">
+            <div class="field">
               <button type="submit" class="ui blue button">Update</button>
               <a href="{% url 'stream:publisher_view' object.lobby.id object.id%}" class="ui button">Cancel</a>
             </div>
         </form>
       </div>
-    {% else %}
+    </div>
+  {% else %}
         <h1>YOU DON'T HAVE ACCESS TO THIS PAGE</h1>
         <a href="{% url 'stream:publisher_view' object.lobby.id object.id%}" class="ui red button" class="ui button">Go Back</a>
     {% endif %}
-</div>
-{% endblock content %}
+{% endblock main %}

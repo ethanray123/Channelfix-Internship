@@ -73,7 +73,7 @@
             </div>
             {% endif %}
             <div class="content">
-              <a class="header">{{ stream.title }}</a>
+              <a class="header" href="{% url 'stream:lobby_detailview' stream.lobby_id %}">{{ stream.title }}</a>
               <div class="meta">
                 <span>{{ stream.tag }}</span>
               </div>
@@ -99,11 +99,11 @@
             </div>
             {% else %}
             <div class="image">
-              <img width="20%" height="50%" src="{% static 'stream/images/default_thumbnail.png' %}">
+              <img width="20%" height="50%" src="{% static 'images/default_thumbnail.jpg' %}">
             </div>
             {% endif %}
             <div class="content">
-              <a class="header">{{ lobby.name }}</a>
+              <a class="header" href="{% url 'stream:lobby_detailview' lobby.id%}">{{ lobby.name }}</a>
               <div class="meta">
                 <span>{{ lobby.type }}</span>
               </div>
@@ -125,7 +125,7 @@
         <div class="item">
           <div class="content">
             <div class="meta">
-              <span>Lobby: {{ comment.lobby }}</span>
+              <a href="{% url 'stream:lobby_detailview' comment.lobby_id %}"><span>Lobby: {{ comment.lobby }}</span></a>
             </div>
             <div class="text">
               <p>{{ comment.text }}</p>
