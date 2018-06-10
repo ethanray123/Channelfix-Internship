@@ -7,8 +7,8 @@ from stream import forms
 from opentok import OpenTok, Roles
 import base64
 
-api_key = "46119842"
-api_secret = "a061d4a5aa1e22cf68b449dcbdd05ce3e403b0f4"
+api_key = "46135682"
+api_secret = "8435ef291938d1e0ee14d715b1e1d3bbb93969f0"
 
 opentok = OpenTok(api_key, api_secret)
 
