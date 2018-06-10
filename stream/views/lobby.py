@@ -61,7 +61,8 @@ class DetailView(generic.DetailView):
                 'username': obj.owner.username,
                 'is_subscribed': obj.owner.profile.is_subscribed(
                     self.request.user),
-                'profile_id': obj.owner.profile.id
+                'profile_id': obj.owner.profile.id,
+                'avatar': obj.owner.profile.avatar.url
             }
             temp['session_id'] = obj.session_id
             temp['pub_token'] = obj.pub_token
