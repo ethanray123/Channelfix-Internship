@@ -134,7 +134,7 @@ $("#loadmoreUsers").click(function(){
           if (response[i].avatar) {
             users = users+'<img class="ui avatar image" src="'+response[i].avatar+'">';
           }else{
-            users = users+'<img class="ui avatar image" src="static/images/default_avatar.png">';
+            users = users+'<img class="ui avatar image" src="/media/stream/static/images/default_avatar.png">';
           }
           users = users+'<div class="content">';
           users = users+'<a class="header" href="stream/profile/'+response[i].profile_id+'">';
