@@ -101,7 +101,7 @@ Next run the celery task on a seperate console using:
 celery -A projectname worker -B
 ```
 
-Once that is running, run the django ssl server using 
+Once that is running, run the django ssl server using: 
 ```
 python manage.py runsslserver localhost:8000
 ```
