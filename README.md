@@ -86,17 +86,25 @@ gulp build
 ## Running the application
 
 To run the application, start by running the RabbitMQ server:
-`systemctl start rabbitmq-server`
+```
+systemctl start rabbitmq-server
+```
 
 Check the status of the RabbitMQ server with:
-`systemctl start rabbitmq-server`
+```
+systemctl start rabbitmq-server
+```
 
 You should see `active` on your console if it is running.
 Next run the celery task on a seperate console using:
-`celery -A projectname worker -B`
+```
+celery -A projectname worker -B
+```
 
 Once that is running, run the django ssl server using 
-`python manage.py runsslserver localhost:8000`
+```
+python manage.py runsslserver localhost:8000
+```
 Just replace the url with something you are using.
 
 And that's it, simply access the url and you should be able to run the application.
