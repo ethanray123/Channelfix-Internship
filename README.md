@@ -24,6 +24,8 @@ Then install the prequisites using:
 pip install django
 pip install social-auth-app-django
 pip install django-sslserver
+pip install celery
+pip install django-celery-beat
 ```
 
 Install npm and Node JS:
@@ -32,6 +34,12 @@ Install npm and Node JS:
 sudo apt-get update
 sudo apt-get install nodejs
 sudo apt-get install npm
+```
+
+Install Opentok:
+
+```
+sudo npm install opentok --save
 ```
 
 Install Gulp:
