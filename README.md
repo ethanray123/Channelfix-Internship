@@ -24,6 +24,9 @@ Then install the prequisites using:
 pip install django
 pip install social-auth-app-django
 pip install django-sslserver
+pip install celery
+pip install django-celery-beat
+sudo apt-get install rabbitmq-server
 ```
 
 Install npm and Node JS:
@@ -32,6 +35,12 @@ Install npm and Node JS:
 sudo apt-get update
 sudo apt-get install nodejs
 sudo apt-get install npm
+```
+
+Install Opentok:
+
+```
+sudo npm install opentok --save
 ```
 
 Install Gulp:
@@ -74,13 +83,31 @@ cd stream/static/semantic
 gulp build
 ```
 
-## Running the tests
+## Running the application
 
-Currently no tests are created for this system
+To run the application, start by running the RabbitMQ server:
+```
+systemctl start rabbitmq-server
+```
 
-## Deployment
+Check the status of the RabbitMQ server with:
+```
+systemctl start rabbitmq-server
+```
 
-Add additional notes about how to deploy this on a live system
+You should see `active` on your console if it is running.
+Next run the celery task on a seperate console using:
+```
+celery -A projectname worker -B
+```
+
+Once that is running, run the django ssl server using: 
+```
+python manage.py runsslserver localhost:8000
+```
+Just replace the url with something you are using.
+
+And that's it, simply access the url and you should be able to run the application.
 
 ## Built With
 
@@ -88,23 +115,11 @@ Python
 Django
 Jquery
 
-## Contributing
-
-Left blank
-
-## Versioning
-
-Left blank
-
 ## Authors
 
 Joe Brotzer
 Ethan Mosqueda
 Rendave Lecciones
-
-## License
-
-Left blank
 
 ## Acknowledgments
 
