@@ -33,9 +33,8 @@ class DetailView(generic.DetailView):
         context['is_requesting'] = profile.memberships.filter(
             lobby=self.object, status=models.LobbyMembership.PENDING,
             removed=False).exists()
-        if(not self.object.owner == self.request.user):
-            context['has_stream'] = self.object.streams.filter(
-                owner=self.request.user, removed=False).exists()
+        context['has_stream'] = self.object.streams.filter(
+            owner=self.request.user, removed=False).exists()
         context['is_favorite'] = self.object.favorites.filter(
             owner=self.request.user).exists()
         context['is_subscribed'] = self.object.owner.profile.is_subscribed(
@@ -190,5 +189,8 @@ class CreateView(generic.CreateView):
         lobby = form.save(commit=False)
         lobby.owner = self.request.user
         lobby.save()
+        models.LobbyMembership.objects.create(
+            member=self.request.user.profile, lobby=lobby,
+            status=models.LobbyMembership.ACCEPTED)
         return HttpResponseRedirect(
             reverse('stream:lobby_detailview', args=[lobby.id]))
