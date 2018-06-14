@@ -52,18 +52,20 @@
           <br>
         {% endfor %}
       </ol>
-      {% if object.owner == user%}
+      {% if object.owner == user %}
         <h2>{{ members.count }} - Members</h2>
         <ol>
           {% for member in members %}
-            <li>
-              <div>
-                <p>{{ member.member }}</p>
-                <p>Remove? <input id="{{ member.id }}" class="remove" type="checkbox" name="member" {% if member.removed %} checked {% endif %}></p>
-                <p>Moderator? <input class="moderate" type="checkbox" name="{{ member.member }}" {% if member.is_moderator %} checked {% endif %}></p>
-              </div>
-              <br>
-            </li>
+            {% if not object.owner.profile == member.member %}
+              <li>
+                <div>
+                  <p>{{ member.member }}</p>
+                  <p>Remove? <input id="{{ member.id }}" class="remove" type="checkbox" name="member" {% if member.removed %} checked {% endif %}></p>
+                  <p>Moderator? <input class="moderate" type="checkbox" name="{{ member.member }}" {% if member.is_moderator %} checked {% endif %}></p>
+                </div>
+                <br>
+              </li>
+              {% endif %}
           {% endfor %}
         </ol>
         <h2>{{ requests.count }} - Membership Requests</h2>
