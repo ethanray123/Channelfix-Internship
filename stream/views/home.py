@@ -58,7 +58,7 @@ class HomeView(generic.TemplateView):
                 'profile_id': obj.owner.profile.id
             }
             temp['description'] = obj.description
-            temp['streams'] = obj.streams.all().count()
+            temp['streams'] = obj.streams.filter(removed=False).count()
             temp['views'] = obj.views.all().count()
             temp['category'] = obj.category
             temp['when'] = obj.when
