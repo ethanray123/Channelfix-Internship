@@ -42,9 +42,10 @@ $("#loadmoreLobbies").click(function(){
           lobbies = lobbies+'<a class="image lobby-image" href="stream/lobby/'+response[i].id+'">';
           lobbies = lobbies+'<img src="'+response[i].image+'"></a>';
           lobbies = lobbies+'<div class="content">';
-          lobbies = lobbies+'<div class="header title">'+response[i].category+': ';
+          lobbies = lobbies+'<div class="header title">';
           lobbies = lobbies+'<a href="stream/lobby/'+response[i].id+'">';
           lobbies = lobbies+response[i].name+'</a></div><br>'; // header title end
+          lobbies = lobbies+'<div class="category">'+response[i].category+'</div>'
           lobbies = lobbies+'<div class="ui horizontal list">';
           lobbies = lobbies+'<div class="item">';
           lobbies = lobbies+'<img class="ui avatar image" src="'+response[i].owner.avatar+'">';
