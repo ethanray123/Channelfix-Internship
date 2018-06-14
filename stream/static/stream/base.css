@@ -23,7 +23,7 @@ body{
 
 .navbar span, #create-lobby{
 	color: white;
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 }
 
@@ -59,4 +59,10 @@ body{
 
 .text-center{
 	text-align: center !important;
+}
+
+#title{
+	font-size: 20px;
+	font-weight: bold;
+	padding-left: 0px !important;
 }
