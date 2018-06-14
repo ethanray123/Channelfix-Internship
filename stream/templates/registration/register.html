@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+  <div class="ui middle aligned center aligned grid container">
+    <div class="six wide column">
+      <br><br>
+      <h2 class="ui header">
+          Create your account
+      </h2>
+      <p style="color: red">{{ error }}</p>
+      <form class="ui medium form" method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label>Name</label>
+          <input placeholder="First Name" name="first_name" type="text">
+        </div>
+        <div class="field">
+          <input placeholder="Last Name" name="last_name" type="text">
+        </div>
+          <div class="field">
+            <label>Email</label>
+            <input placeholder="Email" name="email" type="text">
+          </div>
+        <div class="two fields">
+          <div class="field">
+            <label>Username</label>
+            <input placeholder="Username" name="username" type="text">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input name="password" type="password">
+          </div>
+        </div>
+        <div class="inline field">
+          <div class="ui checkbox">
+            <input name="terms" type="checkbox">
+            <label>I agree to the terms and conditions</label>
+          </div>
+        </div>
+        <a href="{% url 'login' %}" class="ui button">Back</a>
+        <div class="ui primary submit button">Create</div>
+        <div class="ui error message"></div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block additionalJS %}
+  <script type="text/javascript" src="{% static "stream/js/register.js" %}"></script>
+  <script src="{% static 'semantic/dist/components/form.js' %}"></script>
+{% endblock additionalJS %}

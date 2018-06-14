@@ -5,6 +5,8 @@ app_name = 'stream'
 
 urlpatterns = [
     path('', views.home.HomeView.as_view(), name='home'),
+    path('register/',
+         views.registration.RegisterView.as_view(), name='registration'),
     path('lobbies/',
          views.lobbysearch.LobbySearchView.as_view(), name='lobby_search'),
     path('loadmore/',
