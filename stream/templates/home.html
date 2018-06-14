@@ -11,7 +11,7 @@
     <div class="ui statistics one">
       <div class="statistic">
         <div class="value">
-          14,000
+          {{ stats.active_streams }}
         </div>
         <div class="label">
           Active Streams
@@ -83,12 +83,13 @@
         </a>
 
         <div class="content">
-          <div class="header title">
-            {{ lobby.category }}:
+          <div class="header title">            
             <a href="{% url 'stream:lobby_detailview' lobby.id %}">
               {{ lobby.name|truncatechars:50 }}
-            </a>
+            </a><br>
+            <div class="category">{{ lobby.category }}</div>
           </div>
+
           <br>
 
           <div class="ui horizontal list">

@@ -110,4 +110,6 @@ class HomeView(generic.TemplateView):
         game = models.Category.objects.all().annotate(
             lobby_count=Count('lobby')).order_by('-lobby_count').first()
         temp['popular_game'] = game.name
+        streamcount = models.Stream.objects.filter(removed=False).count()
+        temp['active_streams'] = streamcount
         return temp
