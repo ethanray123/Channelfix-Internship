@@ -72,7 +72,7 @@ class LoadMoreView(generic.View):
                 }
 
                 temp['description'] = obj.description
-                temp['streams'] = obj.streams.all().count()
+                temp['streams'] = obj.streams.filter(removed=False).count()
                 temp['views'] = obj.views.all().count()
                 temp['category'] = str(obj.category)
                 temp['when'] = obj.when.strftime("%b %d, %Y, %I:%M %p")
