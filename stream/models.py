@@ -116,7 +116,7 @@ class Profile(models.Model):
         content_type_field="target_type",
         object_id_field="target_id"
     )
-    online_status = models.BooleanField(default=True)
+    online_status = models.BooleanField(default=False)
     last_seen = models.DateTimeField(auto_now_add=True, null=True)
     when = models.DateTimeField(auto_now_add=True, null=True)
     removed = models.BooleanField(default=False)

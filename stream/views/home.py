@@ -66,7 +66,7 @@ class HomeView(generic.TemplateView):
         return results
 
     def get_users(self):
-        queryset = models.User.objects.all()[:10]
+        queryset = models.User.objects.filter(profile__online_status=True)[:10]
         results = []
         for obj in queryset:
             temp = {}
