@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from stream.models import Lobby
 from django import forms
 from stream import models
@@ -40,3 +41,11 @@ class ProfileForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'autocomplete': 'off',
             })
+
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password']
