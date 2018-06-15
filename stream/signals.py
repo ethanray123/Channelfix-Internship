@@ -44,14 +44,20 @@ def create_notify_stream(sender, instance, created, **kwargs):
     #         )
     # else:
     if created:
-        models.Notification.objects.create(
-            owner=instance.owner,
-            template=1,
-            target_id=instance.id,
-            target_type=ContentType.objects.get_for_model(
-                models.Stream),
-            target_object=instance
-        )
+        subscriptions = models.Subscription.objects.filter(
+            publisher=instance.owner)
+        results = []
+        for sub in subscriptions:
+            notif = models.Notification(
+                owner=sub.subscriber,
+                template=1,
+                target_id=instance.id,
+                target_type=ContentType.objects.get_for_model(
+                    models.Stream),
+                target_object=instance
+            )
+            results.append(notif)
+        models.Notification.objects.bulk_create(results)
     elif not created:
         models.Notification.objects.create(
             owner=instance.owner,
@@ -67,20 +73,25 @@ def create_notify_stream(sender, instance, created, **kwargs):
 @receiver(post_save, sender=models.Lobby)
 def create_notify_lobby(sender, instance, created, **kwargs):
     if created:
-        models.Notification.objects.create(
-            owner=instance.owner,
-            template=4,
-            target_id=instance.id,
-            target_type=ContentType.objects.get_for_model(
-                models.Lobby),
-            target_object=instance
-        )
+        subscriptions = models.Subscription.objects.filter(
+            publisher=instance.owner)
+        results = []
+        for sub in subscriptions:
+            notif = models.Notification(
+                owner=sub.subscriber,
+                template=4,
+                target_id=instance.id,
+                target_type=ContentType.objects.get_for_model(
+                    models.Lobby),
+                target_object=instance
+            )
+            results.append(notif)
+        models.Notification.objects.bulk_create(results)
 
 
 @receiver(post_save, sender=models.LobbyMembership)
 def create_notify_membership(sender, instance, created, **kwargs):
     if int(instance.status) == 2:
-        print("hello")
         if not created:
             models.Notification.objects.create(
                 owner=instance.member.owner,
@@ -91,7 +102,6 @@ def create_notify_membership(sender, instance, created, **kwargs):
                 target_object=instance
             )
     if int(instance.status) == 1:
-        print("hello")
         if not created:
             models.Notification.objects.create(
                 owner=instance.member.owner,
@@ -105,12 +115,8 @@ def create_notify_membership(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=models.Comment)
 def create_notify_comment(sender, instance, created, **kwargs):
-    print(instance)
-    print(instance.report)
-    print(instance.report.content_type)
     if instance.reported and instance.removed:
         report = models.Report.objects.get(content_id=instance.id)
-        print("inside")
         if not created:
             models.Notification.objects.create(
                 owner=instance.owner,
