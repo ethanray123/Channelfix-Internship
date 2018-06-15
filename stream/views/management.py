@@ -3,6 +3,7 @@ from stream import models
 from stream.forms import LobbyForm
 from django.urls import reverse_lazy
 from django.http import Http404, JsonResponse
+from django.contrib.contenttypes.models import ContentType
 
 
 class DetailView(generic.DetailView):
@@ -13,7 +14,20 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['streams'] = self.object.streams.order_by('-tag')
         context['comments'] = self.object.comments.order_by('when')
-        context['reports'] = self.object.comments.filter(report__isnull=False)
+        ttype = ContentType.objects.get_for_model(models.Comment)
+        reports = models.Report.objects.filter(content_type=ttype)
+        results = []
+        for report in reports:
+            temp = {}
+            if report.content_object.lobby.name == self.object.name:
+                temp['id'] = report.content_id
+                temp['comment_owner'] = report.content_object.owner
+                temp['comment_text'] = report.content_object.text
+                temp['commentremoved'] = report.content_object.removed
+                temp['reason'] = report.get_reason
+                temp['when'] = report.when
+                results.append(temp)
+        context['reports'] = results
         context['tags'] = models.STREAM_TAGS
         context['statuses'] = models.STATUS
         context['members'] = self.object.memberships.filter(status=2)
