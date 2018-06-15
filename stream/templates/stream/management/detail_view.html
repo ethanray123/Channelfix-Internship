@@ -109,12 +109,13 @@
         <li>
           <div>
             <label>
-              {{ report.owner.username }}
-              <span>{{ report.when }}</span>
+              <span>Owner: {{ report.comment_owner }}</span><br>
+              <span>Comment: {{ report.comment_text }}</span><br>
+              <span>Reason: {{ report.reason }}</span><br>
+              <span>Reported On: {{ report.when }}</span><br>
             </label>
           </div>
-          <p>{{ report.text }}</p>
-          <span>Remove? <input id="{{ report.id }}" class="remove confirmation" type="checkbox" name="comment" {% if comment.removed %} checked {% endif %}></span>
+          <span>Remove? <input id="{{ report.id }}" class="remove confirmation" type="checkbox" name="comment" {% if report.commentremoved %} checked {% endif %}></span>
         </li>
         <br>
         {% endfor %}

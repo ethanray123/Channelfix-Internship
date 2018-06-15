@@ -109,15 +109,16 @@ def create_notify_comment(sender, instance, created, **kwargs):
     print(instance.report)
     print(instance.report.content_type)
     if instance.reported and instance.removed:
+        report = models.Report.objects.get(content_id=instance.id)
         print("inside")
         if not created:
             models.Notification.objects.create(
                 owner=instance.owner,
                 template=8,
-                target_id=instance.id,
+                target_id=report.id,
                 target_type=ContentType.objects.get_for_model(
                     models.Report),
-                target_object=instance.report
+                target_object=report
             )
     else:
         if created:
