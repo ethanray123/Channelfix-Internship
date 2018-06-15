@@ -1,11 +1,16 @@
 body{
 	background-color: #E1E1E1 !important;
 }
+
 #logo{
 	height: 3rem;
 	width: 3rem;
-	padding: 0px;
+	padding: 0px !important;
 	margin: 0px;
+}
+
+#logo-container{
+	padding-right: 0px !important;
 }
 
 #profilepic{
